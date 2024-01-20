@@ -10,6 +10,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import com.example.realestatemanager.loansimulator.LoanSimulatorFragment;
 import com.example.realestatemanager.map.MapFragment;
 import com.google.android.material.navigation.NavigationView;
 
@@ -36,14 +37,13 @@ public class MainActivity extends AppCompatActivity {
             // Gérer la navigation de l'élément de menu sélectionné
             int id = item.getItemId();
             if (id == R.id.map_drawer) {
-                // Remplacer le fragment par MapFragment
                 replaceFragment(new MapFragment());
             } else if (id == R.id.action_property_list) {
                 // Remplacer le fragment par PropertyListFragment
                 replaceFragment(new PropertyListFragment());
             } else if (id == R.id.action_loan_simulator) {
                 // Remplacer le fragment par LoanSimulatorFragment
-                // replaceFragment(new LoanSimulatorFragment());
+                replaceFragment(new LoanSimulatorFragment());
             }
 
             // Fermer le tiroir après la sélection de l'élément

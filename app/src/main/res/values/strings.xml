@@ -3,6 +3,6 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="Api_key">AIzaSyAVoeltvyEl749E90mvfaBU_B6SUCF31gU</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="monthly_payment_result">Montant du paiement mensuel: %1$.2f</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
