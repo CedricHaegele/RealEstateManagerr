@@ -11,7 +11,7 @@
             android:title="Map" />
         <item
             android:id="@+id/action_property_list"
-            android:title="Property List"
+            android:title="Properties List"
             app:showAsAction="ifRoom"
             android:icon="@drawable/baseline_list_24"/>
 

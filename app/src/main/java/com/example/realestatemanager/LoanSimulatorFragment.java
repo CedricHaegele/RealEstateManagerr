@@ -13,8 +13,6 @@ public class LoanSimulatorFragment extends AppCompatActivity {
     private EditText editTextLoanAmount;
     private EditText editTextInterestRate;
     private EditText editTextLoanTerm;
-    private Button buttonCalculate;
-    private TextView textViewMonthlyPayment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,16 +23,11 @@ public class LoanSimulatorFragment extends AppCompatActivity {
         editTextLoanAmount = findViewById(R.id.editTextLoanAmount);
         editTextInterestRate = findViewById(R.id.editTextInterestRate);
         editTextLoanTerm = findViewById(R.id.editTextLoanTerm);
-        buttonCalculate = findViewById(R.id.buttonCalculate);
-        textViewMonthlyPayment = findViewById(R.id.textViewMonthlyPayment);
+        Button buttonCalculate = findViewById(R.id.buttonCalculate);
+        TextView textViewMonthlyPayment = findViewById(R.id.textViewMonthlyPayment);
 
         // Gérez le clic sur le bouton de calcul
-        buttonCalculate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                calculateMonthlyPayment();
-            }
-        });
+        buttonCalculate.setOnClickListener(v -> calculateMonthlyPayment());
     }
 
     private void calculateMonthlyPayment() {

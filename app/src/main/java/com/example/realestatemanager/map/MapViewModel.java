@@ -1,6 +1,7 @@
 package com.example.realestatemanager.map;
 
 import android.app.Application;
+
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -21,14 +22,11 @@ public class MapViewModel extends AndroidViewModel {
     }
 
     private void loadProperties() {
-        // Créez une ArrayList spécifique de RealEstateProperty
-        List<RealEstateProperty> loadedProperties = new ArrayList<RealEstateProperty>();
 
-        // Ajoutez des objets RealEstateProperty à la liste
+        List<RealEstateProperty> loadedProperties = new ArrayList<>();
+
         loadedProperties.add(new RealEstateProperty(40.7128, -74.0060, "New York Property", "Description here", 1000000));
-        // Ajoutez d'autres propriétés si nécessaire
 
-        // Mettez à jour le LiveData avec la liste de RealEstateProperty
         properties.setValue(loadedProperties);
     }
 

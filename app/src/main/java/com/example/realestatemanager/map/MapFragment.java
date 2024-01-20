@@ -7,8 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.realestatemanager.R;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -16,19 +14,18 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.realestatemanager.map.MapViewModel;
+import com.example.realestatemanager.R;
+import com.example.realestatemanager.model.RealEstateProperty;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.example.realestatemanager.model.RealEstateProperty;
 
 import java.util.List;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
-    private MapViewModel mapViewModel;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 101;
     private GoogleMap mMap;
 
@@ -37,7 +34,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-        mapViewModel = new ViewModelProvider(this).get(MapViewModel.class);
+        MapViewModel mapViewModel = new ViewModelProvider(this).get(MapViewModel.class);
         mapViewModel.getProperties().observe(getViewLifecycleOwner(), this::updateMap);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
@@ -49,7 +46,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
         LatLng newYork = new LatLng(40.7128, -74.0060);
