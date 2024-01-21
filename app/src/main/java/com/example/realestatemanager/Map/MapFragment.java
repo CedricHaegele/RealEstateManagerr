@@ -1,4 +1,4 @@
-package com.example.realestatemanager.map;
+package com.example.realestatemanager.Map;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.realestatemanager.R;
-import com.example.realestatemanager.model.RealEstateProperty;
+import com.example.realestatemanager.Model.RealEstateProperty;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

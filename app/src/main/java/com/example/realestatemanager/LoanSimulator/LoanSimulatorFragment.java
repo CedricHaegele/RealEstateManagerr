@@ -1,4 +1,4 @@
-package com.example.realestatemanager.loansimulator;
+package com.example.realestatemanager.LoanSimulator;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

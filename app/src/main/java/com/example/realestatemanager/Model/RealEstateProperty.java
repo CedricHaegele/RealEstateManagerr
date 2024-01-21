@@ -1,4 +1,4 @@
-package com.example.realestatemanager.model;
+package com.example.realestatemanager.Model;
 
 public class RealEstateProperty {
     private final double latitude;
