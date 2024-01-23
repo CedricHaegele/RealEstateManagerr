@@ -1,7 +1,10 @@
 package com.example.realestatemanager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
+
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -10,6 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import com.example.realestatemanager.LoanSimulator.LoanSimulatorFragment;
 import com.example.realestatemanager.Map.MapFragment;
+import com.example.realestatemanager.RealtyAdd.RealtyAdd;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,6 +55,20 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_main_menu_toolbar, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.menu_activity_main_toolbar_add) {
+            // Démarrer RealtyAdd lorsque l'icône baseline_add_24 est cliquée
+            Intent intent = new Intent(this, RealtyAdd.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void replaceFragment(Fragment fragment) {

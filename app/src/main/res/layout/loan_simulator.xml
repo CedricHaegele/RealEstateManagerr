@@ -4,41 +4,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#D2DFF6">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Loan Simulator"
+        android:textStyle="bold"
         android:textSize="24sp"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"/>
 
     <EditText
         android:id="@+id/editTextLoanAmount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Loan Amount"
-        android:inputType="numberDecimal"/>
+        android:padding="15dp"
+        android:inputType="numberDecimal"
+        android:background="@drawable/edittext_rounded"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"/>
 
     <EditText
         android:id="@+id/editTextInterestRate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="15dp"
         android:hint="Interest Rate (%)"
-        android:inputType="numberDecimal"/>
+        android:inputType="numberDecimal"
+        android:background="@drawable/edittext_rounded"
+        android:layout_marginBottom="15dp"/>
 
     <EditText
         android:id="@+id/editTextLoanTerm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="15dp"
         android:hint="Loan Term (years)"
-        android:inputType="number"/>
-
-    <Button
-        android:id="@+id/buttonCalculate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Calculate"/>
+        android:inputType="number"
+        android:background="@drawable/edittext_rounded"
+        android:layout_marginBottom="15dp"/>
 
     <TextView
         android:id="@+id/textViewMonthlyPayment"
@@ -46,6 +53,15 @@
         android:layout_height="wrap_content"
         android:text=""
         android:textSize="18sp"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/buttonCalculate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_rounded"
+        android:text="Calculate"
+        android:textColor="#FFFFFF" />
 
 </LinearLayout>
