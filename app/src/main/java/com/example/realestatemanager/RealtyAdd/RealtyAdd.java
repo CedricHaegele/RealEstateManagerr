@@ -13,16 +13,18 @@ public class RealtyAdd extends AppCompatActivity {
         binding = AddRealtyBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setSupportActionBar(binding.toolbar);
+
         // Set a click listener for the 'Save' button
         binding.saveButton.setOnClickListener(v -> {
             // Logic to save the real estate data
             // Example: Fetching text from a TextInputEditText
-            String propertyType = binding.propertyType.getText().toString();
+            //String propertyType = binding.propertyType.getText().toString();
             String price = binding.price.getText().toString();
             String area = binding.area.getText().toString();
             String rooms = binding.rooms.getText().toString();
             String address = binding.address.getText().toString();
-            String interestPoints = binding.interestPoints.getText().toString();
+            //String interestPoints = binding.interestPoints.getText().toString();
             String status = binding.status.getText().toString();
             String marketEntryDate = binding.marketEntryDate.getText().toString();
             String saleDate = binding.saleDate.getText().toString();
