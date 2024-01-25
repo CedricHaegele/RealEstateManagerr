@@ -39,8 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (id == R.id.map_drawer) {
                 replaceFragment(new MapFragment());
-            } else if (id == R.id.action_property_list) {
-                replaceFragment(new PropertyListFragment());
+
             } else if (id == R.id.action_loan_simulator) {
                 replaceFragment(new LoanSimulatorFragment());
             }
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.menu_activity_main_toolbar_add) {
-            // Démarrer RealtyAdd lorsque l'icône baseline_add_24 est cliquée
+
             Intent intent = new Intent(this, RealtyAdd.class);
             startActivity(intent);
             return true;
