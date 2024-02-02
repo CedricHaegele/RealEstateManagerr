@@ -25,10 +25,23 @@
             android:titleTextColor="@color/white"
             app:menu="@menu/activity_main_menu_toolbar" />
 
-        <FrameLayout
-            android:id="@+id/map_container"
+        <androidx.slidingpanelayout.widget.SlidingPaneLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
+
+            <!-- Panneau Master -->
+            <FrameLayout
+                android:id="@+id/left_pane"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <!-- Panneau Detail -->
+            <FrameLayout
+                android:id="@+id/right_pane"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.slidingpanelayout.widget.SlidingPaneLayout>
 
 
     </LinearLayout>
