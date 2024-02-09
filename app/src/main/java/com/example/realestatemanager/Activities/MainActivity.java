@@ -20,51 +20,53 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnBu
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d("MainActivity", "onCreate: layout chargé");
 
         this.configureAndShowMainFragment();
         this.configureAndShowDetailFragment();
     }
 
-
     // --------------
     // CallBack
     // --------------
-
     @Override
     public void onButtonClicked(View view) {
-        // 3 - Check if detail fragment is not created or if not visible
-        if (detailFragment == null || !detailFragment.isVisible()){
-            startActivity(new Intent(this, DetailActivity.class));
+        if (findViewById(R.id.frame_layout_detail) == null) {
+            Intent intent = new Intent(this, DetailActivity.class);
+            startActivity(intent);
+        } else {
+
         }
     }
 
     // --------------
     // FRAGMENTS
     // --------------
-
     private void configureAndShowMainFragment() {
-        // A - Get FragmentManager (Support) and Try to find existing instance of fragment in FrameLayout container
         mainFragment = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.frame_layout_main);
 
         if (mainFragment == null) {
-            // B - Create new main fragment
             mainFragment = new MainFragment();
-            // C - Add it to FrameLayout container
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.frame_layout_main, mainFragment)
                     .commit();
         }
     }
 
-    private void configureAndShowDetailFragment(){
-        detailFragment = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.frame_layout_detail);
+    private void configureAndShowDetailFragment() {
+        if (findViewById(R.id.frame_layout_detail) != null) {
+            Log.d("MainActivity", "configureAndShowDetailFragmentIfNeeded: frame_layout_detail trouvé");
+            detailFragment = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.frame_layout_detail);
 
-        //A - We only add DetailFragment in Tablet mode (If found frame_layout_detail)
-        if (detailFragment == null && findViewById(R.id.frame_layout_detail) != null) {
-            detailFragment = new DetailFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.frame_layout_detail, detailFragment)
-                    .commit();
+            if (detailFragment == null) {
+                detailFragment = new DetailFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout_detail, detailFragment)
+                        .commit();
+            }
+        } else {
+            Log.d("MainActivity", "Le conteneur frame_layout_detail n'existe pas dans le layout actuel.");
         }
     }
+
 }

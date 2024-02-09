@@ -12,7 +12,6 @@ import com.example.realestatemanager.R;
 
 public class DetailFragment extends Fragment {
 
-
     public DetailFragment() {
         // Required empty public constructor
     }
