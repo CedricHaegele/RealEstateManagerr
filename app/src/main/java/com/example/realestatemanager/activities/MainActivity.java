@@ -82,18 +82,21 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
 
     @Override
     public void onItemSelected(RealtyList item) {
-        DetailFragment fragment = DetailFragment.newInstance(item.getTitle(), item.getPrice(),item.getAddress());
+        DetailFragment fragment = DetailFragment.newInstance(item.getTitle(), item.getPrice(), item.getAddress());
+
         if (isTablet(getApplicationContext())) {
+
             getSupportFragmentManager().beginTransaction()
                     .replace(binding.fragmentDetailContainer.getId(), fragment)
                     .commit();
         } else {
             getSupportFragmentManager().beginTransaction()
                     .replace(binding.fragmentListContainer.getId(), fragment)
-                    .addToBackStack("null")
+                    .addToBackStack(null)
                     .commit();
         }
     }
+
 
     @Override
     public void onListFragmentDisplayed(boolean displayed) {

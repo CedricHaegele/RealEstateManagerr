@@ -1,6 +1,7 @@
 package com.example.realestatemanager.activities;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,8 +16,8 @@ public class AddRealtyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityAddRealtyBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        intToolBar();
 
-        // Configurer le bouton pour ajouter des photos
         binding.addPhotosButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -25,11 +26,9 @@ public class AddRealtyActivity extends AppCompatActivity {
             }
         });
 
-        // Configurer le FAB pour soumettre la propriété
         binding.submitPropertyFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Code pour soumettre la propriété
                 submitProperty();
             }
         });
@@ -47,6 +46,25 @@ public class AddRealtyActivity extends AppCompatActivity {
 
         // Exemple d'utilisation des valeurs récupérées
         Toast.makeText(this, "Submitting property...", Toast.LENGTH_SHORT).show();
-        // Ici, vous pourriez par exemple créer un objet Propriété et l'envoyer à une base de données ou une API
+
+    }
+
+    private void intToolBar() {
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+
+            getSupportActionBar().setTitle("Add Realty");
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

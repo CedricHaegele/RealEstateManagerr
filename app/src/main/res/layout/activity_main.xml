@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:contentDescription="@null"
-            app:backgroundTint="#1A1A61"
+            app:backgroundTint="#391797"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@android:drawable/ic_input_add"

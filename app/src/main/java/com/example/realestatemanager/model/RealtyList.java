@@ -10,11 +10,13 @@ public class RealtyList {
     private String address;
     private String availableDate;
     private String soldDate;
+    private int imageUrl;
 
-    public RealtyList(String title, String price, String address) {
+    public RealtyList(String title, String price, String address,int imageUrl) {
         this.title = title;
         this.price = price;
         this.address = address;
+        this.imageUrl = imageUrl;
     }
 
     public String getTitle() {
@@ -39,6 +41,14 @@ public class RealtyList {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public int getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(int imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     @Override

@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.realestatemanager.R;
 import com.example.realestatemanager.adapter.RealtyListAdapter;
 import com.example.realestatemanager.callback.OnListItemSelectedListener;
 import com.example.realestatemanager.databinding.FragmentListBinding;
@@ -75,10 +76,10 @@ public class ListFragment extends Fragment {
 
     private void setupRecyclerView() {
         List<RealtyList> items = new ArrayList<>();
-        items.add(new RealtyList("Villa Beach House", "4 000 000$","New York City"));
-        items.add(new RealtyList("Love Loft", "2 000 000$","Manhattan"));
-        items.add(new RealtyList("Lovely Appartment ", "500 000$", "Brooklyn"));
-        items.add(new RealtyList("Manoir", "300 000$","Bronx"));
+        items.add(new RealtyList("Villa Beach House", "4 000 000$","New York City", R.drawable.estate_image));
+        items.add(new RealtyList("Love Loft", "2 000 000$","Manhattan",R.drawable.estate_image));
+        items.add(new RealtyList("Lovely Appartment ", "500 000$", "Brooklyn",R.drawable.estate_image));
+        items.add(new RealtyList("Manoir", "300 000$","Bronx",R.drawable.estate_image));
 
         RealtyListAdapter adapter = new RealtyListAdapter(items, item -> {
             navigateToDetailFragment(item);
@@ -88,9 +89,10 @@ public class ListFragment extends Fragment {
         binding.recyclerView.setAdapter(adapter);
     }
 
-    private void navigateToDetailFragment(Object item) {
+    private void navigateToDetailFragment(RealtyList item) {
         if (listener != null) {
-            //listener.onItemSelected(item);
+            listener.onItemSelected(item);
         }
     }
+
 }
