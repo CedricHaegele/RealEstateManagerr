@@ -16,7 +16,7 @@ import com.example.realestatemanager.callback.OnListItemSelectedListener;
 import com.example.realestatemanager.fragments.DetailFragment;
 import com.example.realestatemanager.fragments.ListFragment;
 import com.example.realestatemanager.databinding.ActivityMainBinding;
-import com.example.realestatemanager.model.ItemList;
+import com.example.realestatemanager.model.RealtyList;
 
 public class MainActivity extends AppCompatActivity implements OnListItemSelectedListener {
 
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
         super.onCreate(savedInstanceState);
 
         initViews();
-        intToolBar();
+        initToolBar();
         initListeners();
         displayFragments();
         initFirstTabletItem();
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
         setContentView(binding.getRoot());
     }
 
-    private void intToolBar() {
+    private void initToolBar() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
         binding.addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
+                Intent intent = new Intent(MainActivity.this, AddRealtyActivity.class);
                 startActivity(intent);
             }
         });
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
     }
 
     @Override
-    public void onItemSelected(ItemList item) {
+    public void onItemSelected(RealtyList item) {
         DetailFragment fragment = DetailFragment.newInstance(item.getTitle(), item.getDescription());
         if (isTablet(getApplicationContext())) {
             getSupportFragmentManager().beginTransaction()

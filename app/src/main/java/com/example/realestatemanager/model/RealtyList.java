@@ -1,11 +1,11 @@
 package com.example.realestatemanager.model;
 
-public class ItemList {
+public class RealtyList {
 
     String title;
     String description;
 
-    public ItemList(String title, String description) {
+    public RealtyList(String title, String description) {
         this.title = title;
         this.description = description;
     }
@@ -28,7 +28,7 @@ public class ItemList {
 
     @Override
     public String toString() {
-        return "ItemList{" +
+        return "RealtyList{" +
                 "title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 '}';

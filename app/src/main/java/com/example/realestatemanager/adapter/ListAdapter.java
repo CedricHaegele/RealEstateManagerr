@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.realestatemanager.R;
-import com.example.realestatemanager.model.ItemList;
+import com.example.realestatemanager.model.RealtyList;
 import com.example.realestatemanager.viewholder.ListViewHolder;
 
 import java.util.List;
@@ -15,13 +15,13 @@ import java.util.List;
 public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
 
     public interface OnItemClickListener {
-        void onItemClick(ItemList item);
+        void onItemClick(RealtyList item);
     }
 
-    private List<ItemList> list;
+    private List<RealtyList> list;
     private OnItemClickListener listener;
 
-    public ListAdapter(List<ItemList> list, OnItemClickListener listener) {
+    public ListAdapter(List<RealtyList> list, OnItemClickListener listener) {
         this.list = list;
         this.listener = listener;
     }
@@ -35,7 +35,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ListViewHolder holder, int position) {
-        ItemList item = list.get(position);
+        RealtyList item = list.get(position);
         holder.titleTextView.setText(item.getTitle());
         holder.descriptionTextView.setText(item.getDescription());
         holder.itemView.setOnClickListener(v -> listener.onItemClick(item));
