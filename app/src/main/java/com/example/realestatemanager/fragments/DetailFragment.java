@@ -20,7 +20,7 @@ public class DetailFragment extends Fragment {
 
     private static final String ARG_DESCRIPTION = "description";
 
-    public static DetailFragment newInstance(String title, String description) {
+    public static DetailFragment newInstance(String title, String description, String address) {
         DetailFragment fragment = new DetailFragment();
         Bundle args = new Bundle();
         args.putString(ARG_TITLE, title);

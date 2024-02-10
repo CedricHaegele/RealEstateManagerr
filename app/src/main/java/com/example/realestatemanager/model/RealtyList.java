@@ -2,12 +2,19 @@ package com.example.realestatemanager.model;
 
 public class RealtyList {
 
-    String title;
-    String description;
+    private String title;
+    private String description;
+    private String price;
+    private String surface;
+    private String rooms;
+    private String address;
+    private String availableDate;
+    private String soldDate;
 
-    public RealtyList(String title, String description) {
+    public RealtyList(String title, String price, String address) {
         this.title = title;
-        this.description = description;
+        this.price = price;
+        this.address = address;
     }
 
     public String getTitle() {
@@ -18,19 +25,28 @@ public class RealtyList {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getPrice() {
+        return price;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     @Override
     public String toString() {
         return "RealtyList{" +
                 "title='" + title + '\'' +
-                ", description='" + description + '\'' +
+                ", price='" + price + '\'' +
+                ", address='" + address + '\'' +
                 '}';
     }
 }
