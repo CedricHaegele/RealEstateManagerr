@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
         displayFragments();
         initFirstTabletItem();
         handleNavigationDrawer();
+
     }
 
     private void initViews() {
@@ -74,18 +75,22 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
 
     private void initFirstTabletItem() {
         if (isTablet(getApplicationContext())) {
+
+            int defaultImageResourceId = R.drawable.estate_image;
             getSupportFragmentManager().beginTransaction()
-                    .replace(binding.fragmentDetailContainer.getId(), DetailFragment.newInstance("Title 1", "Description 1","222"))
+                    .replace(binding.fragmentDetailContainer.getId(), DetailFragment.newInstance("Title 1", "Description 1", "222", defaultImageResourceId))
                     .commit();
         }
     }
 
+
     @Override
     public void onItemSelected(RealtyList item) {
-        DetailFragment fragment = DetailFragment.newInstance(item.getTitle(), item.getPrice(), item.getAddress());
+
+        int imageResId = item.getImageUrl();
+        DetailFragment fragment = DetailFragment.newInstance(item.getTitle(),item.getAddress(), item.getPrice(), imageResId);
 
         if (isTablet(getApplicationContext())) {
-
             getSupportFragmentManager().beginTransaction()
                     .replace(binding.fragmentDetailContainer.getId(), fragment)
                     .commit();
@@ -96,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
                     .commit();
         }
     }
+
 
 
     @Override
