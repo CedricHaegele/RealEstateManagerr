@@ -10,6 +10,7 @@ import android.view.View;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 
 import com.example.realestatemanager.R;
 import com.example.realestatemanager.callback.OnListItemSelectedListener;
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
                     .addToBackStack(null)
                     .commit();
         }
+        setupDrawerToggle(false);
     }
 
 
@@ -117,9 +119,7 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
     private void handleNavigationDrawer() {
         toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         binding.drawerLayout.addDrawerListener(toggle);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, binding.drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        binding.drawerLayout.addDrawerListener(toggle);
+
         toggle.syncState();
         binding.navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -134,6 +134,22 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
             return true;
         });
     }
+
+
+    public void setupDrawerToggle(boolean enableDrawer) {
+        toggle.setDrawerIndicatorEnabled(enableDrawer);
+        if (enableDrawer) {
+            toggle.setToolbarNavigationClickListener(null);
+            toggle.syncState();
+
+            toggle.setDrawerSlideAnimationEnabled(true);
+            binding.drawerLayout.addDrawerListener(toggle);
+        } else {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -153,6 +169,11 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        if (id == android.R.id.home && !toggle.isDrawerIndicatorEnabled()) {
+            onBackPressed();
+            return true;
+        }
+
         if (id == R.id.action_search) {
             // handle search click
             return true;
@@ -164,5 +185,17 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onBackPressed() {
+
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+            setupDrawerToggle(true);
+        }
+    }
+
 }
 
