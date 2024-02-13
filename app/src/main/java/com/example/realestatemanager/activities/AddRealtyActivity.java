@@ -41,22 +41,41 @@ public class AddRealtyActivity extends AppCompatActivity {
 
 
     private void setupListeners() {
-        binding.selectDescPictureButton.setOnClickListener(v -> {
-            // Code pour sélectionner une photo de description
-            Toast.makeText(AddRealtyActivity.this, "Select description photo clicked", Toast.LENGTH_SHORT).show();
-        });
 
-        binding.selectGalleryPictureButton.setOnClickListener(v -> {
-            // Code pour sélectionner une photo de la galerie
-            Toast.makeText(AddRealtyActivity.this, "Select gallery photo clicked", Toast.LENGTH_SHORT).show();
-        });
+        binding.buttonPicture.setOnClickListener(v -> showPictureDialog());
+    }
 
-        binding.addButton.setOnClickListener(v -> submitProperty());
+    private void showPictureDialog() {
+
+        CharSequence[] items = {"Take Photo", "Choose from Gallery", "Cancel"};
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle("Add Photo");
+        builder.setItems(items, (dialog, item) -> {
+            if (items[item].equals("Take Photo")) {
+
+                takePhotoFromCamera();
+            } else if (items[item].equals("Choose from Gallery")) {
+
+                choosePhotoFromGallery();
+            } else if (items[item].equals("Cancel")) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    private void takePhotoFromCamera() {
+
+        Toast.makeText(this, "Camera functionality not implemented yet", Toast.LENGTH_SHORT).show();
+    }
+
+    private void choosePhotoFromGallery() {
+
+        Toast.makeText(this, "Gallery functionality not implemented yet", Toast.LENGTH_SHORT).show();
     }
 
     private void submitProperty() {
         String category = binding.categoryInput.getSelectedItem().toString();
-        String district = binding.districtInput.getText().toString();
         String price = binding.priceInput.getText().toString();
         String area = binding.areaInput.getText().toString();
         String rooms = binding.roomsInput.getText().toString();

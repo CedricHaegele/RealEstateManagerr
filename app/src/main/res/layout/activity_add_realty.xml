@@ -36,32 +36,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/categoryLabel" />
 
-        <!-- Sector Section -->
-        <TextView
-            android:id="@+id/districtLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Sector:"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/categoryLabel"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- Price Section -->
-        <EditText
-            android:id="@+id/districtInput"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Sector"
-            android:inputType="textPersonName"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toEndOf="@+id/categoryLabel"
-            app:layout_constraintTop_toBottomOf="@+id/districtLabel" />
 
         <TextView
             android:id="@+id/priceLabel"
@@ -324,23 +298,18 @@
             app:layout_constraintTop_toBottomOf="@+id/poiLayout">
 
             <Button
-                android:id="@+id/selectDescPictureButton"
+                android:id="@+id/buttonPicture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:drawableLeft="@drawable/baseline_camera_alt_24"
-                android:text="Take Picture"
+                android:text="Add Picture"
                 android:textAlignment="center"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                app:layout_constraintBottom_toTopOf="@+id/addButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/poiLayout"/>
 
-            <Button
-                android:id="@+id/selectGalleryPictureButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:drawableLeft="@drawable/baseline_insert_photo_24"
-                android:text="Select Picture"
-                android:textSize="10sp" />
         </LinearLayout>
 
         <Button

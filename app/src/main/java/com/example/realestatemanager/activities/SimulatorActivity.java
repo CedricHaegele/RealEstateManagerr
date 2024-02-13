@@ -21,7 +21,7 @@ public class SimulatorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simulator);
 
-        intToolBar();
+        initToolBar();
 
         viewModel = new ViewModelProvider(this).get(SimulatorViewModel.class);
 
@@ -32,17 +32,32 @@ public class SimulatorActivity extends AppCompatActivity {
         Button buttonCalculate = findViewById(R.id.buttonCalculate);
 
         buttonCalculate.setOnClickListener(v -> {
-            double loanAmount = Double.parseDouble(editTextLoanAmount.getText().toString());
-            double interestRate = Double.parseDouble(editTextInterestRate.getText().toString());
-            int loanTerm = Integer.parseInt(editTextLoanTerm.getText().toString());
+            String loanAmountStr = editTextLoanAmount.getText().toString();
+            String interestRateStr = editTextInterestRate.getText().toString();
+            String loanTermStr = editTextLoanTerm.getText().toString();
 
-            viewModel.calculateMonthlyPayment(loanAmount, interestRate, loanTerm);
+            // Vérifier si les champs sont remplis
+            if (!loanAmountStr.isEmpty() && !interestRateStr.isEmpty() && !loanTermStr.isEmpty()) {
+                try {
+                    double loanAmount = Double.parseDouble(loanAmountStr);
+                    double interestRate = Double.parseDouble(interestRateStr);
+                    int loanTerm = Integer.parseInt(loanTermStr);
+
+                    viewModel.calculateMonthlyPayment(loanAmount, interestRate, loanTerm);
+                } catch (NumberFormatException e) {
+                    textViewMonthlyPayment.setText(getString(R.string.input_error));
+                }
+            } else {
+                textViewMonthlyPayment.setText(getString(R.string.input_error));
+            }
         });
 
-        viewModel.getMonthlyPayment().observe(this, payment -> textViewMonthlyPayment.setText(getString(R.string.monthly_payment, payment)));
+        viewModel.getMonthlyPayment().observe(this, payment -> {
+            textViewMonthlyPayment.setText(getString(R.string.monthly_payment, payment));
+        });
     }
 
-    private void intToolBar() {
+    private void initToolBar() {
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

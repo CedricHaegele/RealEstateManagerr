@@ -17,6 +17,7 @@ import com.example.realestatemanager.callback.OnListItemSelectedListener;
 import com.example.realestatemanager.fragments.DetailFragment;
 import com.example.realestatemanager.fragments.ListFragment;
 import com.example.realestatemanager.databinding.ActivityMainBinding;
+import com.example.realestatemanager.fragments.SearchFragment;
 import com.example.realestatemanager.model.RealtyList;
 
 public class MainActivity extends AppCompatActivity implements OnListItemSelectedListener {
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
     public void onItemSelected(RealtyList item) {
 
         int imageResId = item.getImageUrl();
-        DetailFragment fragment = DetailFragment.newInstance(item.getTitle(),item.getAddress(), item.getPrice(), imageResId);
+        DetailFragment fragment = DetailFragment.newInstance(item.getTitle(), item.getAddress(), item.getPrice(), imageResId);
 
         if (isTablet(getApplicationContext())) {
             getSupportFragmentManager().beginTransaction()
@@ -103,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
         }
         setupDrawerToggle(false);
     }
-
 
 
     @Override
@@ -150,7 +150,6 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
     }
 
 
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -175,7 +174,8 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
         }
 
         if (id == R.id.action_search) {
-            // handle search click
+
+            displaySearchFragment();
             return true;
         }
 
@@ -186,9 +186,17 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
         return super.onOptionsItemSelected(item);
     }
 
+    private void displaySearchFragment() {
+        SearchFragment searchFragment = new SearchFragment();
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_list_container, searchFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
     @Override
     public void onBackPressed() {
-
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
@@ -196,6 +204,4 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
             setupDrawerToggle(true);
         }
     }
-
 }
-

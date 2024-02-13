@@ -7,6 +7,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="type">Type</string>
     <string name="monthly_payment">Paiement mensuel : %1$s</string>
+    <string name="input_error">Please enter valid numbers in all fields.</string>
 
     <string-array name="real_estate_agents">
         <item>Smith</item>
@@ -20,9 +21,9 @@
         <item>Penthouse</item>
         <item>Villa</item>
         <item>Manor</item>
-        <item>Mansion</item>
         <item>Luxury Apartment</item>
-        <item>Estate</item>
         <item>Castle</item>
     </string-array>
+
+
 </resources>
