@@ -3,8 +3,11 @@ package com.example.realestatemanager.activities;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.realestatemanager.R;
 import com.example.realestatemanager.databinding.ActivityAddRealtyBinding;
 
 public class AddRealtyActivity extends AppCompatActivity {
@@ -16,45 +19,59 @@ public class AddRealtyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityAddRealtyBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        intToolBar();
+        initToolBar();
+        initSpinner();
+        setupListeners();
+    }
 
-        binding.addPhotosButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Code pour ajouter des photos
-                Toast.makeText(AddRealtyActivity.this, "Add photos clicked", Toast.LENGTH_SHORT).show();
-            }
+    private void initSpinner() {
+        // Initialisation du Spinner pour l'agent immobilier
+        ArrayAdapter<CharSequence> agentAdapter = ArrayAdapter.createFromResource(this,
+                R.array.real_estate_agents, android.R.layout.simple_spinner_item);
+        agentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.agentInput.setAdapter(agentAdapter);
+
+        // Initialisation du Spinner pour les catégories de propriétés
+        ArrayAdapter<CharSequence> categoryAdapter = ArrayAdapter.createFromResource(this,
+                R.array.property_types, android.R.layout.simple_spinner_item);
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.categoryInput.setAdapter(categoryAdapter);
+    }
+
+
+
+    private void setupListeners() {
+        binding.selectDescPictureButton.setOnClickListener(v -> {
+            // Code pour sélectionner une photo de description
+            Toast.makeText(AddRealtyActivity.this, "Select description photo clicked", Toast.LENGTH_SHORT).show();
         });
 
-        binding.submitPropertyFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                submitProperty();
-            }
+        binding.selectGalleryPictureButton.setOnClickListener(v -> {
+            // Code pour sélectionner une photo de la galerie
+            Toast.makeText(AddRealtyActivity.this, "Select gallery photo clicked", Toast.LENGTH_SHORT).show();
         });
+
+        binding.addButton.setOnClickListener(v -> submitProperty());
     }
 
     private void submitProperty() {
-        // Récupération des valeurs des EditText avec ViewBinding
-        String price = binding.propertyPriceEditText.getText().toString();
-        String surface = binding.propertySurfaceEditText.getText().toString();
-        String rooms = binding.propertyRoomsEditText.getText().toString();
-        String description = binding.propertyDescriptionEditText.getText().toString();
-        String address = binding.propertyAddressEditText.getText().toString();
-        String availableDate = binding.propertyAvailableDateEditText.getText().toString();
-        String soldDate = binding.propertySoldDateEditText.getText().toString();
+        String category = binding.categoryInput.getSelectedItem().toString();
+        String district = binding.districtInput.getText().toString();
+        String price = binding.priceInput.getText().toString();
+        String area = binding.areaInput.getText().toString();
+        String rooms = binding.roomsInput.getText().toString();
+        String bedrooms = binding.bedroomsInput.getText().toString();
+        String bathrooms = binding.bathroomsInput.getText().toString();
+        String description = binding.descriptionInput.getText().toString();
 
-        // Exemple d'utilisation des valeurs récupérées
-        Toast.makeText(this, "Submitting property...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Property Category: " + category, Toast.LENGTH_SHORT).show();
 
     }
 
-    private void intToolBar() {
-
+    private void initToolBar() {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
-
             getSupportActionBar().setTitle("Add Realty");
         }
     }

@@ -1,273 +1,381 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.AddRealtyActivity">
 
-    <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!-- Category Section -->
+        <TextView
+            android:id="@+id/categoryLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Category:"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/categoryInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:hint="Property Category"
+            android:inputType="textPersonName"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/categoryLabel" />
+
+        <!-- Sector Section -->
+        <TextView
+            android:id="@+id/districtLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Sector:"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/categoryLabel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Price Section -->
+        <EditText
+            android:id="@+id/districtInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Sector"
+            android:inputType="textPersonName"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toEndOf="@+id/categoryLabel"
+            app:layout_constraintTop_toBottomOf="@+id/districtLabel" />
+
+        <TextView
+            android:id="@+id/priceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Price:"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/categoryInput" />
+
+        <EditText
+            android:id="@+id/priceInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:hint="Price"
+            android:inputType="number"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/priceLabel" />
+
+        <TextView
+            android:id="@+id/areaLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Area:"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/priceLabel"
+            app:layout_constraintTop_toBottomOf="@+id/districtInput" />
+
+        <EditText
+            android:id="@+id/areaInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Area"
+            android:inputType="number"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/priceInput"
+            app:layout_constraintTop_toBottomOf="@+id/areaLabel" />
+
+        <TextView
+            android:id="@+id/roomsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Number of rooms:"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearAddress" />
+
+        <EditText
+            android:id="@+id/roomsInput"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:hint="Rooms"
+            android:inputType="number"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/roomsLabel" />
+
+        <EditText
+            android:id="@+id/bedroomsInput"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:hint="Bedrooms"
+            android:inputType="number"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/roomsInput"
+            app:layout_constraintTop_toBottomOf="@+id/roomsLabel" />
+
+        <EditText
+            android:id="@+id/bathroomsInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:hint="Bathrooms"
+            android:inputType="number"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/bedroomsInput"
+            app:layout_constraintTop_toBottomOf="@+id/roomsLabel" />
+
+        <TextView
+            android:id="@+id/poiTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Points of Interest:"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bathroomsInput" />
+
+        <LinearLayout
+            android:id="@+id/poiLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/poiTitle">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutPropertyTitle"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
+            <CheckBox
+                android:id="@+id/schoolCheckbox"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/propertyFeaturesChipGroup"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                android:text="School"
+                android:textSize="12sp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/propertyTitleEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Title"
-                    android:inputType="text"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutPropertyPrice"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
+            <CheckBox
+                android:id="@+id/shoppingCheckbox"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/layoutPropertyTitle"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                android:text="Shopping"
+                android:textSize="12sp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/propertyPriceEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Price"
-                    android:inputType="numberDecimal" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutPropertySurface"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
+            <CheckBox
+                android:id="@+id/transportCheckbox"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/layoutPropertyPrice"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="8dp">
+                android:text="Transport"
+                android:textSize="12sp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/propertySurfaceEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Surface (m²)"
-                    android:inputType="number" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutPropertyRooms"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
+            <CheckBox
+                android:id="@+id/poolCheckbox"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/layoutPropertySurface"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="8dp">
+                android:text="Swimming Pool"
+                android:textSize="12sp" />
+        </LinearLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/propertyRoomsEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Rooms"
-                    android:inputType="number" />
-            </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/descriptionLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Description:"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/agentInput" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutPropertyStatus"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="0dp"
+        <EditText
+            android:id="@+id/descriptionInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="start|top"
+            android:hint="Description"
+            android:inputType="textMultiLine"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/addButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionLabel" />
+
+        <TextView
+            android:id="@+id/agentNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Real Estate Agent"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pictureButtonLayout" />
+
+        <Spinner
+            android:id="@+id/agentInput"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            app:layout_constraintStart_toEndOf="@+id/agentNameLabel"
+            app:layout_constraintTop_toBottomOf="@+id/pictureButtonLayout" />
+
+        <TextView
+            android:id="@+id/addressLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Address:"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/priceInput" />
+
+        <LinearLayout
+            android:id="@+id/linearAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addressLabel">
+
+            <EditText
+                android:id="@+id/streetNumberInput"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/layoutPropertyRooms"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="8dp">
+                android:hint="Street Number"
+                android:inputType="number"
+                android:textSize="10sp" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/propertyStatusAutoComplete"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:hint="Status" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutPropertyDescription"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
+            <EditText
+                android:id="@+id/streetNameInput"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/layoutPropertyStatus"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="8dp">
+                android:hint="Street"
+                android:inputType="textPersonName"
+                android:textSize="10sp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/propertyDescriptionEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Description"
-                    android:inputType="textMultiLine"
-                    android:maxLines="4" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutPropertyAddress"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
+            <EditText
+                android:id="@+id/zipcodeInput"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/layoutPropertyDescription"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="8dp">
+                android:hint="Postal code"
+                android:inputType="number"
+                android:textSize="10sp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/propertyAddressEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Address"
-                    android:inputType="textPostalAddress" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutPropertyAvailableDate"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
+            <EditText
+                android:id="@+id/cityInput"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/layoutPropertyAddress"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="8dp">
+                android:hint="City"
+                android:inputType="textPersonName"
+                android:textSize="10sp" />
+        </LinearLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/propertyAvailableDateEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Available Date"
-                    android:inputType="date" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutPropertySoldDate"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/layoutPropertyAvailableDate"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="8dp">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/propertySoldDateEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Sold Date"
-                    android:inputType="date" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/nearbyFeaturesTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Nearby Features"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/layoutPropertySoldDate"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/propertyFeaturesChipGroup"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:chipSpacingHorizontal="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:singleLine="true">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipNearbySchools"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Schools"
-                    android:textSize="16sp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipNearbyShops"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Shops"
-                    android:textSize="16sp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipNearbyParks"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Parks"
-                    android:textSize="16sp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipNearbyHospitals"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Hospitals"
-                    android:textSize="16sp" />
-            </com.google.android.material.chip.ChipGroup>
+        <LinearLayout
+            android:id="@+id/pictureButtonLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/poiLayout">
 
             <Button
-                android:id="@+id/addPhotosButton"
-                android:layout_width="0dp"
+                android:id="@+id/selectDescPictureButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add Photos"
-                app:layout_constraintTop_toBottomOf="@id/layoutPropertySoldDate"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="8dp"
-                android:drawableStart="@drawable/baseline_add_24"
-                android:drawablePadding="8dp" />
+                android:layout_margin="16dp"
+                android:drawableLeft="@drawable/baseline_camera_alt_24"
+                android:text="Take Picture"
+                android:textAlignment="center"
+                android:textSize="10sp" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/photosRecyclerView"
-                android:layout_width="0dp"
+            <Button
+                android:id="@+id/selectGalleryPictureButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@id/addPhotosButton"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:layout_margin="16dp"
+                android:drawableLeft="@drawable/baseline_insert_photo_24"
+                android:text="Select Picture"
+                android:textSize="10sp" />
+        </LinearLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+        <Button
+            android:id="@+id/addButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/photosRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionInput" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/submitPropertyFAB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp"
-        app:srcCompat="@drawable/baseline_add_24"
-        app:tint="@android:color/white"
-        app:backgroundTint="#391797" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/photosRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addButton" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <EditText
+            android:id="@+id/saleDateInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:hint="Sale Date"
+            android:inputType="date"
+            android:textSize="10dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/agentInput"
+            app:layout_constraintTop_toBottomOf="@+id/pictureButtonLayout" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
