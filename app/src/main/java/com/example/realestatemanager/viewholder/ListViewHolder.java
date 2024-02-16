@@ -12,7 +12,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
 
     public ListViewHolder(View view) {
         super(view);
-        titleTextView = view.findViewById(R.id.titleTextView);
-        descriptionTextView = view.findViewById(R.id.descriptionTextView);
+        //titleTextView = view.findViewById(R.id.titleTextView);
+        //descriptionTextView = view.findViewById(R.id.descriptionTextView);
     }
 }

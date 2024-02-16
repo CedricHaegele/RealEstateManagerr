@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:hint="category_hint">
+                    android:hint="Category">
 
                     <AutoCompleteTextView
                         android:id="@+id/spinnerCategory"
@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:hint="status_hint">
+                    android:hint="Status">
 
                     <AutoCompleteTextView
                         android:id="@+id/spinnerStatus"
@@ -77,7 +77,7 @@
                 style="@style/SearchSectionTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/surface_filter_title" />
+                android:text="Surface Filter Title:" />
 
 
             <LinearLayout
@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:hint="min_surface_hint">
+                    android:hint="Min surface">
 
                     <EditText
                         android:id="@+id/editTextMinSurface"
@@ -111,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:hint="max_surface_hint">
+                    android:hint="Max surface">
 
                     <EditText
                         android:id="@+id/editTextMaxSurface"
@@ -128,7 +128,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="price_filter_title:"
+                android:text="Price filter title:"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
 
@@ -147,7 +147,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:hint="min_price_hint">
+                    android:hint="Min price">
 
                     <EditText
                         android:id="@+id/editTextMinPrice"
@@ -163,7 +163,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:hint="max_price_hint">
+                    android:hint="Max price hint">
 
                     <EditText
                         android:id="@+id/editTextMaxPrice"
@@ -180,7 +180,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="rooms_filter_title:"
+                android:text="Rooms filter title:"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
             <LinearLayout
@@ -198,7 +198,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:hint="min_rooms_hint">
+                    android:hint="Min rooms">
 
                     <EditText
                         android:id="@+id/editTextMinRooms"
@@ -214,7 +214,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:hint="max_rooms_hint">
+                    android:hint="Max rooms">
 
                     <EditText
                         android:id="@+id/editTextMaxRooms"
@@ -249,7 +249,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:hint="min_date_hint">
+                    android:hint="Min date">
 
                     <EditText
                         android:id="@+id/editTextMinDate"
@@ -266,7 +266,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:hint="max_date_hint">
+                    android:hint="Max date">
 
                     <EditText
                         android:id="@+id/editTextMaxDate"

@@ -1,5 +1,6 @@
 package com.example.realestatemanager.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -82,10 +83,11 @@ public class AddRealtyActivity extends AppCompatActivity {
         String bedrooms = binding.bedroomsInput.getText().toString();
         String bathrooms = binding.bathroomsInput.getText().toString();
         String description = binding.descriptionInput.getText().toString();
+        String agent = binding.agentInput.getSelectedItem().toString();
 
-        Toast.makeText(this, "Property Category: " + category, Toast.LENGTH_SHORT).show();
 
     }
+
 
     private void initToolBar() {
         if (getSupportActionBar() != null) {

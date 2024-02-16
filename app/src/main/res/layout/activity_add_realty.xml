@@ -301,7 +301,10 @@
                 android:id="@+id/buttonPicture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_margin="16dp"
+                app:cornerRadius="20dp"
+                android:layout_marginTop="20dp"
                 android:text="Add Picture"
                 android:textAlignment="center"
                 android:textSize="10sp"
@@ -309,15 +312,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/poiLayout"/>
-
         </LinearLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/addButton"
-            android:layout_width="0dp"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add"
+            android:layout_gravity="center"
+            android:text="SAVE"
             android:textSize="12sp"
+            app:cornerRadius="20dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintBottom_toTopOf="@+id/photosRecyclerView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

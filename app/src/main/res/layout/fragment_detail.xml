@@ -1,56 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activities.MainActivity">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp">
+        android:padding="2dp">
 
-        <!-- ImageView pour la photo -->
-        <ImageView
-            android:id="@+id/imageView"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/photosRecyclerView"
             android:layout_width="0dp"
             android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/estate_image"
-            app:layout_constraintTop_toTopOf="parent"
+            android:scrollbars="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- TextView pour le titre -->
+
+        <!-- TextView pour le titre de la propriété -->
         <TextView
-            android:id="@+id/titleTextView"
+            android:id="@+id/propertyTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
+            android:layout_marginTop="8dp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/imageView"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/photosRecyclerView" />
+
+        <!-- TextView pour la description détaillée de la propriété -->
+        <TextView
+            android:id="@+id/propertyDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/baseline_add_location_24"
+            android:textSize="14sp"
+            android:drawablePadding="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/propertyTitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- TextView pour la description -->
-        <TextView
-            android:id="@+id/descriptionTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@id/titleTextView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- TextView pour l'adresse -->
+        <!-- TextView pour le nombre de chambres -->
         <TextView
-            android:id="@+id/addressTextView"
+            android:id="@+id/propertyRooms"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
+            android:layout_marginTop="8dp"
+            android:text="Nombre de chambres: N/A"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/propertyDescription" />
+
+        <!-- TextView pour le type de propriété -->
+        <TextView
+            android:id="@+id/propertyType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Type de propriété: N/A"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/propertyRooms" />
+
+        <!-- TextView pour l'adresse de la propriété -->
+        <TextView
+            android:id="@+id/propertyAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Adresse: N/A"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/propertyType" />
+
+        <!-- TextView pour le prix de la propriété -->
+        <TextView
+            android:id="@+id/propertyPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Prix: N/A"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/propertyAddress" />
+
+        <!-- Placeholder pour la carte en bas à droite -->
+
+        <!-- RecyclerView pour la galerie d'images -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/propertyImagesGallery"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/propertyMap"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/propertyPrice"
+            tools:listitem="@layout/gallery_image_item" />
+
+        <!-- Chips pour montrer les caractéristiques uniques -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/propertyFeaturesChips"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/propertyImagesGallery">
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <!-- Bouton pour contacter un agent -->
+        <Button
+            android:id="@+id/buttonContactAgent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Contact Agent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/propertyFeaturesChips" />
+
+        <ImageView
+            android:id="@+id/propertyMap"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/map_placeholder"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/propertyType" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
