@@ -4,6 +4,7 @@ import static com.google.android.gms.common.util.DeviceProperties.isTablet;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
 
             int defaultImageResourceId = R.drawable.estate_image;
             getSupportFragmentManager().beginTransaction()
-                    .replace(binding.fragmentDetailContainer.getId(), DetailFragment.newInstance("Title 1", "Description 1", "222", defaultImageResourceId))
+                    .replace(binding.fragmentDetailContainer.getId(), DetailFragment.newInstance("Title 1", "Description 1", "222", String.valueOf(defaultImageResourceId)))
                     .commit();
         }
     }
@@ -88,9 +89,9 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
 
     @Override
     public void onItemSelected(RealtyList item) {
-
-        int imageResId = item.getImageUrl();
-        DetailFragment fragment = DetailFragment.newInstance(item.getTitle(), item.getAddress(), item.getPrice(), imageResId);
+        Log.d("MainActivity", "Item Selected: " + item.getTitle());
+        String imageResUrl = item.getImageUrl();
+        DetailFragment fragment = DetailFragment.newInstance(item.getTitle(), item.getAddress(), item.getPrice(), imageResUrl);
 
         if (isTablet(getApplicationContext())) {
             getSupportFragmentManager().beginTransaction()

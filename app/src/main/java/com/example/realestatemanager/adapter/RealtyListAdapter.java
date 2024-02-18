@@ -1,5 +1,8 @@
 package com.example.realestatemanager.adapter;
 
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,10 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.realestatemanager.R;
 import com.example.realestatemanager.callback.OnItemClickListener;
 import com.example.realestatemanager.model.RealtyList;
@@ -72,11 +79,29 @@ public class RealtyListAdapter extends RecyclerView.Adapter<RealtyListAdapter.Vi
             textViewAddress.setText(realtyList.getAddress());
             textViewPrice.setText(realtyList.getPrice());
 
-            Glide.with(itemView.getContext())
-                    .load(realtyList.getImageUrl())
-                    .apply(new RequestOptions().placeholder(R.drawable.estate_image).error(R.drawable.estate_image))
-                    .into(imageViewPropertyPhoto);
+            if (realtyList.getImageUrl() != null && !realtyList.getImageUrl().isEmpty()) {
+                Uri imageUri = Uri.parse(realtyList.getImageUrl()); // Convertir la chaîne en Uri
+                Glide.with(itemView.getContext())
+                        .load(imageUri)
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                Log.e("GlideError", "Erreur de chargement", e);
+                                return false;
+                            }
 
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                Log.d("GlideSuccess", "Image chargée avec succès");
+                                return false;
+                            }
+                        })
+                        .into(imageViewPropertyPhoto);
+            } else {
+                Log.d("ImageLoading", "L'URI de l'image est null ou vide.");
+            }
         }
+
     }
 }
+

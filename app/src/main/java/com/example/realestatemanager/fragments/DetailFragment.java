@@ -11,9 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.realestatemanager.R;
-import com.example.realestatemanager.adapter.PhotosAdapter;
+
+import com.example.realestatemanager.adapter.ImageAdapter;
 import com.example.realestatemanager.databinding.FragmentDetailBinding;
-import com.bumptech.glide.Glide;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,16 +32,17 @@ public class DetailFragment extends Fragment {
 
     }
 
-    public static DetailFragment newInstance(String title, String description, String address, int imageUrl) {
+    public static DetailFragment newInstance(String title, String address, String price, String imageUrl) {
         DetailFragment fragment = new DetailFragment();
         Bundle args = new Bundle();
         args.putString(ARG_TITLE, title);
-        args.putString(ARG_DESCRIPTION, description);
-        args.putString(ARG_ADDRESS, address);
-        args.putInt(ARG_IMAGE_URL, imageUrl);
+        args.putString(ARG_DESCRIPTION, address);
+        args.putString(ARG_ADDRESS, price);
+        args.putString(ARG_IMAGE_URL, imageUrl);
         fragment.setArguments(args);
         return fragment;
     }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,8 +57,8 @@ public class DetailFragment extends Fragment {
 
         List<String> imageUrls = new ArrayList<>();
 
-        PhotosAdapter photosAdapter = new PhotosAdapter(getContext(), imageUrls);
-        binding.photosRecyclerView.setAdapter(photosAdapter);
+        ImageAdapter imageAdapter = new ImageAdapter(getContext(), imageUrls);
+        binding.photosRecyclerView.setAdapter(imageAdapter);
         binding.photosRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
         // Use the getArguments() method to retrieve the data passed to the fragment
@@ -64,7 +66,7 @@ public class DetailFragment extends Fragment {
             String title = getArguments().getString(ARG_TITLE);
             String description = getArguments().getString(ARG_DESCRIPTION);
             String address = getArguments().getString(ARG_ADDRESS);
-            int imageUrl = getArguments().getInt(ARG_IMAGE_URL);
+            String imageUrl = getArguments().getString(ARG_IMAGE_URL);
 
             // Set the text or image on the views using the binding object
             binding.propertyTitle.setText(title);

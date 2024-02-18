@@ -6,4 +6,5 @@
     <color name="black">#040404</color>
     <color name="yellow">#D69435</color>
     <color name="grey">#958E8E</color>
+    <color name="buttonLabel">#FFFFFF</color>
 </resources>
