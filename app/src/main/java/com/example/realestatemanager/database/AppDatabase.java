@@ -6,10 +6,12 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import com.example.realestatemanager.dao.PhotoDao;
 import com.example.realestatemanager.dao.RealtyListDao;
+import com.example.realestatemanager.model.Photo;
 import com.example.realestatemanager.model.RealtyList;
 
-@Database(entities = {RealtyList.class}, version = 2)
+@Database(entities = {RealtyList.class, Photo.class}, version = 3)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase instance;
 
@@ -24,4 +26,5 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     public abstract RealtyListDao realtyListDao();
+    public abstract PhotoDao photoDao();
 }

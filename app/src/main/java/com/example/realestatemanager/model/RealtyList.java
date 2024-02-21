@@ -2,7 +2,11 @@ package com.example.realestatemanager.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(tableName = "realty_list")
 public class RealtyList {
@@ -20,6 +24,9 @@ public class RealtyList {
     private String soldDate;
     private String imageUrl;
     private String imageBase64;
+
+    @Ignore
+    private List<String> imageUrls = new ArrayList<>();
 
     public RealtyList(String title, String price, String address, String imageUrl, String imageBase64) {
         this.title = title;
@@ -109,6 +116,13 @@ public class RealtyList {
         this.address = address;
     }
 
+    public List<String> getImageUrls() {
+        return imageUrls;
+    }
+
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
+    }
 
     public String getImageUrl() {
         return imageUrl;

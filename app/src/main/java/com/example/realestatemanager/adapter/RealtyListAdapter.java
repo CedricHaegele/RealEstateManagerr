@@ -1,5 +1,7 @@
 package com.example.realestatemanager.adapter;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
@@ -20,16 +22,16 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.realestatemanager.R;
 import com.example.realestatemanager.callback.OnItemClickListener;
+import com.example.realestatemanager.model.CombinedRealtyData;
 import com.example.realestatemanager.model.RealtyList;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class RealtyListAdapter extends RecyclerView.Adapter<RealtyListAdapter.ViewHolder> {
-    private List<RealtyList> items;
+    private List<CombinedRealtyData> items;
     private OnItemClickListener onClickListener;
 
-    public RealtyListAdapter(List<RealtyList> items, OnItemClickListener onClickListener) {
+    public RealtyListAdapter(List<CombinedRealtyData> items, OnItemClickListener onClickListener) {
         this.items = items;
         this.onClickListener = onClickListener;
     }
@@ -38,13 +40,13 @@ public class RealtyListAdapter extends RecyclerView.Adapter<RealtyListAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.realty_list_item, parent, false);
-        return new ViewHolder(view, onClickListener);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        RealtyList realtyList = items.get(position);
-        holder.bind(realtyList);
+        CombinedRealtyData data = items.get(position);
+        holder.bind(data);
     }
 
     @Override
@@ -52,56 +54,43 @@ public class RealtyListAdapter extends RecyclerView.Adapter<RealtyListAdapter.Vi
         return items.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView imageViewPropertyPhoto;
-        public TextView textViewTitle, textViewAddress, textViewPrice;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView imageViewPropertyPhoto;
+        TextView textViewTitle, textViewAddress, textViewPrice;
 
-        public ViewHolder(View itemView, OnItemClickListener onClickListener) {
+        ViewHolder(View itemView) {
             super(itemView);
             imageViewPropertyPhoto = itemView.findViewById(R.id.imageViewPropertyPhoto);
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
             textViewAddress = itemView.findViewById(R.id.textViewAddress);
             textViewPrice = itemView.findViewById(R.id.textViewPrice);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        onClickListener.onItemClick(items.get(position));
-                    }
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    CombinedRealtyData data = items.get(position);
+                    onClickListener.onItemClick(data);
                 }
             });
         }
 
-        public void bind(RealtyList realtyList) {
-            textViewTitle.setText(realtyList.getTitle());
-            textViewAddress.setText(realtyList.getAddress());
-            textViewPrice.setText(realtyList.getPrice());
+        void bind(CombinedRealtyData data) {
+            textViewTitle.setText(data.getRealtyList().getTitle());
+            textViewAddress.setText(data.getRealtyList().getAddress());
+            textViewPrice.setText(data.getRealtyList().getPrice());
 
-            if (realtyList.getImageUrl() != null && !realtyList.getImageUrl().isEmpty()) {
-                Uri imageUri = Uri.parse(realtyList.getImageUrl()); // Convertir la chaîne en Uri
+            if (!data.getPhotos().isEmpty() && data.getPhotos().get(0).getImage() != null) {
+                // Convertir le tableau de bytes en Bitmap
+                Bitmap bitmap = BitmapFactory.decodeByteArray(data.getPhotos().get(0).getImage(), 0, data.getPhotos().get(0).getImage().length);
+
+                // Utiliser Glide pour charger le Bitmap
                 Glide.with(itemView.getContext())
-                        .load(imageUri)
-                        .listener(new RequestListener<Drawable>() {
-                            @Override
-                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                Log.e("GlideError", "Erreur de chargement", e);
-                                return false;
-                            }
-
-                            @Override
-                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                Log.d("GlideSuccess", "Image chargée avec succès");
-                                return false;
-                            }
-                        })
+                        .load(bitmap)
+                        .error(R.drawable.estate_image)
                         .into(imageViewPropertyPhoto);
             } else {
-                Log.d("ImageLoading", "L'URI de l'image est null ou vide.");
+                imageViewPropertyPhoto.setImageResource(R.drawable.estate_image);
             }
         }
-
     }
 }
-

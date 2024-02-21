@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.example.realestatemanager.model.Photo;
 import com.example.realestatemanager.model.RealtyList;
 import com.example.realestatemanager.repository.RealtyRepository;
 
@@ -23,6 +24,10 @@ public class RealtyListViewModel extends AndroidViewModel {
 
     public LiveData<List<RealtyList>> getRealtyLists() {
         return realtyLists;
+    }
+
+    public LiveData<List<Photo>> getPhotosByPropertyId(int propertyId) {
+        return repository.getPhotosByPropertyId(propertyId);
     }
 
 }

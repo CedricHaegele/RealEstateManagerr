@@ -49,7 +49,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.imageView); // Assurez-vous que cet ID correspond à votre ImageView dans image_item.xml
+            imageView = itemView.findViewById(R.id.imageView);
         }
     }
 }
