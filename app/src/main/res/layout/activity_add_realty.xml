@@ -64,7 +64,6 @@
 
         </LinearLayout>
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -102,7 +101,6 @@
 
         </LinearLayout>
 
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/agentInputLayout"
             android:layout_width="wrap_content"
@@ -118,7 +116,6 @@
                 android:inputType="none"
                 android:editable="false" />
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <TextView
             android:id="@+id/roomsLabel"

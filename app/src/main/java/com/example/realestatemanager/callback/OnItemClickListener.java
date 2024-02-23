@@ -1,10 +1,9 @@
 package com.example.realestatemanager.callback;
 
-import com.example.realestatemanager.model.CombinedRealtyData;
-import com.example.realestatemanager.model.RealtyList;
+import com.example.realestatemanager.model.RealEstate;
 
 public interface OnItemClickListener {
-    void onItemClick(CombinedRealtyData item);
+    void onItemClick(RealEstate realEstate);
 }
 
 

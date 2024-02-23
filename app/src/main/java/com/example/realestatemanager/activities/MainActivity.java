@@ -4,7 +4,6 @@ import static com.google.android.gms.common.util.DeviceProperties.isTablet;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +18,6 @@ import com.example.realestatemanager.fragments.DetailFragment;
 import com.example.realestatemanager.fragments.ListFragment;
 import com.example.realestatemanager.databinding.ActivityMainBinding;
 import com.example.realestatemanager.fragments.SearchFragment;
-import com.example.realestatemanager.model.RealtyList;
 
 public class MainActivity extends AppCompatActivity implements OnListItemSelectedListener {
 
@@ -36,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
         displayFragments();
         initFirstTabletItem();
         handleNavigationDrawer();
-
     }
 
     private void initViews() {
@@ -78,34 +75,11 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
 
     private void initFirstTabletItem() {
         if (isTablet(getApplicationContext())) {
-
-            int defaultImageResourceId = R.drawable.estate_image;
             getSupportFragmentManager().beginTransaction()
-                    .replace(binding.fragmentDetailContainer.getId(), DetailFragment.newInstance("Title 1", "Description 1", "222", String.valueOf(defaultImageResourceId)))
+                    .replace(binding.fragmentDetailContainer.getId(), DetailFragment.newInstance(1))
                     .commit();
         }
     }
-
-
-    @Override
-    public void onItemSelected(RealtyList item) {
-        Log.d("MainActivity", "Item Selected: " + item.getTitle());
-        String imageResUrl = item.getImageUrl();
-        DetailFragment fragment = DetailFragment.newInstance(item.getTitle(), item.getAddress(), item.getPrice(), imageResUrl);
-
-        if (isTablet(getApplicationContext())) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(binding.fragmentDetailContainer.getId(), fragment)
-                    .commit();
-        } else {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(binding.fragmentListContainer.getId(), fragment)
-                    .addToBackStack(null)
-                    .commit();
-        }
-        setupDrawerToggle(false);
-    }
-
 
     @Override
     public void onListFragmentDisplayed(boolean displayed) {
@@ -189,7 +163,6 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
 
     private void displaySearchFragment() {
         SearchFragment searchFragment = new SearchFragment();
-
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_list_container, searchFragment)
                 .addToBackStack(null)

@@ -1,6 +1,9 @@
 package com.example.realestatemanager;
 
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 
 import androidx.room.Room;
 
@@ -18,6 +21,7 @@ public class RealtyApp extends Application {
         database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "realty_database")
                 .fallbackToDestructiveMigration()
                 .build();
+        createChannel();
     }
 
     public static RealtyApp getInstance() {
@@ -26,5 +30,17 @@ public class RealtyApp extends Application {
 
     public AppDatabase getDatabase() {
         return database;
+    }
+
+    private void createChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "MonCanal";
+            String description = "Description du canal";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("canalId", name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }

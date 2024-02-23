@@ -1,12 +1,24 @@
 package com.example.realestatemanager.viewmodel;
 
-import androidx.lifecycle.ViewModel;
+import android.app.Application;
 
-public class AddRealtyViewModel extends ViewModel {
-    // Ajoutez ici les LiveData et la logique pour gérer les données de l'UI
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
-    public void addProperty(/* Paramètres de la propriété */) {
-        // Implémentez la logique pour ajouter une propriété
+import com.example.realestatemanager.model.RealEstate;
+import com.example.realestatemanager.repository.RealEstateRepository;
+
+public class AddRealtyViewModel extends AndroidViewModel {
+
+    private final RealEstateRepository repository;
+
+    public AddRealtyViewModel(@NonNull Application application) {
+        super(application);
+        repository = new RealEstateRepository(application.getApplicationContext());
+    }
+
+    public LiveData<Long> addProperty(RealEstate realEstate) {
+        return repository.addRealState(realEstate);
     }
 }
-

@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#5A02F8"
     android:padding="16dp">
 
     <EditText
@@ -37,6 +38,17 @@
         android:background="@drawable/edittext_rounded"
         android:layout_marginBottom="15dp"/>
 
+    <EditText
+        android:id="@+id/editTextDownPayment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Down Payment"
+        android:inputType="numberDecimal"
+        android:padding="15dp"
+        android:background="@drawable/edittext_rounded"
+        android:layout_marginBottom="15dp"/>
+
+
     <TextView
         android:id="@+id/textViewMonthlyPayment"
         android:layout_width="wrap_content"
@@ -47,7 +59,7 @@
         android:layout_margin="20dp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:textColor="#FFFFFF" />
+        android:textColor="#070707" />
 
     <Button
         android:id="@+id/buttonCalculate"

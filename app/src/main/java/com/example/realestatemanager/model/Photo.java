@@ -1,11 +1,7 @@
 package com.example.realestatemanager.model;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
-@Entity(tableName = "photos")
 public class Photo {
-    @PrimaryKey(autoGenerate = true)
+
     private int id;
 
     private int realtyId;

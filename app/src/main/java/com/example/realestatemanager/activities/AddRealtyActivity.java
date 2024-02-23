@@ -16,58 +16,58 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.realestatemanager.R;
 import com.example.realestatemanager.Utils;
 import com.example.realestatemanager.adapter.ImageAdapter;
-import com.example.realestatemanager.dao.PhotoDao;
-import com.example.realestatemanager.database.AppDatabase;
 import com.example.realestatemanager.databinding.ActivityAddRealtyBinding;
-import com.example.realestatemanager.model.Photo;
-import com.example.realestatemanager.model.RealtyList;
+import com.example.realestatemanager.model.AddressLoc;
+import com.example.realestatemanager.model.RealEstate;
+import com.example.realestatemanager.viewmodel.AddRealtyViewModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AddRealtyActivity extends AppCompatActivity {
+
+    private final String TAG = AddRealtyActivity.class.getName();
     private ActivityAddRealtyBinding binding;
+    private AddRealtyViewModel viewModel;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
     private static final int REQUEST_PICK_IMAGE = 2;
     private final List<String> imageList = new ArrayList<>();
     private ImageAdapter imageAdapter;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private PhotoDao photoDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityAddRealtyBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
 
-        photoDao = AppDatabase.getInstance(getApplicationContext()).photoDao();
-
+        viewModel = new ViewModelProvider(this).get(AddRealtyViewModel.class);
+        initView();
         initToolBar();
         setupListeners();
         checkAndRequestPermissions();
-
-        // Setup for AutoCompleteTextView for agent selection
-        AutoCompleteTextView agentAutoCompleteTextView = findViewById(R.id.edit_agent);
-        String[] agents = getResources().getStringArray(R.array.real_estate_agents);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.dropdown_menu_popup_item, agents);
-        agentAutoCompleteTextView.setAdapter(adapter);
+        initAgentList();
     }
 
+    private void initView() {
+        binding = ActivityAddRealtyBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+    }
 
     private void initToolBar() {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
-            getSupportActionBar().setTitle("Add Property");
+            getSupportActionBar().setTitle(getString(R.string.add_property));
         }
     }
 
@@ -87,15 +87,12 @@ public class AddRealtyActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if (!isUpdating) {
                     isUpdating = true;
-
                     String str = s.toString();
-
                     if (!str.startsWith("$")) {
                         str = "$" + str;
                         binding.editPrice.setText(str);
                         binding.editPrice.setSelection(str.length());
                     }
-
                     isUpdating = false;
                 }
             }
@@ -105,17 +102,24 @@ public class AddRealtyActivity extends AppCompatActivity {
         binding.addButton.setOnClickListener(v -> submitProperty());
     }
 
+    private void initAgentList() {
+        AutoCompleteTextView agentAutoCompleteTextView = findViewById(R.id.edit_agent);
+        String[] agents = getResources().getStringArray(R.array.real_estate_agents);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.dropdown_menu_popup_item, agents);
+        agentAutoCompleteTextView.setAdapter(adapter);
+    }
+
     private void showPictureDialog() {
-        CharSequence[] items = {"Take Photo", "Choose from Gallery", "Cancel"};
-        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        builder.setTitle("Add Photo");
+        CharSequence[] items = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.add_photo));
 
         builder.setItems(items, (dialog, item) -> {
-            if (items[item].equals("Take Photo")) {
+            if (items[item].equals(getString(R.string.take_photo))) {
                 dispatchTakePictureIntent();
-            } else if (items[item].equals("Choose from Gallery")) {
+            } else if (items[item].equals(getString(R.string.choose_from_gallery))) {
                 choosePhotoFromGallery();
-            } else if (items[item].equals("Cancel")) {
+            } else if (items[item].equals(getString(R.string.cancel))) {
                 dialog.dismiss();
             }
         });
@@ -142,7 +146,6 @@ public class AddRealtyActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
     }
 
     private void dispatchTakePictureIntent() {
@@ -172,7 +175,7 @@ public class AddRealtyActivity extends AppCompatActivity {
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
                 } catch (IOException e) {
-                    Log.e("TAG", "Error processing gallery image", e);
+                    Log.e(TAG, "Error processing gallery image", e);
                 }
             }
 
@@ -187,26 +190,6 @@ public class AddRealtyActivity extends AppCompatActivity {
         }
     }
 
-
-    private void insertPhotoAndUpdateUI(String base64, int realtyId) {
-        Log.d("tagii", "insertPhotoAndUpdateUI");
-        new Thread(() -> {
-            Photo photo = new Photo();
-            photo.setImageUri(base64);
-            photo.setRealtyId(realtyId);
-
-            long photoId = photoDao.insert(photo);
-            runOnUiThread(() -> {
-                if (photoId != -1) {
-                    Log.d("tagii", "Photo inserted successfully. ID: " + photoId);
-                    updateRecyclerView();
-                } else {
-                    Toast.makeText(AddRealtyActivity.this, "Failed to add photo", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }).start();
-    }
-
     private void updateRecyclerView() {
         if (imageAdapter == null) {
             imageAdapter = new ImageAdapter(this, imageList);
@@ -218,6 +201,18 @@ public class AddRealtyActivity extends AppCompatActivity {
     }
 
     private void submitProperty() {
+        RealEstate realEstate = populateRealEstate();
+        if (realEstate != null) {
+            Log.d(TAG, "realEstate: " + realEstate);
+            viewModel.addProperty(realEstate).observe(this, id -> {
+                Log.d(TAG, "realEstate is created: " + id);
+                Utils.displayNotification(AddRealtyActivity.this, getString(R.string.successfully));
+                finish();
+            });
+        }
+    }
+
+    private RealEstate populateRealEstate() {
         String title = binding.editTitle.getText().toString();
         String price = binding.editPrice.getText().toString().replaceAll("[$]", "");
         String surface = binding.editSurface.getText().toString();
@@ -226,40 +221,30 @@ public class AddRealtyActivity extends AppCompatActivity {
         String bedrooms = binding.bedroomsInput.getText().toString();
         String bathrooms = binding.bathroomsInput.getText().toString();
         String description = binding.descriptionInput.getText().toString();
-
         String agent = binding.editAgent.getText().toString();
+        AddressLoc addressLoc = new AddressLoc();
+        addressLoc.setAddressLabel(address);
+        addressLoc.setLatLng(Utils.getLocationFromAddress(this, address));
 
-        if (!validateInput(title, price, surface, address, rooms, bedrooms, bathrooms, description)) {
-            Toast.makeText(this, "Please fill in all required fields.", Toast.LENGTH_SHORT).show();
-            return;
+        RealEstate realEstate = new RealEstate();
+        realEstate.setTitle(title);
+        realEstate.setPrice(price);
+        realEstate.setSurface(surface);
+        realEstate.setAddressLoc(addressLoc);
+        realEstate.setRooms(rooms);
+        realEstate.setBedrooms(bedrooms);
+        realEstate.setBathrooms(bathrooms);
+        realEstate.setDescription(description);
+        realEstate.setAgent(agent);
+        if (imageAdapter != null) {
+            realEstate.setImageUrls(imageAdapter.getImages());
         }
-
-        RealtyList newRealty = new RealtyList();
-        newRealty.setTitle(title);
-        newRealty.setPrice(price);
-        newRealty.setSurface(surface);
-        newRealty.setAddress(address);
-        newRealty.setRooms(rooms);
-        newRealty.setBedrooms(bedrooms);
-        newRealty.setBathrooms(bathrooms);
-        newRealty.setDescription(description);
-
-        new Thread(() -> {
-            long realtyId = AppDatabase.getInstance(getApplicationContext()).realtyListDao().insert(newRealty);
-            if (realtyId > 0) {
-                for (String base64Image : imageList) {
-                    Photo photo = new Photo();
-                    photo.setRealtyId((int) realtyId);
-                    photo.setImageUri(base64Image);
-                    AppDatabase.getInstance(getApplicationContext()).photoDao().insert(photo);
-                }
-                runOnUiThread(() -> Toast.makeText(AddRealtyActivity.this, "Property and photos added successfully", Toast.LENGTH_SHORT).show());
-            }
-        }).start();
+        if (!validateInput(title, price, surface, address, rooms, bedrooms, bathrooms, description)) {
+            Toast.makeText(this, getString(R.string.error_fields), Toast.LENGTH_SHORT).show();
+            return null;
+        }
+        return realEstate;
     }
-
-
-
 
     private boolean validateInput(String... inputs) {
         for (String input : inputs) {

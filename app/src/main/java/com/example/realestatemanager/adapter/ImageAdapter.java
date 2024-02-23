@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,28 +12,29 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.realestatemanager.R;
 import com.example.realestatemanager.Utils;
+import com.example.realestatemanager.viewholder.ImageViewHolder;
 
 import java.util.List;
 
-public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
+public class ImageAdapter extends RecyclerView.Adapter<ImageViewHolder> {
     private final Context context;
-    private final List<String> imageUris;
+    private final List<String> imageList;
 
     public ImageAdapter(Context context, List<String> imageUris) {
         this.context = context;
-        this.imageUris = imageUris;
+        this.imageList = imageUris;
     }
 
     @NonNull
     @Override
-    public ImageAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.image_item, parent, false);
-        return new ViewHolder(view);
+        return new ImageViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ImageAdapter.ViewHolder holder, int position) {
-        String base64Image = imageUris.get(position);
+    public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
+        String base64Image = imageList.get(position);
         Bitmap bitmap = Utils.base64ToBitmap(base64Image);
         if (bitmap != null) {
             Glide.with(context).load(bitmap).into(holder.imageView);
@@ -43,15 +43,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return imageUris.size();
+        return imageList.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView;
-
-        ViewHolder(View itemView) {
-            super(itemView);
-            imageView = itemView.findViewById(R.id.imageView);
-        }
+    public List<String> getImages() {
+        return imageList;
     }
 }

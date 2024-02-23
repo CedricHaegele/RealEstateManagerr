@@ -6,28 +6,24 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.example.realestatemanager.model.Photo;
-import com.example.realestatemanager.model.RealtyList;
-import com.example.realestatemanager.repository.RealtyRepository;
+import com.example.realestatemanager.model.RealEstate;
+import com.example.realestatemanager.repository.RealEstateRepository;
 
 import java.util.List;
 
 public class RealtyListViewModel extends AndroidViewModel {
-    private LiveData<List<RealtyList>> realtyLists;
-    private RealtyRepository repository;
+    private final RealEstateRepository repository;
 
     public RealtyListViewModel(@NonNull Application application) {
         super(application);
-        repository = new RealtyRepository(application.getApplicationContext());
-        realtyLists = repository.getAllRealties();
+        repository = new RealEstateRepository(application.getApplicationContext());
     }
 
-    public LiveData<List<RealtyList>> getRealtyLists() {
-        return realtyLists;
+    public LiveData<List<RealEstate>> getRealtyLists() {
+        return repository.getAll();
     }
 
-    public LiveData<List<Photo>> getPhotosByPropertyId(int propertyId) {
-        return repository.getPhotosByPropertyId(propertyId);
+    public LiveData<RealEstate> getRealEstate(int id) {
+        return repository.getRealEstate(id);
     }
-
 }

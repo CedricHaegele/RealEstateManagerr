@@ -1,122 +1,108 @@
 package com.example.realestatemanager.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.View;
+import android.widget.ImageButton;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModelProvider;
-
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.Settings;
-import android.view.MenuItem;
 
 import com.example.realestatemanager.R;
-import com.example.realestatemanager.viewmodel.MapViewModel;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
+import org.osmdroid.api.IMapController;
+import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
 
-    private MapViewModel viewModel;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+public class MapActivity extends AppCompatActivity {
+    private MapView mapView;
+    private ImageButton myLocationButton;
+    private ImageButton zoomInButton;
+    private ImageButton zoomOutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        intToolBar();
+        // Configuration initiale de la mapView
+        mapView = findViewById(R.id.map);
+        Configuration.getInstance().load(getApplicationContext(), PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
+        mapView.setTileSource(TileSourceFactory.MAPNIK);
+        mapView.setBuiltInZoomControls(false);
+        mapView.setMultiTouchControls(true);
 
-        viewModel = new ViewModelProvider(this).get(MapViewModel.class);
+        IMapController mapController = mapView.getController();
+        mapController.setZoom(9.5);
+        GeoPoint startPoint = new GeoPoint(48.8583, 2.2944);
+        mapController.setCenter(startPoint);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(this);
-        }
+        Marker startMarker = new Marker(mapView);
+        startMarker.setPosition(startPoint);
+        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        mapView.getOverlays().add(startMarker);
 
-        checkLocationPermission();
+        // Boutons
+        setupLocationButton();
+        setupZoomButtons();
+    }
 
-        viewModel.getPermissionGranted().observe(this, isGranted -> {
-            if (isGranted) {
-                // La permission a été accordée, réinitialiser la carte si nécessaire.
-                if (mapFragment != null) {
-                    mapFragment.getMapAsync(this);
-                }
-            } else {
-                showPermissionExplanationDialog();
+    private void setupLocationButton() {
+        myLocationButton = findViewById(R.id.myLocationButton);
+        myLocationButton.setOnClickListener(view -> {
+            if (checkLocationPermission()) {
+                centerMapOnLocation();
             }
         });
     }
 
-    private void checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-        } else {
-            viewModel.updatePermissionStatus(true);
+    private boolean checkLocationPermission() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // La permission n'est pas accordée. Vous pouvez ici demander la permission.
+            return false;
         }
+        return true;
+    }
+
+    private void centerMapOnLocation() {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            return;
+        }
+        Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if (lastKnownLocation != null) {
+            double latitude = lastKnownLocation.getLatitude();
+            double longitude = lastKnownLocation.getLongitude();
+            mapView.getController().animateTo(new GeoPoint(latitude, longitude));
+        }
+    }
+
+    private void setupZoomButtons() {
+        zoomInButton = findViewById(R.id.zoomInButton);
+        zoomOutButton = findViewById(R.id.zoomOutButton);
+
+        zoomInButton.setOnClickListener(v -> mapView.getController().zoomIn());
+        zoomOutButton.setOnClickListener(v -> mapView.getController().zoomOut());
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            viewModel.updatePermissionStatus(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED);
-        }
-    }
-
-    private void showPermissionExplanationDialog() {
-        new AlertDialog.Builder(this)
-                .setTitle("Permission de localisation requise")
-                .setMessage("Cette application a besoin de la permission de localisation pour afficher votre position sur la carte. Veuillez activer la permission de localisation dans les paramètres de l'application.")
-                .setPositiveButton("Paramètres", (dialogInterface, i) -> {
-                    Intent intent = new Intent();
-                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    Uri uri = Uri.fromParts("package", getPackageName(), null);
-                    intent.setData(uri);
-                    startActivity(intent);
-                })
-                .setNegativeButton("Annuler", (dialog, which) -> dialog.dismiss())
-                .create()
-                .show();
-    }
-
-    private void intToolBar() {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
-            getSupportActionBar().setTitle("Map");
-        }
+    protected void onResume() {
+        super.onResume();
+        mapView.onResume();
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        LatLng newYork = new LatLng(40.7128, -74.0060);
-        googleMap.addMarker(new MarkerOptions().position(newYork).title("Marker in New York"));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newYork, 8));
-
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            googleMap.setMyLocationEnabled(true);
-            googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-        }
+    protected void onPause() {
+        super.onPause();
+        mapView.onPause();
     }
 }

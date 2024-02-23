@@ -28,5 +28,13 @@
     <string name="number_of_rooms">Number of Rooms</string>
     <string name="property_type">Property Type</string>
     <string name="price">Price</string>
+    <string name="add_property">Add Property</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="choose_from_gallery">Choose from Gallery</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_photo">Add Photo</string>
+    <string name="error_fields">Please fill in all required fields.</string>
+    <string name="successfully">Property was added successfully.</string>
+    <string name="add_message">Veuillez ajouter des propriétés</string>
 
 </resources>

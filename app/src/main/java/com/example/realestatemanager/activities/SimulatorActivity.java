@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +26,7 @@ public class SimulatorActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(SimulatorViewModel.class);
 
+        EditText editTextDownPayment = findViewById(R.id.editTextDownPayment);
         EditText editTextLoanAmount = findViewById(R.id.editTextLoanAmount);
         EditText editTextInterestRate = findViewById(R.id.editTextInterestRate);
         EditText editTextLoanTerm = findViewById(R.id.editTextLoanTerm);
@@ -35,15 +37,16 @@ public class SimulatorActivity extends AppCompatActivity {
             String loanAmountStr = editTextLoanAmount.getText().toString();
             String interestRateStr = editTextInterestRate.getText().toString();
             String loanTermStr = editTextLoanTerm.getText().toString();
+            String downPaymentStr = editTextDownPayment.getText().toString();
 
-            // Vérifier si les champs sont remplis
             if (!loanAmountStr.isEmpty() && !interestRateStr.isEmpty() && !loanTermStr.isEmpty()) {
                 try {
                     double loanAmount = Double.parseDouble(loanAmountStr);
                     double interestRate = Double.parseDouble(interestRateStr);
                     int loanTerm = Integer.parseInt(loanTermStr);
+                    double downPayment = Double.parseDouble(downPaymentStr);
 
-                    viewModel.calculateMonthlyPayment(loanAmount, interestRate, loanTerm);
+                    viewModel.calculateMonthlyPayment(loanAmount, interestRate, loanTerm,downPayment);
                 } catch (NumberFormatException e) {
                     textViewMonthlyPayment.setText(getString(R.string.input_error));
                 }
@@ -53,8 +56,10 @@ public class SimulatorActivity extends AppCompatActivity {
         });
 
         viewModel.getMonthlyPayment().observe(this, payment -> {
-            textViewMonthlyPayment.setText(getString(R.string.monthly_payment, payment));
+            String formattedPayment = getString(R.string.monthly_payment, payment);
+            textViewMonthlyPayment.setText(formattedPayment);
         });
+
     }
 
     private void initToolBar() {

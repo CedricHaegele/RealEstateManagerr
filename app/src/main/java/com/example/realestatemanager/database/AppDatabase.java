@@ -8,12 +8,10 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.example.realestatemanager.Converters;
-import com.example.realestatemanager.dao.PhotoDao;
-import com.example.realestatemanager.dao.RealtyListDao;
-import com.example.realestatemanager.model.Photo;
-import com.example.realestatemanager.model.RealtyList;
+import com.example.realestatemanager.dao.RealEstateDao;
+import com.example.realestatemanager.model.RealEstate;
 
-@Database(entities = {RealtyList.class, Photo.class}, version = 1)
+@Database(entities = {RealEstate.class}, version = 1)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase instance;
@@ -28,6 +26,5 @@ public abstract class AppDatabase extends RoomDatabase {
         return instance;
     }
 
-    public abstract RealtyListDao realtyListDao();
-    public abstract PhotoDao photoDao();
+    public abstract RealEstateDao realtyListDao();
 }
