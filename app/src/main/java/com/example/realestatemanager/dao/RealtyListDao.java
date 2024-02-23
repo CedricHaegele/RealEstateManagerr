@@ -14,7 +14,7 @@ import java.util.List;
 @Dao
 public interface RealtyListDao {
     @Insert
-    void insert(RealtyList realtyList);
+    long insert(RealtyList realtyList);
 
     @Update
     void update(RealtyList realtyList);

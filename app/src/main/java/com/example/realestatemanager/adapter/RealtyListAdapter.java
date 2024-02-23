@@ -79,15 +79,15 @@ public class RealtyListAdapter extends RecyclerView.Adapter<RealtyListAdapter.Vi
             textViewAddress.setText(data.getRealtyList().getAddress());
             textViewPrice.setText(data.getRealtyList().getPrice());
 
-            if (!data.getPhotos().isEmpty() && data.getPhotos().get(0).getImage() != null) {
+            if (!data.getPhotos().isEmpty() && data.getPhotos().get(0).getImageUri() != null) {
                 // Convertir le tableau de bytes en Bitmap
-                Bitmap bitmap = BitmapFactory.decodeByteArray(data.getPhotos().get(0).getImage(), 0, data.getPhotos().get(0).getImage().length);
+                // Bitmap bitmap = BitmapFactory.decodeByteArray(data.getPhotos().get(0).getImageUri(), 0, data.getPhotos().get(0).getImageUri().length());
 
                 // Utiliser Glide pour charger le Bitmap
-                Glide.with(itemView.getContext())
-                        .load(bitmap)
-                        .error(R.drawable.estate_image)
-                        .into(imageViewPropertyPhoto);
+                // Glide.with(itemView.getContext())
+                //    .load(bitmap)
+                //    .error(R.drawable.estate_image)
+                //   .into(imageViewPropertyPhoto);
             } else {
                 imageViewPropertyPhoto.setImageResource(R.drawable.estate_image);
             }

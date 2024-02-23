@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,9 +7,9 @@
     tools:context=".activities.AddRealtyActivity">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="@dimen/small_padding">
 
         <TextView
@@ -26,60 +26,99 @@
             app:layout_constraintTop_toBottomOf="@+id/linearAddress" />
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:padding="@dimen/small_padding">
 
-            <EditText
-                android:id="@+id/edit_title"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Property name :"
-                android:textSize="18sp"/>
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
-            <EditText
-                android:id="@+id/edit_price"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Property name :"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Property Price :"
-                android:inputType="numberDecimal"
-                android:textSize="18sp"/>
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Property Price :"
+                    android:inputType="numberDecimal"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
+
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:padding="@dimen/small_padding">
 
-            <EditText
-                android:id="@+id/edit_surface"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Property Surface :"
-                android:inputType="numberDecimal"
-                android:textSize="18sp"/>
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
-            <EditText
-                android:id="@+id/edit_address"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_surface"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Property Surface :"
+                    android:inputType="numberDecimal"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Property Address :"
-                android:textSize="18sp"/>
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Property Address :"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/edit_agent"
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/agentInputLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/small_padding"
-            android:hint="Property Agent :"
-            android:textSize="18sp"/>
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+            <AutoCompleteTextView
+                android:id="@+id/edit_agent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Agent"
+                android:inputType="none"
+                android:editable="false" />
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <TextView
             android:id="@+id/roomsLabel"
@@ -95,38 +134,57 @@
             app:layout_constraintTop_toBottomOf="@+id/linearAddress" />
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:padding="@dimen/small_padding">
 
-            <EditText
-                android:id="@+id/roomsInput"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Rooms"
-                android:inputType="number"
-                android:textSize="18sp"/>
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-            <EditText
-                android:id="@+id/bedroomsInput"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Bedrooms"
-                android:inputType="number"
-                android:textSize="18sp"/>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/roomsInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Rooms"
+                    android:inputType="number"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/bathroomsInput"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Bathrooms"
-                android:inputType="number"
-                android:textSize="18sp"/>
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/bedroomsInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Bedrooms"
+                    android:inputType="number"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/bathroomsInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Bathrooms"
+                    android:inputType="number"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
+
 
         <TextView
             android:id="@+id/poiTitle"
@@ -135,9 +193,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:text="Points of Interest :"
+            android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bathroomsInput" />
 
@@ -145,10 +203,10 @@
             android:id="@+id/poiLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/small_padding"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:orientation="horizontal"
+            android:padding="@dimen/small_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/poiTitle">
@@ -216,9 +274,9 @@
             android:id="@+id/pictureButtonLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/small_padding"
             android:gravity="center"
             android:orientation="horizontal"
+            android:padding="@dimen/small_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/poiLayout">
@@ -246,12 +304,12 @@
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/small_padding"
             android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:padding="@dimen/small_padding"
             android:text="SAVE"
             android:textSize="12sp"
             app:cornerRadius="20dp"
-            android:layout_marginTop="20dp"
             app:layout_constraintBottom_toTopOf="@+id/photosRecyclerView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -260,12 +318,12 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/photosRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addButton" />
+            app:layout_constraintTop_toBottomOf="@id/addButton" />
 
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

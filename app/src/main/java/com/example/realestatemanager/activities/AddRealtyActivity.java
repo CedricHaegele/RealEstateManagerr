@@ -6,46 +6,41 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.realestatemanager.R;
+import com.example.realestatemanager.Utils;
 import com.example.realestatemanager.adapter.ImageAdapter;
 import com.example.realestatemanager.dao.PhotoDao;
 import com.example.realestatemanager.database.AppDatabase;
 import com.example.realestatemanager.databinding.ActivityAddRealtyBinding;
 import com.example.realestatemanager.model.Photo;
+import com.example.realestatemanager.model.RealtyList;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class AddRealtyActivity extends AppCompatActivity {
     private ActivityAddRealtyBinding binding;
-    private Uri photoURI;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
     private static final int REQUEST_PICK_IMAGE = 2;
-    private List<String> imageList = new ArrayList<>();
+    private final List<String> imageList = new ArrayList<>();
     private ImageAdapter imageAdapter;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private int currentRealtyId;
     private PhotoDao photoDao;
 
     @Override
@@ -59,7 +54,14 @@ public class AddRealtyActivity extends AppCompatActivity {
         initToolBar();
         setupListeners();
         checkAndRequestPermissions();
+
+        // Setup for AutoCompleteTextView for agent selection
+        AutoCompleteTextView agentAutoCompleteTextView = findViewById(R.id.edit_agent);
+        String[] agents = getResources().getStringArray(R.array.real_estate_agents);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.dropdown_menu_popup_item, agents);
+        agentAutoCompleteTextView.setAdapter(adapter);
     }
+
 
     private void initToolBar() {
         if (getSupportActionBar() != null) {
@@ -103,7 +105,6 @@ public class AddRealtyActivity extends AppCompatActivity {
         binding.addButton.setOnClickListener(v -> submitProperty());
     }
 
-
     private void showPictureDialog() {
         CharSequence[] items = {"Take Photo", "Choose from Gallery", "Cancel"};
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
@@ -111,7 +112,7 @@ public class AddRealtyActivity extends AppCompatActivity {
 
         builder.setItems(items, (dialog, item) -> {
             if (items[item].equals("Take Photo")) {
-                takePhotoFromCamera();
+                dispatchTakePictureIntent();
             } else if (items[item].equals("Choose from Gallery")) {
                 choosePhotoFromGallery();
             } else if (items[item].equals("Cancel")) {
@@ -144,35 +145,11 @@ public class AddRealtyActivity extends AppCompatActivity {
 
     }
 
-    private void takePhotoFromCamera() {
+    private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-                if (photoFile != null) {
-
-                    String authority = "com.example.realestatemanager.provider";
-                    photoURI = FileProvider.getUriForFile(this, authority, photoFile);
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                }
-            } catch (IOException ex) {
-                Log.e("CameraError", "Erreur lors de la création du fichier photo", ex);
-            }
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
-    }
-
-    private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,
-                ".jpg",
-                storageDir
-        );
-        return image;
     }
 
     private void choosePhotoFromGallery() {
@@ -184,49 +161,50 @@ public class AddRealtyActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            Uri imageUri;
+            Bitmap bitmap = null;
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
-                imageUri = photoURI;
-            } else if (requestCode == REQUEST_PICK_IMAGE && data != null) {
-                imageUri = data.getData();
-            } else {
-                return;
+                Bundle extras = data.getExtras();
+                if (extras != null) {
+                    bitmap = (Bitmap) extras.get("data");
+                }
+            } else if (requestCode == REQUEST_PICK_IMAGE && data != null && data.getData() != null) {
+                Uri selectedImageUri = data.getData();
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+                } catch (IOException e) {
+                    Log.e("TAG", "Error processing gallery image", e);
+                }
             }
 
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                insertPhotoAndUpdateUI(bitmap);
-            } catch (IOException e) {
-                Log.e("ImageProcessingError", "Error processing image", e);
-                Toast.makeText(this, "Error processing image", Toast.LENGTH_SHORT).show();
+            if (bitmap != null) {
+                // Convert Bitmap to Base64
+                String base64 = Utils.bitmapToBase64(bitmap);
+                // Add base64 encoded image to list
+                imageList.add(base64);
+                // Update UI to reflect new image added
+                updateRecyclerView();
             }
         }
     }
 
-    private void insertPhotoAndUpdateUI(Bitmap bitmap) {
+
+    private void insertPhotoAndUpdateUI(String base64, int realtyId) {
+        Log.d("tagii", "insertPhotoAndUpdateUI");
         new Thread(() -> {
             Photo photo = new Photo();
-            photo.setRealtyId(currentRealtyId);
-            photo.setImage(bitmapToByteArray(bitmap));
+            photo.setImageUri(base64);
+            photo.setRealtyId(realtyId);
 
             long photoId = photoDao.insert(photo);
             runOnUiThread(() -> {
                 if (photoId != -1) {
-                    Log.d("InsertPhoto", "Photo inserted successfully. ID: " + photoId);
-                    // Mise à jour de l'UI ici si nécessaire
-                    imageList.add("Un identifiant ou chemin pour l'image insérée"); // Mettre à jour avec des données réelles
+                    Log.d("tagii", "Photo inserted successfully. ID: " + photoId);
                     updateRecyclerView();
                 } else {
                     Toast.makeText(AddRealtyActivity.this, "Failed to add photo", Toast.LENGTH_SHORT).show();
                 }
             });
         }).start();
-    }
-
-    public byte[] bitmapToByteArray(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        return baos.toByteArray();
     }
 
     private void updateRecyclerView() {
@@ -239,54 +217,48 @@ public class AddRealtyActivity extends AppCompatActivity {
         }
     }
 
-
-    private void handleCameraImage() {
-        Bitmap bitmap = null;
-        try {
-            // Convertissez l'URI de l'image en Bitmap
-            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoURI);
-            // Convertissez le Bitmap en tableau de bytes
-            byte[] imageData = bitmapToByteArray(bitmap);
-
-            // Créez un nouvel objet Photo
-            Photo photo = new Photo();
-            photo.setImage(imageData);
-            // Assurez-vous de définir les autres propriétés de Photo si nécessaire
-            // photo.setRealtyId(currentRealtyId);
-
-            // Insérez la photo dans la base de données
-            new Thread(() -> {
-                long photoId = AppDatabase.getInstance(getApplicationContext()).photoDao().insert(photo);
-                if (photoId != -1) {
-                    Log.d("InsertPhoto", "Photo insérée avec succès. ID: " + photoId);
-                    // Mettre à jour l'interface utilisateur si nécessaire...
-                } else {
-                    Log.e("InsertPhoto", "Échec de l'insertion de la photo.");
-                }
-            }).start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void submitProperty() {
         String title = binding.editTitle.getText().toString();
-        String priceStr = binding.editPrice.getText().toString().replaceAll("[$]", "");
+        String price = binding.editPrice.getText().toString().replaceAll("[$]", "");
         String surface = binding.editSurface.getText().toString();
         String address = binding.editAddress.getText().toString();
         String rooms = binding.roomsInput.getText().toString();
         String bedrooms = binding.bedroomsInput.getText().toString();
         String bathrooms = binding.bathroomsInput.getText().toString();
         String description = binding.descriptionInput.getText().toString();
+
         String agent = binding.editAgent.getText().toString();
 
-        if (validateInput(title, priceStr, surface, address, rooms, bedrooms, bathrooms, description, agent)) {
-            // Ici, vous pouvez traiter les informations de propriété
-            // Pour les images, vous les traitez déjà dans onActivityResult
-        } else {
+        if (!validateInput(title, price, surface, address, rooms, bedrooms, bathrooms, description)) {
             Toast.makeText(this, "Please fill in all required fields.", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        RealtyList newRealty = new RealtyList();
+        newRealty.setTitle(title);
+        newRealty.setPrice(price);
+        newRealty.setSurface(surface);
+        newRealty.setAddress(address);
+        newRealty.setRooms(rooms);
+        newRealty.setBedrooms(bedrooms);
+        newRealty.setBathrooms(bathrooms);
+        newRealty.setDescription(description);
+
+        new Thread(() -> {
+            long realtyId = AppDatabase.getInstance(getApplicationContext()).realtyListDao().insert(newRealty);
+            if (realtyId > 0) {
+                for (String base64Image : imageList) {
+                    Photo photo = new Photo();
+                    photo.setRealtyId((int) realtyId);
+                    photo.setImageUri(base64Image);
+                    AppDatabase.getInstance(getApplicationContext()).photoDao().insert(photo);
+                }
+                runOnUiThread(() -> Toast.makeText(AddRealtyActivity.this, "Property and photos added successfully", Toast.LENGTH_SHORT).show());
+            }
+        }).start();
     }
+
+
 
 
     private boolean validateInput(String... inputs) {
@@ -297,32 +269,6 @@ public class AddRealtyActivity extends AppCompatActivity {
         }
         return true;
     }
-
-    private void addItemToDataBase(String title, String price, String area, String rooms, String bedrooms, String bathrooms, String description, String address, Bitmap bitmap) {
-        // Assurez-vous que bitmap n'est pas null avant de l'utiliser
-        if (bitmap != null) {
-            new Thread(() -> {
-                Photo photo = new Photo();
-                byte[] imageData = bitmapToByteArray(bitmap);
-                photo.setImage(imageData);
-                photo.setRealtyId(currentRealtyId); // Assurez-vous de définir le currentRealtyId correctement
-
-                Log.d("AddRealtyActivity", "Inserting photo with Realty ID: " + currentRealtyId);
-                long photoId = photoDao.insert(photo);
-                Log.d("AddRealtyActivity", "Photo inserted with ID: " + photoId);
-
-                runOnUiThread(() -> {
-                    if (photoId != -1) {
-                        Log.d("InsertPhoto", "Photo insérée avec succès. ID: " + photoId);
-                        // Mettre à jour l'interface utilisateur si nécessaire
-                    } else {
-                        Log.e("InsertPhoto", "Échec de l'insertion de la photo.");
-                    }
-                });
-            }).start();
-        }
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

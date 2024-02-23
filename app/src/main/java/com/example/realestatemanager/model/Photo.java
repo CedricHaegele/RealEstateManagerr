@@ -9,34 +9,30 @@ public class Photo {
     private int id;
 
     private int realtyId;
-    private byte[] image;
 
-    public byte[] getImage() {
-        return image;
-    }
+    private String imageUri;
 
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
-    // Getter pour id
     public int getId() {
         return id;
     }
 
-    // Setter pour id
     public void setId(int id) {
         this.id = id;
     }
 
-    // Getter pour realtyId
     public int getRealtyId() {
         return realtyId;
     }
 
-    // Setter pour realtyId
     public void setRealtyId(int realtyId) {
         this.realtyId = realtyId;
     }
 
+    public String getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
+    }
 }

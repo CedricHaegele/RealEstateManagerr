@@ -19,13 +19,14 @@ public class RealtyList {
     private String price;
     private String surface;
     private String rooms;
+    private String bedrooms;
+    private String bathrooms;
     private String address;
     private String availableDate;
     private String soldDate;
     private String imageUrl;
     private String imageBase64;
 
-    @Ignore
     private List<String> imageUrls = new ArrayList<>();
 
     public RealtyList(String title, String price, String address, String imageUrl, String imageBase64) {
@@ -34,6 +35,10 @@ public class RealtyList {
         this.address = address;
         this.imageUrl = imageUrl;
         this.imageBase64 = imageBase64;
+    }
+
+    public RealtyList() {
+
     }
 
     public String getImageBase64() {
@@ -101,7 +106,7 @@ public class RealtyList {
     }
 
     public String getPrice() {
-        return price;
+        return "$ " + price;
     }
 
     public void setPrice(String price) {
@@ -140,5 +145,21 @@ public class RealtyList {
                 ", price='" + price + '\'' +
                 ", address='" + address + '\'' +
                 '}';
+    }
+
+    public String getBedrooms() {
+        return bedrooms;
+    }
+
+    public void setBedrooms(String bedrooms) {
+        this.bedrooms = bedrooms;
+    }
+
+    public String getBathrooms() {
+        return bathrooms;
+    }
+
+    public void setBathrooms(String bathrooms) {
+        this.bathrooms = bathrooms;
     }
 }

@@ -1,7 +1,7 @@
 package com.example.realestatemanager.adapter;
 
 import android.content.Context;
-import android.net.Uri;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.realestatemanager.R;
+import com.example.realestatemanager.Utils;
 
 import java.util.List;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
-    private Context context;
-    private List<String> imageUris;
+    private final Context context;
+    private final List<String> imageUris;
 
     public ImageAdapter(Context context, List<String> imageUris) {
         this.context = context;
@@ -33,10 +34,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ImageAdapter.ViewHolder holder, int position) {
-        Uri imageUri = Uri.parse(imageUris.get(position));
-        Glide.with(context)
-                .load(imageUri)
-                .into(holder.imageView);
+        String base64Image = imageUris.get(position);
+        Bitmap bitmap = Utils.base64ToBitmap(base64Image);
+        if (bitmap != null) {
+            Glide.with(context).load(bitmap).into(holder.imageView);
+        }
     }
 
     @Override
@@ -44,10 +46,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         return imageUris.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
         }
