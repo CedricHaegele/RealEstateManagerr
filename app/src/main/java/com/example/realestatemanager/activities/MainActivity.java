@@ -34,6 +34,17 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
         displayFragments();
         initFirstTabletItem();
         handleNavigationDrawer();
+
+        if (getIntent().hasExtra("property_id")) {
+            int propertyId = getIntent().getIntExtra("property_id", -1);
+            if (propertyId != -1) {
+                DetailFragment detailFragment = DetailFragment.newInstance(propertyId);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_list_container, detailFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        }
     }
 
     private void initViews() {

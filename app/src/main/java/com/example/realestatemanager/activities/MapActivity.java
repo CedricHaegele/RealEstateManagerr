@@ -6,6 +6,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
@@ -72,15 +74,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap.setOnMarkerClickListener(marker -> {
             Integer propertyId = (Integer) marker.getTag();
             if (propertyId != null) {
-                Fragment detailFragment = DetailFragment.newInstance(propertyId);
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_list_container, detailFragment)
-                        .addToBackStack(null)
-                        .commit();
+                Intent intent = new Intent(MapActivity.this, MainActivity.class);
+                intent.putExtra("property_id", propertyId);
+                startActivity(intent);
+            } else {
+                Log.e("MapActivity", "L'ID de la propriété est nul.");
             }
 
             return false;
         });
+
     }
 
     private void updateMapUI(Boolean isGranted) {
@@ -93,18 +96,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void addPropertyMarkers(List<RealEstate> properties) {
         if (mMap == null) return;
-
         mMap.clear();
 
         LatLng newYork = new LatLng(40.7128, -74.0060);
-        mMap.addMarker(new MarkerOptions().position(newYork).title("New York"));
-
 
         for (RealEstate property : properties) {
             AddressLoc addressLoc = property.getAddressLoc();
             if (addressLoc != null && addressLoc.getLatLng() != null) {
                 LatLng location = addressLoc.getLatLng();
-                mMap.addMarker(new MarkerOptions().position(location).title(property.getTitle()));
+                Marker marker = mMap.addMarker(new MarkerOptions().position(location).title(property.getTitle()));
+                marker.setTag(property.getId());
             }
         }
     }
