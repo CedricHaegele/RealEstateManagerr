@@ -47,6 +47,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        initToolBar();
     }
 
 
@@ -114,6 +115,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             boolean isGranted = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
             viewModel.updateLocationPermissionStatus(isGranted);
+        }
+    }
+
+    private void initToolBar() {
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+
+            getSupportActionBar().setTitle(" Map");
         }
     }
 

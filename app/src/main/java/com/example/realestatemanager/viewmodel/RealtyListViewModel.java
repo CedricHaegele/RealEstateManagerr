@@ -11,10 +11,10 @@ import com.example.realestatemanager.repository.RealEstateRepository;
 
 import java.util.List;
 
-public class RealEstateViewModel extends AndroidViewModel {
+public class RealtyListViewModel extends AndroidViewModel {
     private final RealEstateRepository repository;
 
-    public RealEstateViewModel(@NonNull Application application) {
+    public RealtyListViewModel(@NonNull Application application) {
         super(application);
         repository = new RealEstateRepository(application.getApplicationContext());
     }
