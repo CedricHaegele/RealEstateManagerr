@@ -11,7 +11,7 @@ import com.example.realestatemanager.Converters;
 import com.example.realestatemanager.dao.RealEstateDao;
 import com.example.realestatemanager.model.RealEstate;
 
-@Database(entities = {RealEstate.class}, version = 1)
+@Database(entities = {RealEstate.class}, version = 2, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase instance;

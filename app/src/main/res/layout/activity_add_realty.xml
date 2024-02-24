@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#E1D5F6"
     tools:context=".activities.AddRealtyActivity">
 
     <LinearLayout
@@ -98,7 +99,6 @@
                     android:hint="Property Address :"
                     android:textSize="18sp" />
             </com.google.android.material.textfield.TextInputLayout>
-
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout

@@ -27,6 +27,7 @@ public interface RealEstateDao {
     @Query("SELECT * FROM RealEstate")
     LiveData<List<RealEstate>> getAll();
 
-    @Query("SELECT * FROM RealEstate WHERE id = :id")
+    @Query("SELECT id, title, description FROM RealEstate WHERE id = :id")
     LiveData<RealEstate> getRealEstate(int id);
+
 }

@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import com.example.realestatemanager.adapter.ImageAdapter;
 import com.example.realestatemanager.databinding.FragmentDetailBinding;
 import com.example.realestatemanager.model.RealEstate;
-import com.example.realestatemanager.viewmodel.RealtyListViewModel;
+import com.example.realestatemanager.viewmodel.RealEstateViewModel;
 
 
 import java.util.ArrayList;
@@ -23,11 +23,9 @@ import java.util.List;
 
 public class DetailFragment extends Fragment {
 
+    private static final String ARG_ID = "propertyId";
     private FragmentDetailBinding binding;
-
-    private RealtyListViewModel realtyListViewModel;
-
-    private static final String ARG_ID = "id";
+    private RealEstateViewModel realEstateViewModel;
 
     public DetailFragment() {
 
@@ -44,7 +42,7 @@ public class DetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        realtyListViewModel = new ViewModelProvider(requireActivity()).get(RealtyListViewModel.class);
+        realEstateViewModel = new ViewModelProvider(requireActivity()).get(RealEstateViewModel.class);
     }
 
     @Override
@@ -56,8 +54,9 @@ public class DetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (getArguments() != null) {
-            realtyListViewModel.getRealEstate(getArguments().getInt(ARG_ID)).observe(getViewLifecycleOwner(), this::populateRealEstate);
+        if (getArguments() != null && getArguments().containsKey(ARG_ID)) {
+            int propertyId = getArguments().getInt(ARG_ID);
+            realEstateViewModel.getRealEstate(propertyId).observe(getViewLifecycleOwner(), this::populateRealEstate);
         }
     }
 

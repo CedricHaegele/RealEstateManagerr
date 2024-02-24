@@ -6,41 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".activities.MapActivity">
 
-    <FrameLayout
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <org.osmdroid.views.MapView
-            android:id="@+id/map"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <ImageButton
-            android:id="@+id/zoomInButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_gravity="bottom|right"
-            android:src="@drawable/baseline_add_24" />
-
-        <ImageButton
-            android:id="@+id/zoomOutButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_gravity="bottom|right"
-            android:layout_marginBottom="60dp"
-            android:src="@drawable/baseline_minimize_24" />
-
-        <ImageButton
-            android:id="@+id/myLocationButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_gravity="bottom|end"
-            android:src="@android:drawable/ic_menu_mylocation" />
-
-    </FrameLayout>
-
+        android:layout_height="match_parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

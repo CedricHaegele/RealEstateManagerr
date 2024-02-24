@@ -1,108 +1,129 @@
 package com.example.realestatemanager.activities;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.view.View;
-import android.widget.ImageButton;
+import static android.app.PendingIntent.getActivity;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.realestatemanager.R;
+import com.example.realestatemanager.fragments.DetailFragment;
+import com.example.realestatemanager.model.AddressLoc;
+import com.example.realestatemanager.model.RealEstate;
+import com.example.realestatemanager.viewmodel.MapViewModel;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.osmdroid.api.IMapController;
-import org.osmdroid.config.Configuration;
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-import org.osmdroid.util.GeoPoint;
-import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.Marker;
+import java.util.List;
 
-public class MapActivity extends AppCompatActivity {
-    private MapView mapView;
-    private ImageButton myLocationButton;
-    private ImageButton zoomInButton;
-    private ImageButton zoomOutButton;
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 101;
+    private GoogleMap mMap;
+    private MapViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        // Configuration initiale de la mapView
-        mapView = findViewById(R.id.map);
-        Configuration.getInstance().load(getApplicationContext(), PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
-        mapView.setTileSource(TileSourceFactory.MAPNIK);
-        mapView.setBuiltInZoomControls(false);
-        mapView.setMultiTouchControls(true);
+        viewModel = new ViewModelProvider(this).get(MapViewModel.class);
 
-        IMapController mapController = mapView.getController();
-        mapController.setZoom(9.5);
-        GeoPoint startPoint = new GeoPoint(48.8583, 2.2944);
-        mapController.setCenter(startPoint);
+        viewModel.getLocationPermissionGranted().observe(this, this::updateMapUI);
+        viewModel.getRealtyList().observe(this, this::addPropertyMarkers);
 
-        Marker startMarker = new Marker(mapView);
-        startMarker.setPosition(startPoint);
-        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        mapView.getOverlays().add(startMarker);
-
-        // Boutons
-        setupLocationButton();
-        setupZoomButtons();
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
-    private void setupLocationButton() {
-        myLocationButton = findViewById(R.id.myLocationButton);
-        myLocationButton.setOnClickListener(view -> {
-            if (checkLocationPermission()) {
-                centerMapOnLocation();
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        setupMap();
+
+        LatLng newYork = new LatLng(40.7128, -74.0060);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newYork, 10));
+    }
+
+    private void setupMap() {
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+
+        mMap.setOnMarkerClickListener(marker -> {
+            Integer propertyId = (Integer) marker.getTag();
+            if (propertyId != null) {
+                Fragment detailFragment = DetailFragment.newInstance(propertyId);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_list_container, detailFragment)
+                        .addToBackStack(null)
+                        .commit();
             }
+
+            return false;
         });
     }
 
-    private boolean checkLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // La permission n'est pas accordée. Vous pouvez ici demander la permission.
-            return false;
-        }
-        return true;
-    }
-
-    private void centerMapOnLocation() {
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            return;
-        }
-        Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if (lastKnownLocation != null) {
-            double latitude = lastKnownLocation.getLatitude();
-            double longitude = lastKnownLocation.getLongitude();
-            mapView.getController().animateTo(new GeoPoint(latitude, longitude));
+    private void updateMapUI(Boolean isGranted) {
+        if (isGranted != null && isGranted && mMap != null) {
+            setupMap();
+        } else {
+            Toast.makeText(this, "Permission de localisation refusée", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void setupZoomButtons() {
-        zoomInButton = findViewById(R.id.zoomInButton);
-        zoomOutButton = findViewById(R.id.zoomOutButton);
+    private void addPropertyMarkers(List<RealEstate> properties) {
+        if (mMap == null) return;
 
-        zoomInButton.setOnClickListener(v -> mapView.getController().zoomIn());
-        zoomOutButton.setOnClickListener(v -> mapView.getController().zoomOut());
+        mMap.clear();
+
+        LatLng newYork = new LatLng(40.7128, -74.0060);
+        mMap.addMarker(new MarkerOptions().position(newYork).title("New York"));
+
+
+        for (RealEstate property : properties) {
+            AddressLoc addressLoc = property.getAddressLoc();
+            if (addressLoc != null && addressLoc.getLatLng() != null) {
+                LatLng location = addressLoc.getLatLng();
+                mMap.addMarker(new MarkerOptions().position(location).title(property.getTitle()));
+            }
+        }
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        mapView.onResume();
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            boolean isGranted = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+            viewModel.updateLocationPermissionStatus(isGranted);
+        }
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        mapView.onPause();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
+
 }
