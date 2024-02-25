@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.realestatemanager.activities.MainActivity;
@@ -15,12 +14,10 @@ import com.example.realestatemanager.viewmodel.AddRealtyViewModel;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -33,8 +30,6 @@ import com.example.realestatemanager.R;
 import com.example.realestatemanager.adapter.ImageAdapter;
 import com.example.realestatemanager.databinding.FragmentDetailBinding;
 import com.example.realestatemanager.model.RealEstate;
-import com.example.realestatemanager.viewmodel.AddRealtyViewModel;
-import com.example.realestatemanager.viewmodel.RealtyEstateViewModel;
 import com.google.android.gms.maps.model.LatLng;
 
 

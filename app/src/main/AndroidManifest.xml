@@ -33,6 +33,9 @@
         <activity
             android:name=".activities.MapActivity"
             android:exported="false" />
+
+        <activity android:name=".activities.EditPropertyActivity" />
+
         <activity
             android:name=".activities.MainActivity"
             android:exported="true"

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,11 +21,14 @@ import com.example.realestatemanager.databinding.ActivityMainBinding;
 import com.example.realestatemanager.fragments.SearchFragment;
 
 public class MainActivity extends AppCompatActivity implements OnListItemSelectedListener {
-
+    private int currentPropertyId = -1;
     private ActivityMainBinding binding;
     private ActionBarDrawerToggle toggle;
     private boolean isSearchFragmentDisplayed = false;
 
+    public void onPropertySelected(int propertyId) {
+        this.currentPropertyId = propertyId;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,7 +166,6 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
         }
 
         if (id == R.id.action_search) {
-
             displaySearchFragment();
             return true;
         }
@@ -171,8 +174,20 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
             return true;
         }
 
+        if (id == R.id.action_edit) {
+            if (currentPropertyId != -1) {
+                Intent intent = new Intent(this, EditPropertyActivity.class);
+                intent.putExtra("PROPERTY_ID", currentPropertyId);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "No property selected", Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
+
 
     private void displaySearchFragment() {
         SearchFragment searchFragment = new SearchFragment();
