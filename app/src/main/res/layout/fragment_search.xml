@@ -5,219 +5,163 @@
     android:layout_height="match_parent">
 
     <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="16dp">
+            android:padding="16dp">
 
-            <!-- Category and Status Selectors -->
-            <TextView
-                android:id="@+id/tvCategoryStatusTitle"
+            <!-- Category Selector -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutCategory"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginBottom="8dp"
+                android:hint="Category">
+
+                <AutoCompleteTextView
+                    android:id="@+id/spinnerCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Surface Filter -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Category and Status:"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textStyle="bold"/>
+                android:text="Surface (sqm)"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layoutCategory"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:hint="Category">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/spinnerCategory"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layoutStatus"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:hint="Status">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/spinnerStatus"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-
-            <!-- Surface Filters -->
-            <TextView
-                android:id="@+id/textViewSurfaceFilter"
-                style="@style/SearchSectionTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Surface Filter Title:" />
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layoutMinSurface"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    android:hint="Min surface">
+                    android:hint="Min Surface">
 
-                    <EditText
-                        android:id="@+id/editTextMinSurface"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layoutMaxSurface"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:hint="Max surface">
-
-                    <EditText
-                        android:id="@+id/editTextMaxSurface"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"/>
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-
-            <!-- Price Filters -->
-            <TextView
-                android:id="@+id/textViewPriceFilter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="Price filter title:"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layoutMinPrice"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    android:hint="Min price">
-
-                    <EditText
-                        android:id="@+id/editTextMinPrice"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/minSurfaceEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layoutMaxPrice"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:hint="Max price hint">
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:hint="Max Surface"
+                    android:layout_marginStart="8dp">
 
-                    <EditText
-                        android:id="@+id/editTextMaxPrice"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/maxSurfaceEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"/>
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
-            <!-- Room Filters -->
+
+            <!-- Price Filter -->
             <TextView
-                android:id="@+id/textViewRoomsFilter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:text="Price Filter"
                 android:layout_marginTop="16dp"
-                android:text="Rooms filter title:"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layoutMinRooms"
+                    android:id="@+id/minPriceTextInputLayout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:hint="Min rooms">
+                    android:hint="Min Price ($)">
 
-                    <EditText
-                        android:id="@+id/editTextMinRooms"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/minPriceEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/maxPriceTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:hint="Max Price ($)">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/maxPriceEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+
+            <!-- Room Filter -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Room Filter"
+                android:layout_marginTop="16dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/minRoomsTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Min Rooms">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/minRoomsEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layoutMaxRooms"
+                    android:id="@+id/maxRoomsTextInputLayout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:hint="Max rooms">
+                    android:layout_marginStart="8dp"
+                    android:hint="Max Rooms">
 
-                    <EditText
-                        android:id="@+id/editTextMaxRooms"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/maxRoomsEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"/>
@@ -225,73 +169,62 @@
             </LinearLayout>
 
 
-            <!-- Date Range Selection -->
+            <!-- Date Range Filter -->
             <TextView
-                android:id="@+id/tvDateRangeTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:text="Date Range Filter"
                 android:layout_marginTop="16dp"
-                android:text="Date Range"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textStyle="bold"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layoutMinDate"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <!-- Start Date Button -->
+                <Button
+                    android:id="@+id/btnStartDate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:hint="Min date">
+                    android:text="Start Date"/>
 
-                    <EditText
-                        android:id="@+id/editTextMinDate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:focusable="false"
-                        android:inputType="date" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layoutMaxDate"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <!-- End Date Button -->
+                <Button
+                    android:id="@+id/btnEndDate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:hint="Max date">
-
-                    <EditText
-                        android:id="@+id/editTextMaxDate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:focusable="false"
-                        android:inputType="date" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:text="End Date"/>
             </LinearLayout>
 
-            <!-- Search Results Display -->
-            <TextView
-                android:id="@+id/textViewSearchTitle"
+
+            <!-- Search Button -->
+            <Button
+                android:id="@+id/btnSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:text="Search"
+                android:layout_marginTop="16dp"/>
+
+            <!-- Search Results RecyclerView -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Search Results"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textStyle="bold" />
+                android:layout_marginTop="16dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewSearchResults"
+                android:id="@+id/searchResultsRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp" />
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="8dp"/>
+
 
         </LinearLayout>
     </ScrollView>

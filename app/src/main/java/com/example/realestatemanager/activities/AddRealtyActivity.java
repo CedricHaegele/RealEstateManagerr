@@ -1,6 +1,7 @@
 package com.example.realestatemanager.activities;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -35,6 +36,8 @@ import com.example.realestatemanager.viewmodel.AddRealtyViewModel;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class AddRealtyActivity extends AppCompatActivity {
@@ -58,6 +61,37 @@ public class AddRealtyActivity extends AppCompatActivity {
         setupListeners();
         checkAndRequestPermissions();
         initAgentList();
+        setupStatusDropdown();
+        setupDatePickers();
+    }
+
+    private void setupStatusDropdown() {
+        String[] statuses = {"On Sale", "Sold"};
+        ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(this, R.layout.dropdown_menu_popup_item, statuses);
+        binding.statusAutoCompleteTextView.setAdapter(statusAdapter);
+    }
+
+    private void setupDatePickers() {
+        binding.marketDateButton.setOnClickListener(view -> showDatePickerDialog(true));
+        binding.soldDateButton.setOnClickListener(view -> showDatePickerDialog(false));
+    }
+
+    private void showDatePickerDialog(boolean isMarketDate) {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                (datePicker, selectedYear, selectedMonth, selectedDay) -> {
+                    // Format de la date: AAAA-MM-JJ
+                    String selectedDate = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay;
+                    if (isMarketDate) {
+                        binding.marketDateButton.setText(selectedDate);
+                    } else {
+                        binding.soldDateButton.setText(selectedDate);
+                    }
+                }, year, month, dayOfMonth);
+        datePickerDialog.show();
     }
 
     private void initView() {
@@ -110,6 +144,7 @@ public class AddRealtyActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.dropdown_menu_popup_item, agents);
         agentAutoCompleteTextView.setAdapter(adapter);
     }
+
 
     private void showPictureDialog() {
         CharSequence[] items = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
@@ -220,11 +255,16 @@ public class AddRealtyActivity extends AppCompatActivity {
         String bathrooms = binding.bathroomsInput.getText().toString();
         String description = binding.descriptionInput.getText().toString();
         String agent = binding.editAgent.getText().toString();
+        String status = binding.statusAutoCompleteTextView.getText().toString();
+        String marketDateStr = binding.marketDateButton.getText().toString();
+        String soldDateStr = binding.soldDateButton.getText().toString();
+        Date marketDate = Utils.convertStringToDate(marketDateStr);
+        Date soldDate = Utils.convertStringToDate(soldDateStr);
 
-        if (validateInput(title, price, surface, address, rooms, bedrooms, bathrooms, description) || imageList.isEmpty()) {
-            // Afficher un message d'erreur si les champs sont vides ou aucune photo n'a été ajoutée
-            Toast.makeText(this, getString(R.string.error_fields_photos_required), Toast.LENGTH_SHORT).show();
-            return; // Sortir de la méthode si la validation échoue
+
+        if (!validateInput(title, price, surface, address, rooms, bedrooms, bathrooms, description, agent, status, marketDateStr, soldDateStr) || imageList.isEmpty()) {
+            Toast.makeText(this, getString(R.string.error_fields), Toast.LENGTH_SHORT).show();
+            return;
         }
 
         // Continuer avec la création de l'objet RealEstate si toutes les validations sont passées
@@ -243,6 +283,9 @@ public class AddRealtyActivity extends AppCompatActivity {
         realEstate.setBathrooms(bathrooms);
         realEstate.setDescription(description);
         realEstate.setAgent(agent);
+        realEstate.setStatus(status);
+        realEstate.setMarketDate(marketDate);
+        realEstate.setSoldDate(soldDate);
         if (imageAdapter != null) {
             realEstate.setImageUrls(imageAdapter.getImages());
         }
@@ -266,9 +309,21 @@ public class AddRealtyActivity extends AppCompatActivity {
         String bathrooms = binding.bathroomsInput.getText().toString();
         String description = binding.descriptionInput.getText().toString();
         String agent = binding.editAgent.getText().toString();
+        String status = binding.statusAutoCompleteTextView.getText().toString();
+        String marketDateStr = binding.marketDateButton.getText().toString();
+        String soldDateStr = binding.soldDateButton.getText().toString();
+
+        if (!validateInput(title, price, surface, address, rooms, bedrooms, bathrooms, description, agent, status, marketDateStr, soldDateStr)) {
+            Toast.makeText(this, getString(R.string.error_fields), Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
         AddressLoc addressLoc = new AddressLoc();
         addressLoc.setAddressLabel(address);
         addressLoc.setLatLng(Utils.getLocationFromAddress(this, address));
+
+        Date marketDate = Utils.convertStringToDate(marketDateStr);
+        Date soldDate = status.equals("Sold") ? Utils.convertStringToDate(soldDateStr) : null;
 
         RealEstate realEstate = new RealEstate();
         realEstate.setTitle(title);
@@ -280,24 +335,31 @@ public class AddRealtyActivity extends AppCompatActivity {
         realEstate.setBathrooms(bathrooms);
         realEstate.setDescription(description);
         realEstate.setAgent(agent);
+        realEstate.setStatus(status);
+        realEstate.setMarketDate(marketDate);
+        realEstate.setSoldDate(soldDate);
+
         if (imageAdapter != null) {
             realEstate.setImageUrls(imageAdapter.getImages());
         }
-        if (validateInput(title, price, surface, address, rooms, bedrooms, bathrooms, description)) {
-            Toast.makeText(this, getString(R.string.error_fields), Toast.LENGTH_SHORT).show();
-            return null;
-        }
+
         return realEstate;
     }
 
-    private boolean validateInput(String... inputs) {
-        for (String input : inputs) {
-            if (input.isEmpty()) {
-                return true;
-            }
+    private boolean validateInput(String title, String price, String surface, String address, String rooms, String bedrooms, String bathrooms, String description, String agent, String status, String marketDateStr, String soldDateStr) {
+        // Basic validation for required fields
+        if (title.isEmpty() || price.isEmpty() || surface.isEmpty() || address.isEmpty() || rooms.isEmpty() || bedrooms.isEmpty() || bathrooms.isEmpty() || description.isEmpty() || agent.isEmpty() || marketDateStr.isEmpty()) {
+            return false;
         }
-        return false;
+
+        // Additional validation for "sold date" based on status
+        if ("Sold".equals(status) && soldDateStr.isEmpty()) {
+            return false;
+        }
+
+        return true; // Passed all validations
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

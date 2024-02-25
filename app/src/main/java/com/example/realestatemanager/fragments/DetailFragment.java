@@ -1,5 +1,6 @@
 package com.example.realestatemanager.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -36,8 +38,10 @@ import com.example.realestatemanager.viewmodel.RealtyEstateViewModel;
 import com.google.android.gms.maps.model.LatLng;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class DetailFragment extends Fragment {
     private AddRealtyViewModel realtyEstateViewModel;
@@ -46,7 +50,6 @@ public class DetailFragment extends Fragment {
     private LatLng latLng;
 
     public DetailFragment() {
-
     }
 
     public static DetailFragment newInstance(int id) {
@@ -62,7 +65,6 @@ public class DetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         realtyEstateViewModel = new ViewModelProvider(requireActivity()).get(AddRealtyViewModel.class);
     }
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -87,6 +89,7 @@ public class DetailFragment extends Fragment {
         binding = null;
     }
 
+    @SuppressLint("SetTextI18n")
     private void populateRealEstate(RealEstate realEstate) {
         if (realEstate != null) {
             binding.propertyTitle.setText("Title : " + realEstate.getTitle());
@@ -102,6 +105,24 @@ public class DetailFragment extends Fragment {
             binding.shoppingCheckbox.setChecked(realEstate.hasShoppingNearby());
             binding.transportCheckbox.setChecked(realEstate.hasTransportNearby());
             binding.poolCheckbox.setChecked(realEstate.hasPoolNearby());
+            binding.propertyTitle.setText("Title : " + realEstate.getTitle());
+            binding.propertyDescription.setText("Description : "+ realEstate.getDescription());
+            binding.statusAutoCompleteTextView.setText(realEstate.getStatus());
+
+            if (realEstate.getMarketDate() != null) {
+                String marketDateStr = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(realEstate.getMarketDate());
+                binding.marketDateEditText.setText(marketDateStr);
+            } else {
+                binding.marketDateEditText.setText("");
+            }
+
+            if ("Sold".equals(realEstate.getStatus()) && realEstate.getSoldDate() != null) {
+                String soldDateStr = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(realEstate.getSoldDate());
+                binding.soldDateEditText.setText(soldDateStr);
+                binding.soldDateEditText.setVisibility(View.VISIBLE);
+            } else {
+                binding.soldDateEditText.setVisibility(View.GONE);
+            }
 
             binding.schoolCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
@@ -139,7 +160,6 @@ public class DetailFragment extends Fragment {
                 realtyEstateViewModel.updateRealEstate(realEstate);
             });
 
-
             if (realEstate.getAddressLoc() != null && realEstate.getAddressLoc().getLatLng() != null) {
                 this.latLng = realEstate.getAddressLoc().getLatLng(); // Mise à jour correcte
 
@@ -160,7 +180,6 @@ public class DetailFragment extends Fragment {
                                 Log.e("DetailFragment", "Erreur de chargement de la carte", e);
                                 return false;
                             }
-
                             @Override
                             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                                 Log.i("DetailFragment", "Carte chargée avec succès");
@@ -175,7 +194,6 @@ public class DetailFragment extends Fragment {
             ImageAdapter imageAdapter = new ImageAdapter(getContext(), imageUrls);
             binding.photosRecyclerView.setAdapter(imageAdapter);
             binding.photosRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-
             binding.propertyMap.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -191,9 +209,6 @@ public class DetailFragment extends Fragment {
                     }
                 }
             });
-
         }
-
     }
-
 }

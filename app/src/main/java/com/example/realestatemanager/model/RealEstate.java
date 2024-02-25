@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey;
 import org.w3c.dom.NameList;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity(tableName = "RealEstate")
@@ -24,14 +25,19 @@ public class RealEstate {
     private AddressLoc addressLoc;
     private String agent;
     private String availableDate;
-    private String soldDate;
     private List<String> imageUrls = new ArrayList<>();
     private List<String> pointsOfInterest = new ArrayList<>();
+    private String dateAdded;
+    private String hasSchoolNearby;
+    private String hasShoppingNearby;
+    private String status;
+    private Date marketDate;
+    private Date soldDate;
 
     public RealEstate() {
     }
 
-    public RealEstate(int id, String title, String description, String price, String surface, String rooms, String bedrooms, String bathrooms, AddressLoc addressLoc, String agent, String availableDate, String soldDate, List<String> imageUrls) {
+    public RealEstate(int id, String title, String description, String price, String surface, String rooms, String bedrooms, String bathrooms, AddressLoc addressLoc, String agent, String availableDate, List<String> imageUrls, List<String> pointsOfInterest, String dateAdded, String hasSchoolNearby, String hasShoppingNearby, String status, Date marketDate, Date soldDate) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -43,8 +49,14 @@ public class RealEstate {
         this.addressLoc = addressLoc;
         this.agent = agent;
         this.availableDate = availableDate;
-        this.soldDate = soldDate;
         this.imageUrls = imageUrls;
+        this.pointsOfInterest = pointsOfInterest;
+        this.dateAdded = dateAdded;
+        this.hasSchoolNearby = hasSchoolNearby;
+        this.hasShoppingNearby = hasShoppingNearby;
+        this.status = status;
+        this.marketDate = marketDate;
+        this.soldDate = soldDate;
     }
 
     public static RealEstate fromContentValues(ContentValues values) {
@@ -62,6 +74,55 @@ public class RealEstate {
 
     public void setPointsOfInterest(List<String> pointsOfInterest) {
         this.pointsOfInterest = pointsOfInterest;
+    }
+
+    public Date getSoldDate() {
+        return soldDate;
+    }
+
+    public void setSoldDate(Date soldDate) {
+        this.soldDate = soldDate;
+    }
+
+    public String getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(String dateAdded) {
+        this.dateAdded = dateAdded;
+    }
+
+    public Date getMarketDate() {
+        return marketDate;
+    }
+
+    public void setMarketDate(Date marketDate) {
+        this.marketDate = marketDate;
+    }
+
+
+    public String getHasSchoolNearby() {
+        return hasSchoolNearby;
+    }
+
+    public void setHasSchoolNearby(String hasSchoolNearby) {
+        this.hasSchoolNearby = hasSchoolNearby;
+    }
+
+    public String getHasShoppingNearby() {
+        return hasShoppingNearby;
+    }
+
+    public void setHasShoppingNearby(String hasShoppingNearby) {
+        this.hasShoppingNearby = hasShoppingNearby;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public int getId() {
@@ -152,13 +213,7 @@ public class RealEstate {
         this.availableDate = availableDate;
     }
 
-    public String getSoldDate() {
-        return soldDate;
-    }
 
-    public void setSoldDate(String soldDate) {
-        this.soldDate = soldDate;
-    }
 
     public List<String> getImageUrls() {
         return imageUrls;

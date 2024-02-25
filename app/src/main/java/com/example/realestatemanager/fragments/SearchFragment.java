@@ -1,23 +1,105 @@
 package com.example.realestatemanager.fragments;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.realestatemanager.adapter.SearchResultsAdapter;
+import com.example.realestatemanager.dao.RealEstateDao;
+import com.example.realestatemanager.database.AppDatabase;
 import com.example.realestatemanager.databinding.FragmentSearchBinding;
+import com.example.realestatemanager.model.RealEstate;
+
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 public class SearchFragment extends Fragment {
 
     private FragmentSearchBinding binding;
+    private SearchResultsAdapter searchResultsAdapter;
+    private String selectedStartDate;
+    private String selectedEndDate;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentSearchBinding.inflate(inflater, container, false);
+        setupSearchButton();
+        setupRecyclerView();
+        setupDatePickers();
         return binding.getRoot();
+    }
+
+    private void setupDatePickers() {
+        binding.btnStartDate.setOnClickListener(v -> showDatePicker(true));
+        binding.btnEndDate.setOnClickListener(v -> showDatePicker(false));
+    }
+
+    private void showDatePicker(boolean isStartDate) {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (view, year1, month1, dayOfMonth) -> {
+            String selectedDate = String.format(Locale.US, "%d-%02d-%02d", year1, month1 + 1, dayOfMonth);
+            if (isStartDate) {
+                selectedStartDate = selectedDate;
+                binding.btnStartDate.setText(selectedDate);
+            } else {
+                selectedEndDate = selectedDate;
+                binding.btnEndDate.setText(selectedDate);
+            }
+        }, year, month, day);
+
+        datePickerDialog.show();
+    }
+
+    private void setupRecyclerView() {
+        searchResultsAdapter = new SearchResultsAdapter();
+        binding.searchResultsRecyclerView.setAdapter(searchResultsAdapter);
+        binding.searchResultsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    private void setupSearchButton() {
+        binding.btnSearch.setOnClickListener(v -> performSearch());
+    }
+
+    private void performSearch() {
+        Integer minSurface = getIntegerFromEditText(binding.minSurfaceEditText);
+        Integer maxSurface = getIntegerFromEditText(binding.maxSurfaceEditText);
+        Integer minPrice = getIntegerFromEditText(binding.minPriceEditText);
+        Integer maxPrice = getIntegerFromEditText(binding.maxPriceEditText);
+        Integer minRooms = getIntegerFromEditText(binding.minRoomsEditText);
+        Integer maxRooms = getIntegerFromEditText(binding.maxRoomsEditText);
+
+        AppDatabase db = AppDatabase.getInstance(getContext());
+        RealEstateDao dao = db.realtyListDao();
+
+        LiveData<List<RealEstate>> results = dao.searchProperties(minSurface, maxSurface, minPrice, maxPrice, minRooms, maxRooms, selectedStartDate, selectedEndDate);
+
+        results.observe(getViewLifecycleOwner(), realEstates -> {
+            updateSearchResults(realEstates);
+        });
+    }
+
+    private Integer getIntegerFromEditText(EditText editText) {
+        if (!TextUtils.isEmpty(editText.getText())) {
+            return Integer.parseInt(editText.getText().toString());
+        }
+        return null;
+    }
+
+    private void updateSearchResults(List<RealEstate> realEstates) {
+        searchResultsAdapter.setRealEstates(realEstates);
     }
 
     @Override
@@ -26,4 +108,3 @@ public class SearchFragment extends Fragment {
         binding = null;
     }
 }
-

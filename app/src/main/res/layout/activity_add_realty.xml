@@ -237,6 +237,43 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Statut du bien -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/statusInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Statut du bien"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+                <AutoCompleteTextView
+                    android:id="@+id/statusAutoCompleteTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Button pour la date d’entrée sur le marché -->
+            <Button
+                android:id="@+id/marketDateButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Date d’entrée sur le marché" />
+
+            <!-- Button pour la date de vente du bien -->
+            <Button
+                android:id="@+id/soldDateButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Date de vente du bien" />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/descriptionLabel"
             android:layout_width="wrap_content"
