@@ -45,10 +45,10 @@
             </intent-filter>
         </activity>
 
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/Api_key" />
+
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -60,6 +60,11 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <provider
+
+            android:name=".provider.RealEstateContentProvider"
+            android:authorities="com.example.realestatemanager.provider"
+            android:exported="true"/>
 
     </application>
 

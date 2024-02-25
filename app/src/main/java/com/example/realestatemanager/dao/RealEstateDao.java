@@ -15,14 +15,6 @@ import java.util.List;
 
 @Dao
 public interface RealEstateDao {
-    @Insert
-    long insert(RealEstate realEstate);
-
-    @Update
-    void update(RealEstate realEstate);
-
-    @Delete
-    void delete(RealEstate realEstate);
 
     @Query("SELECT * FROM RealEstate")
     LiveData<List<RealEstate>> getAll();
@@ -30,5 +22,16 @@ public interface RealEstateDao {
     @Query("SELECT * FROM RealEstate WHERE id = :id")
     LiveData<RealEstate> getRealEstate(int id);
 
+    @Query("SELECT * FROM RealEstate")
+    Cursor getItemsWithCursor();
+
+    @Insert
+    long insert(RealEstate realEstate);
+
+    @Update
+    int update(RealEstate realEstate);
+
+    @Query("DELETE FROM RealEstate WHERE id = :id")
+    int deleteById(long id);
 
 }

@@ -44,6 +44,8 @@ dependencies {
 
     // Room
     implementation "androidx.room:room-runtime:2.6.1"
+    implementation 'junit:junit:4.13.2'
+    implementation 'androidx.test:monitor:1.6.1'
     annotationProcessor "androidx.room:room-compiler:2.6.1"
 
     // LiveData and ViewModel
@@ -62,4 +64,11 @@ dependencies {
 
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation 'androidx.paging:paging-runtime:x.x.x'
+
+    // Testing Libraries
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test:runner:1.5.2'
+    androidTestImplementation 'androidx.test:rules:1.5.0'
 }

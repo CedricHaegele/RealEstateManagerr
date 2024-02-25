@@ -1,5 +1,7 @@
 package com.example.realestatemanager.model;
 
+import android.content.ContentValues;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -43,6 +45,15 @@ public class RealEstate {
         this.availableDate = availableDate;
         this.soldDate = soldDate;
         this.imageUrls = imageUrls;
+    }
+
+    public static RealEstate fromContentValues(ContentValues values) {
+        RealEstate realEstate = new RealEstate();
+        if (values.containsKey("id")) {
+            realEstate.setId(values.getAsInteger("id"));
+        }
+
+        return realEstate;
     }
 
     public List<String> getPointsOfInterest() {

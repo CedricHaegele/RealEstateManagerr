@@ -55,7 +55,7 @@
             android:src="@drawable/map_placeholder"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/propertyTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/propertyAddress" />
 
         <TextView
             android:id="@+id/propertyPrice"
