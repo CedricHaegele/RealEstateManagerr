@@ -99,7 +99,10 @@ public class SearchFragment extends Fragment {
     }
 
     private void updateSearchResults(List<RealEstate> realEstates) {
-        searchResultsAdapter.setRealEstates(realEstates);
+        if (searchResultsAdapter != null) {
+            searchResultsAdapter.setRealEstates(realEstates);
+            searchResultsAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
