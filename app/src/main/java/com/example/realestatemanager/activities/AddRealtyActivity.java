@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -31,6 +32,7 @@ import com.example.realestatemanager.model.AddressLoc;
 import com.example.realestatemanager.model.RealEstate;
 import com.example.realestatemanager.viewmodel.AddRealtyViewModel;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -157,8 +159,10 @@ public class AddRealtyActivity extends AppCompatActivity {
 
     private void choosePhotoFromGallery() {
         Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickPhotoIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         startActivityForResult(pickPhotoIntent, REQUEST_PICK_IMAGE);
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -180,15 +184,21 @@ public class AddRealtyActivity extends AppCompatActivity {
             }
 
             if (bitmap != null) {
-                // Convert Bitmap to Base64
-                String base64 = Utils.bitmapToBase64(bitmap);
-                // Add base64 encoded image to list
-                imageList.add(base64);
-                // Update UI to reflect new image added
+                // Compression de l'image ici
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream); // Compresser l'image
+                byte[] byteArray = byteArrayOutputStream.toByteArray();
+                String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+                // Ajout de l'image compressée et encodée à la liste
+                imageList.add(encodedImage);
+
+                // Mise à jour de l'interface utilisateur
                 updateRecyclerView();
             }
         }
     }
+
 
     private void updateRecyclerView() {
         if (imageAdapter == null) {
@@ -201,16 +211,50 @@ public class AddRealtyActivity extends AppCompatActivity {
     }
 
     private void submitProperty() {
-        RealEstate realEstate = populateRealEstate();
-        if (realEstate != null) {
-            Log.d(TAG, "realEstate: " + realEstate);
-            viewModel.addProperty(realEstate).observe(this, id -> {
-                Log.d(TAG, "realEstate is created: " + id);
-                Utils.displayNotification(AddRealtyActivity.this, getString(R.string.successfully));
-                finish();
-            });
+        String title = binding.editTitle.getText().toString();
+        String price = binding.editPrice.getText().toString().replaceAll("[$]", "");
+        String surface = binding.editSurface.getText().toString();
+        String address = binding.editAddress.getText().toString();
+        String rooms = binding.roomsInput.getText().toString();
+        String bedrooms = binding.bedroomsInput.getText().toString();
+        String bathrooms = binding.bathroomsInput.getText().toString();
+        String description = binding.descriptionInput.getText().toString();
+        String agent = binding.editAgent.getText().toString();
+
+        if (validateInput(title, price, surface, address, rooms, bedrooms, bathrooms, description) || imageList.isEmpty()) {
+            // Afficher un message d'erreur si les champs sont vides ou aucune photo n'a été ajoutée
+            Toast.makeText(this, getString(R.string.error_fields_photos_required), Toast.LENGTH_SHORT).show();
+            return; // Sortir de la méthode si la validation échoue
         }
+
+        // Continuer avec la création de l'objet RealEstate si toutes les validations sont passées
+        AddressLoc addressLoc = new AddressLoc();
+        addressLoc.setAddressLabel(address);
+        // Assurez-vous que vous avez la méthode Utils.getLocationFromAddress qui retourne une valeur non nulle
+        addressLoc.setLatLng(Utils.getLocationFromAddress(this, address));
+
+        RealEstate realEstate = new RealEstate();
+        realEstate.setTitle(title);
+        realEstate.setPrice(price);
+        realEstate.setSurface(surface);
+        realEstate.setAddressLoc(addressLoc);
+        realEstate.setRooms(rooms);
+        realEstate.setBedrooms(bedrooms);
+        realEstate.setBathrooms(bathrooms);
+        realEstate.setDescription(description);
+        realEstate.setAgent(agent);
+        if (imageAdapter != null) {
+            realEstate.setImageUrls(imageAdapter.getImages());
+        }
+
+        // Logique pour ajouter la propriété via le ViewModel
+        viewModel.addProperty(realEstate).observe(this, id -> {
+            Log.d(TAG, "RealEstate is created: " + id);
+            Utils.displayNotification(AddRealtyActivity.this, getString(R.string.successfully_added_property));
+            finish();
+        });
     }
+
 
     private RealEstate populateRealEstate() {
         String title = binding.editTitle.getText().toString();
@@ -239,7 +283,7 @@ public class AddRealtyActivity extends AppCompatActivity {
         if (imageAdapter != null) {
             realEstate.setImageUrls(imageAdapter.getImages());
         }
-        if (!validateInput(title, price, surface, address, rooms, bedrooms, bathrooms, description)) {
+        if (validateInput(title, price, surface, address, rooms, bedrooms, bathrooms, description)) {
             Toast.makeText(this, getString(R.string.error_fields), Toast.LENGTH_SHORT).show();
             return null;
         }
@@ -249,10 +293,10 @@ public class AddRealtyActivity extends AppCompatActivity {
     private boolean validateInput(String... inputs) {
         for (String input : inputs) {
             if (input.isEmpty()) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     @Override

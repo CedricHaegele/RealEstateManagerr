@@ -36,5 +36,7 @@
     <string name="error_fields">Please fill in all required fields.</string>
     <string name="successfully">Property was added successfully.</string>
     <string name="add_message">Veuillez ajouter des propriétés</string>
+    <string name="error_fields_photos_required">Please fill in all required fields.</string>
+    <string name="successfully_added_property">Property was added successfully.</string>
 
 </resources>

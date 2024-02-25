@@ -3,6 +3,8 @@ package com.example.realestatemanager.model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import org.w3c.dom.NameList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class RealEstate {
     private String availableDate;
     private String soldDate;
     private List<String> imageUrls = new ArrayList<>();
+    private List<String> pointsOfInterest = new ArrayList<>();
 
     public RealEstate() {
     }
@@ -40,6 +43,14 @@ public class RealEstate {
         this.availableDate = availableDate;
         this.soldDate = soldDate;
         this.imageUrls = imageUrls;
+    }
+
+    public List<String> getPointsOfInterest() {
+        return pointsOfInterest;
+    }
+
+    public void setPointsOfInterest(List<String> pointsOfInterest) {
+        this.pointsOfInterest = pointsOfInterest;
     }
 
     public int getId() {
@@ -145,6 +156,34 @@ public class RealEstate {
     public void setImageUrls(List<String> imageUrls) {
         this.imageUrls = imageUrls;
     }
+
+    public boolean hasSchoolNearby() {
+        return this.pointsOfInterest.contains("School");
+    }
+
+    public boolean hasShoppingNearby() {
+        return this.pointsOfInterest.contains("Shopping");
+    }
+
+    public boolean hasTransportNearby() {
+        return this.pointsOfInterest.contains("Transport");
+    }
+
+    public boolean hasPoolNearby() {
+        return this.pointsOfInterest.contains("Swimming Pool");
+    }
+
+    public void addPointOfInterest(String pointOfInterest) {
+        if (!this.pointsOfInterest.contains(pointOfInterest)) {
+            this.pointsOfInterest.add(pointOfInterest);
+        }
+    }
+
+    public void removePointOfInterest(String pointOfInterest) {
+        this.pointsOfInterest.remove(pointOfInterest);
+    }
+
+
 
     @Override
     public String toString() {

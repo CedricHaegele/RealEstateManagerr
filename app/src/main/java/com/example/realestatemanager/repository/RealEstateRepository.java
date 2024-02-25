@@ -16,7 +16,6 @@ import java.util.concurrent.Executors;
 public class RealEstateRepository {
 
     private final RealEstateDao realEstateDao;
-
     private final Executor executor;
 
     public RealEstateRepository(Context context) {
@@ -41,4 +40,11 @@ public class RealEstateRepository {
     public LiveData<RealEstate> getRealEstate(int id) {
         return realEstateDao.getRealEstate(id);
     }
+
+    public void update(RealEstate realEstate) {
+        executor.execute(() -> {
+            realEstateDao.update(realEstate);
+        });
+    }
+
 }

@@ -19,13 +19,13 @@ import com.example.realestatemanager.callback.OnItemClickListener;
 import com.example.realestatemanager.callback.OnListItemSelectedListener;
 import com.example.realestatemanager.databinding.FragmentListBinding;
 import com.example.realestatemanager.model.RealEstate;
-import com.example.realestatemanager.viewmodel.RealtyListViewModel;
+import com.example.realestatemanager.viewmodel.RealtyEstateViewModel;
 
 import java.util.List;
 
 public class ListFragment extends Fragment implements OnItemClickListener {
     private FragmentListBinding binding;
-    private RealtyListViewModel realtyListViewModel;
+    private RealtyEstateViewModel realtyEstateViewModel;
     private OnListItemSelectedListener listener;
 
     @Override
@@ -41,7 +41,7 @@ public class ListFragment extends Fragment implements OnItemClickListener {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        realtyListViewModel = new ViewModelProvider(requireActivity()).get(RealtyListViewModel.class);
+        realtyEstateViewModel = new ViewModelProvider(requireActivity()).get(RealtyEstateViewModel.class);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class ListFragment extends Fragment implements OnItemClickListener {
     }
 
     private void observeRealtyLists() {
-        realtyListViewModel.getRealtyLists().observe(getViewLifecycleOwner(), this::observePhotosForEachRealty);
+        realtyEstateViewModel.getRealtyLists().observe(getViewLifecycleOwner(), this::observePhotosForEachRealty);
     }
 
     private void observePhotosForEachRealty(List<RealEstate> properties) {

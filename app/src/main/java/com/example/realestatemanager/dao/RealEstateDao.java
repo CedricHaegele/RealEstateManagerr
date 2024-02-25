@@ -29,4 +29,6 @@ public interface RealEstateDao {
 
     @Query("SELECT * FROM RealEstate WHERE id = :id")
     LiveData<RealEstate> getRealEstate(int id);
+
+
 }
