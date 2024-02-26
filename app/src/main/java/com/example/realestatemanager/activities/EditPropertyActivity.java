@@ -1,6 +1,9 @@
 package com.example.realestatemanager.activities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -8,8 +11,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
 import com.example.realestatemanager.R;
 import com.example.realestatemanager.databinding.ActivityEditPropertyBinding;
+import com.example.realestatemanager.model.AddressLoc;
 import com.example.realestatemanager.model.RealEstate;
 import com.example.realestatemanager.viewmodel.RealEstateViewModel;
 
@@ -26,6 +31,7 @@ public class EditPropertyActivity extends AppCompatActivity {
     private ActivityEditPropertyBinding binding;
     private RealEstateViewModel realEstateViewModel;
     private RealEstate currentRealEstate;
+    private static final int PICK_IMAGE_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +43,6 @@ public class EditPropertyActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-
 
         realEstateViewModel = new ViewModelProvider(this).get(RealEstateViewModel.class);
 
@@ -70,13 +75,20 @@ public class EditPropertyActivity extends AppCompatActivity {
                 binding.editTextTitle.setText(realEstate.getTitle());
                 binding.editTextPrice.setText(realEstate.getPrice());
                 binding.editTextSurface.setText(realEstate.getSurface());
-                binding.editTextDescription.setText(realEstate.getDescription());
                 binding.editTextBedrooms.setText(realEstate.getBedrooms());
                 binding.editTextBathrooms.setText(realEstate.getBathrooms());
+                binding.editTextAddress.setText(realEstate.getAddressLoc().getAddressLabel());
+                binding.editTextAgent.setText(realEstate.getAgent());
 
                 if (realEstate.getMarketDate() != null) {
                     binding.editTextMarketDate.setText(formatDate(realEstate.getMarketDate()));
                 }
+
+                binding.imageViewEditPhoto.setOnClickListener(v -> {
+                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, PICK_IMAGE_REQUEST);
+                });
+
 
                 binding.checkBoxSchool.setChecked(realEstate.hasSchoolNearby());
                 binding.checkBoxShopping.setChecked(realEstate.hasShoppingNearby());
@@ -121,6 +133,12 @@ public class EditPropertyActivity extends AppCompatActivity {
         currentRealEstate.setDescription(binding.editTextDescription.getText().toString());
         currentRealEstate.setBedrooms(binding.editTextBedrooms.getText().toString());
         currentRealEstate.setBathrooms(binding.editTextBathrooms.getText().toString());
+        currentRealEstate.setAgent(binding.editTextAgent.getText().toString());
+
+        AddressLoc address = new AddressLoc();
+        address.setAddressLabel(binding.editTextAddress.getText().toString());
+        currentRealEstate.setAddressLoc(address);
+        currentRealEstate.setAgent(binding.editTextAgent.getText().toString());
 
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -152,4 +170,5 @@ public class EditPropertyActivity extends AppCompatActivity {
         Toast.makeText(this, "Property updated successfully", Toast.LENGTH_SHORT).show();
         finish();
     }
+
 }

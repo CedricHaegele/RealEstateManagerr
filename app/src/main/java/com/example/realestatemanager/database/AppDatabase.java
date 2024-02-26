@@ -11,12 +11,18 @@ import com.example.realestatemanager.Converters;
 import com.example.realestatemanager.dao.RealEstateDao;
 import com.example.realestatemanager.model.RealEstate;
 
-@Database(entities = {RealEstate.class}, version = 2)
+@Database(entities = {RealEstate.class}, version = 1)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase instance;
+    private static AppDatabase TEST_INSTANCE;
 
     public static synchronized AppDatabase getInstance(Context context) {
+
+        if (TEST_INSTANCE != null) {
+            return TEST_INSTANCE;
+        }
+
         if (instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "realty_database")
@@ -27,4 +33,8 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     public abstract RealEstateDao realtyListDao();
+
+    public static void setTestInstance(AppDatabase testInstance) {
+        TEST_INSTANCE = testInstance;
+    }
 }

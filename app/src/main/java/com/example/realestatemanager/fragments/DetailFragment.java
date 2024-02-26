@@ -79,6 +79,16 @@ public class DetailFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).setupDrawerToggle(true);
+        }
+    }
+
+
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
