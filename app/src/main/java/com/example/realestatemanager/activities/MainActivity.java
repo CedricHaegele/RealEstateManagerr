@@ -53,6 +53,12 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        toggle.syncState();
+    }
+
     private void initViews() {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -196,23 +202,19 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
                 .addToBackStack(null)
                 .commit();
 
-        // Mise à jour de l'indicateur pour refléter que le SearchFragment est affiché
         isSearchFragmentDisplayed = true;
 
-        // Demande la mise à jour du menu pour refléter les changements de visibilité des icônes
         invalidateOptionsMenu();
     }
 
     @Override
     public void onBackPressed() {
-        // Si le drawer est ouvert, fermez-le
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            // Si le SearchFragment est affiché, mettez à jour l'indicateur et le menu
             if (isSearchFragmentDisplayed) {
                 isSearchFragmentDisplayed = false;
-                invalidateOptionsMenu(); // Mettre à jour le menu
+                invalidateOptionsMenu();
             }
             super.onBackPressed();
         }
@@ -221,11 +223,9 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        // Récupérez les éléments de menu par leur ID
         MenuItem searchItem = menu.findItem(R.id.action_search);
         MenuItem editItem = menu.findItem(R.id.action_edit);
 
-        // Cachez les deux éléments si le SearchFragment est affiché
         boolean showItems = !isSearchFragmentDisplayed;
         if (searchItem != null && editItem != null) {
             searchItem.setVisible(showItems);

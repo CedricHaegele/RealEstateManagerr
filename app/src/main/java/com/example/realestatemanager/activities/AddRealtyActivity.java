@@ -41,7 +41,6 @@ import java.util.Date;
 import java.util.List;
 
 public class AddRealtyActivity extends AppCompatActivity {
-
     private final String TAG = AddRealtyActivity.class.getName();
     private ActivityAddRealtyBinding binding;
     private AddRealtyViewModel viewModel;
@@ -145,7 +144,6 @@ public class AddRealtyActivity extends AppCompatActivity {
         agentAutoCompleteTextView.setAdapter(adapter);
     }
 
-
     private void showPictureDialog() {
         CharSequence[] items = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -179,7 +177,6 @@ public class AddRealtyActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -197,7 +194,6 @@ public class AddRealtyActivity extends AppCompatActivity {
         pickPhotoIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         startActivityForResult(pickPhotoIntent, REQUEST_PICK_IMAGE);
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -219,21 +215,16 @@ public class AddRealtyActivity extends AppCompatActivity {
             }
 
             if (bitmap != null) {
-                // Compression de l'image ici
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream); // Compresser l'image
                 byte[] byteArray = byteArrayOutputStream.toByteArray();
                 String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
 
-                // Ajout de l'image compressée et encodée à la liste
                 imageList.add(encodedImage);
-
-                // Mise à jour de l'interface utilisateur
                 updateRecyclerView();
             }
         }
     }
-
 
     private void updateRecyclerView() {
         if (imageAdapter == null) {
@@ -267,10 +258,8 @@ public class AddRealtyActivity extends AppCompatActivity {
             return;
         }
 
-        // Continuer avec la création de l'objet RealEstate si toutes les validations sont passées
         AddressLoc addressLoc = new AddressLoc();
         addressLoc.setAddressLabel(address);
-        // Assurez-vous que vous avez la méthode Utils.getLocationFromAddress qui retourne une valeur non nulle
         addressLoc.setLatLng(Utils.getLocationFromAddress(this, address));
 
         RealEstate realEstate = new RealEstate();
@@ -290,14 +279,12 @@ public class AddRealtyActivity extends AppCompatActivity {
             realEstate.setImageUrls(imageAdapter.getImages());
         }
 
-        // Logique pour ajouter la propriété via le ViewModel
         viewModel.addProperty(realEstate).observe(this, id -> {
             Log.d(TAG, "RealEstate is created: " + id);
             Utils.displayNotification(AddRealtyActivity.this, getString(R.string.successfully_added_property));
             finish();
         });
     }
-
 
     private RealEstate populateRealEstate() {
         String title = binding.editTitle.getText().toString();
@@ -342,24 +329,20 @@ public class AddRealtyActivity extends AppCompatActivity {
         if (imageAdapter != null) {
             realEstate.setImageUrls(imageAdapter.getImages());
         }
-
         return realEstate;
     }
 
     private boolean validateInput(String title, String price, String surface, String address, String rooms, String bedrooms, String bathrooms, String description, String agent, String status, String marketDateStr, String soldDateStr) {
-        // Basic validation for required fields
         if (title.isEmpty() || price.isEmpty() || surface.isEmpty() || address.isEmpty() || rooms.isEmpty() || bedrooms.isEmpty() || bathrooms.isEmpty() || description.isEmpty() || agent.isEmpty() || marketDateStr.isEmpty()) {
             return false;
         }
 
-        // Additional validation for "sold date" based on status
         if ("Sold".equals(status) && soldDateStr.isEmpty()) {
             return false;
         }
 
         return true; // Passed all validations
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
