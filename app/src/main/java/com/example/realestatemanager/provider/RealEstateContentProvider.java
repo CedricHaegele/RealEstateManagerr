@@ -25,16 +25,9 @@ public class RealEstateContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        final int realEstateId = (int) ContentUris.parseId(uri);
         if (getContext() != null) {
             final Cursor cursor;
-            if (realEstateId == -1) {
-
-                cursor = AppDatabase.getInstance(getContext()).realtyListDao().getItemsWithCursor();
-            } else {
-
-                cursor = AppDatabase.getInstance(getContext()).realtyListDao().getItemsWithCursor();
-            }
+            cursor = AppDatabase.getInstance(getContext()).realtyListDao().getItemsWithCursor();
             cursor.setNotificationUri(getContext().getContentResolver(), uri);
             return cursor;
 

@@ -42,9 +42,7 @@ public class RealEstateRepository {
     }
 
     public void update(RealEstate realEstate) {
-        executor.execute(() -> {
-            realEstateDao.update(realEstate);
-        });
+        executor.execute(() -> realEstateDao.update(realEstate));
     }
 
 }

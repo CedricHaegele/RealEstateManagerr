@@ -20,14 +20,31 @@ import com.example.realestatemanager.fragments.ListFragment;
 import com.example.realestatemanager.databinding.ActivityMainBinding;
 import com.example.realestatemanager.fragments.SearchFragment;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity implements OnListItemSelectedListener {
     private int currentPropertyId = -1;
     private ActivityMainBinding binding;
     private ActionBarDrawerToggle toggle;
     private boolean isSearchFragmentDisplayed = false;
 
+    @Override
     public void onPropertySelected(int propertyId) {
-        this.currentPropertyId = propertyId;
+        if (isTablet(getApplicationContext())) {
+
+            DetailFragment detailFragment = DetailFragment.newInstance(propertyId);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_detail_container, detailFragment)
+                    .commit();
+        } else {
+
+            DetailFragment detailFragment = DetailFragment.newInstance(propertyId);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_list_container, detailFragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
+
     }
 
     @Override
@@ -65,17 +82,14 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
     }
 
     private void initToolBar() {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     private void initListeners() {
-        binding.addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AddRealtyActivity.class);
-                startActivity(intent);
-            }
+        binding.addButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, AddRealtyActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -85,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
             getSupportFragmentManager().beginTransaction()
                     .replace(binding.fragmentListContainer.getId(), new ListFragment())
                     .commit();
+            assert binding.fragmentDetailContainer != null;
             getSupportFragmentManager().beginTransaction()
                     .replace(binding.fragmentDetailContainer.getId(), new DetailFragment())
                     .commit();
@@ -98,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
 
     private void initFirstTabletItem() {
         if (isTablet(getApplicationContext())) {
+            assert binding.fragmentDetailContainer != null;
             getSupportFragmentManager().beginTransaction()
                     .replace(binding.fragmentDetailContainer.getId(), DetailFragment.newInstance(1))
                     .commit();
@@ -143,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
             toggle.setDrawerSlideAnimationEnabled(true);
             binding.drawerLayout.addDrawerListener(toggle);
         } else {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         }
     }
 

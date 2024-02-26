@@ -1,6 +1,7 @@
 package com.example.realestatemanager.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class AddRealtyActivity extends AppCompatActivity {
     private final String TAG = AddRealtyActivity.class.getName();
@@ -226,6 +228,7 @@ public class AddRealtyActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void updateRecyclerView() {
         if (imageAdapter == null) {
             imageAdapter = new ImageAdapter(this, imageList);
@@ -237,13 +240,13 @@ public class AddRealtyActivity extends AppCompatActivity {
     }
 
     private void submitProperty() {
-        String title = binding.editTitle.getText().toString();
-        String price = binding.editPrice.getText().toString().replaceAll("[$]", "");
-        String surface = binding.editSurface.getText().toString();
-        String address = binding.editAddress.getText().toString();
-        String rooms = binding.roomsInput.getText().toString();
-        String bedrooms = binding.bedroomsInput.getText().toString();
-        String bathrooms = binding.bathroomsInput.getText().toString();
+        String title = Objects.requireNonNull(binding.editTitle.getText()).toString();
+        String price = Objects.requireNonNull(binding.editPrice.getText()).toString().replaceAll("[$]", "");
+        String surface = Objects.requireNonNull(binding.editSurface.getText()).toString();
+        String address = Objects.requireNonNull(binding.editAddress.getText()).toString();
+        String rooms = Objects.requireNonNull(binding.roomsInput.getText()).toString();
+        String bedrooms = Objects.requireNonNull(binding.bedroomsInput.getText()).toString();
+        String bathrooms = Objects.requireNonNull(binding.bathroomsInput.getText()).toString();
         String description = binding.descriptionInput.getText().toString();
         String agent = binding.editAgent.getText().toString();
         String status = binding.statusAutoCompleteTextView.getText().toString();
@@ -253,7 +256,7 @@ public class AddRealtyActivity extends AppCompatActivity {
         Date soldDate = Utils.convertStringToDate(soldDateStr);
 
 
-        if (!validateInput(title, price, surface, address, rooms, bedrooms, bathrooms, description, agent, status, marketDateStr, soldDateStr) || imageList.isEmpty()) {
+        if (validateInput(title, price, surface, address, rooms, bedrooms, bathrooms, description, agent, status, marketDateStr, soldDateStr) || imageList.isEmpty()) {
             Toast.makeText(this, getString(R.string.error_fields), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -286,62 +289,12 @@ public class AddRealtyActivity extends AppCompatActivity {
         });
     }
 
-    private RealEstate populateRealEstate() {
-        String title = binding.editTitle.getText().toString();
-        String price = binding.editPrice.getText().toString().replaceAll("[$]", "");
-        String surface = binding.editSurface.getText().toString();
-        String address = binding.editAddress.getText().toString();
-        String rooms = binding.roomsInput.getText().toString();
-        String bedrooms = binding.bedroomsInput.getText().toString();
-        String bathrooms = binding.bathroomsInput.getText().toString();
-        String description = binding.descriptionInput.getText().toString();
-        String agent = binding.editAgent.getText().toString();
-        String status = binding.statusAutoCompleteTextView.getText().toString();
-        String marketDateStr = binding.marketDateButton.getText().toString();
-        String soldDateStr = binding.soldDateButton.getText().toString();
-
-        if (!validateInput(title, price, surface, address, rooms, bedrooms, bathrooms, description, agent, status, marketDateStr, soldDateStr)) {
-            Toast.makeText(this, getString(R.string.error_fields), Toast.LENGTH_SHORT).show();
-            return null;
-        }
-
-        AddressLoc addressLoc = new AddressLoc();
-        addressLoc.setAddressLabel(address);
-        addressLoc.setLatLng(Utils.getLocationFromAddress(this, address));
-
-        Date marketDate = Utils.convertStringToDate(marketDateStr);
-        Date soldDate = status.equals("Sold") ? Utils.convertStringToDate(soldDateStr) : null;
-
-        RealEstate realEstate = new RealEstate();
-        realEstate.setTitle(title);
-        realEstate.setPrice(price);
-        realEstate.setSurface(surface);
-        realEstate.setAddressLoc(addressLoc);
-        realEstate.setRooms(rooms);
-        realEstate.setBedrooms(bedrooms);
-        realEstate.setBathrooms(bathrooms);
-        realEstate.setDescription(description);
-        realEstate.setAgent(agent);
-        realEstate.setStatus(status);
-        realEstate.setMarketDate(marketDate);
-        realEstate.setSoldDate(soldDate);
-
-        if (imageAdapter != null) {
-            realEstate.setImageUrls(imageAdapter.getImages());
-        }
-        return realEstate;
-    }
-
     private boolean validateInput(String title, String price, String surface, String address, String rooms, String bedrooms, String bathrooms, String description, String agent, String status, String marketDateStr, String soldDateStr) {
         if (title.isEmpty() || price.isEmpty() || surface.isEmpty() || address.isEmpty() || rooms.isEmpty() || bedrooms.isEmpty() || bathrooms.isEmpty() || description.isEmpty() || agent.isEmpty() || marketDateStr.isEmpty()) {
-            return false;
+            return true;
         }
 
-        if ("Sold".equals(status) && soldDateStr.isEmpty()) {
-            return false;
-        }
-
-        return true; // Passed all validations
+        return "Sold".equals(status) && soldDateStr.isEmpty();// Passed all validations
     }
 
     @Override

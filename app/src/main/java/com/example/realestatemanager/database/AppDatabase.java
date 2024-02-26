@@ -33,7 +33,6 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     public abstract RealEstateDao realtyListDao();
-
     public static void setTestInstance(AppDatabase testInstance) {
         TEST_INSTANCE = testInstance;
     }

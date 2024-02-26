@@ -8,9 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.realestatemanager.R;
 import com.example.realestatemanager.Utils;
-import com.example.realestatemanager.databinding.ItemRealestateBinding; // Assurez-vous que ce nom correspond à votre fichier XML d'item
+import com.example.realestatemanager.databinding.ItemRealestateBinding;
 import com.example.realestatemanager.model.RealEstate;
 
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Utilisation de View Binding
+
         ItemRealestateBinding binding = ItemRealestateBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new ViewHolder(binding);
     }
@@ -34,7 +33,6 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         holder.binding.descriptionTextView.setText(realEstate.getDescription());
         holder.binding.priceTextView.setText(String.format("$%,d", Integer.parseInt(realEstate.getPrice())));
 
-        // Charger la première image si disponible
         if (realEstate.getImageUrls() != null && !realEstate.getImageUrls().isEmpty()) {
             Bitmap bitmap = Utils.base64ToBitmap(realEstate.getImageUrls().get(0));
             if (bitmap != null) {
@@ -42,7 +40,6 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             }
         }
     }
-
 
     @Override
     public int getItemCount() {
@@ -55,7 +52,6 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // Utilisation de View Binding pour l'item
         ItemRealestateBinding binding;
 
         public ViewHolder(ItemRealestateBinding binding) {

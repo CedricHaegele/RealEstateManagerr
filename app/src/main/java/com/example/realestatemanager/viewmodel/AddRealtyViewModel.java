@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.example.realestatemanager.dao.RealEstateDao;
 import com.example.realestatemanager.model.RealEstate;
 import com.example.realestatemanager.repository.RealEstateRepository;
 

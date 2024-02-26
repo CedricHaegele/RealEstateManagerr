@@ -24,13 +24,10 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder {
         textViewAddress = itemView.findViewById(R.id.textViewAddress);
         textViewPrice = itemView.findViewById(R.id.textViewPrice);
 
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION) {
-                    listener.onItemClick(properties.get(position));
-                }
+        itemView.setOnClickListener(v -> {
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                listener.onItemClick(properties.get(position));
             }
         });
     }

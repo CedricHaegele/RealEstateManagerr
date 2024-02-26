@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class SimulatorViewModel extends ViewModel {
-    private MutableLiveData<String> monthlyPayment = new MutableLiveData<>();
+    private final MutableLiveData<String> monthlyPayment = new MutableLiveData<>();
 
     public void calculateMonthlyPayment(double loanAmount, double interestRate, int loanTerm, double downPayment) {
         loanAmount -= downPayment;

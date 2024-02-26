@@ -1,7 +1,5 @@
 package com.example.realestatemanager.activities;
 
-import static android.app.PendingIntent.getActivity;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,11 +11,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.realestatemanager.R;
-import com.example.realestatemanager.fragments.DetailFragment;
 import com.example.realestatemanager.model.AddressLoc;
 import com.example.realestatemanager.model.RealEstate;
 import com.example.realestatemanager.viewmodel.MapViewModel;
@@ -48,13 +44,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         viewModel.getRealtyList().observe(this, this::addPropertyMarkers);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        assert mapFragment != null;
         mapFragment.getMapAsync(this);
         initToolBar();
     }
 
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         setupMap();
 
@@ -98,13 +95,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if (mMap == null) return;
         mMap.clear();
 
-        LatLng newYork = new LatLng(40.7128, -74.0060);
-
         for (RealEstate property : properties) {
             AddressLoc addressLoc = property.getAddressLoc();
             if (addressLoc != null && addressLoc.getLatLng() != null) {
                 LatLng location = addressLoc.getLatLng();
                 Marker marker = mMap.addMarker(new MarkerOptions().position(location).title(property.getTitle()));
+                assert marker != null;
                 marker.setTag(property.getId());
             }
         }

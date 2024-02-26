@@ -5,8 +5,6 @@ import android.content.ContentValues;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import org.w3c.dom.NameList;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

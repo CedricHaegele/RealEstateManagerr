@@ -18,7 +18,10 @@ import com.example.realestatemanager.database.AppDatabase;
 import com.example.realestatemanager.databinding.FragmentSearchBinding;
 import com.example.realestatemanager.model.RealEstate;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -81,15 +84,30 @@ public class SearchFragment extends Fragment {
         Integer minRooms = getIntegerFromEditText(binding.minRoomsEditText);
         Integer maxRooms = getIntegerFromEditText(binding.maxRoomsEditText);
 
+        Long startDateTimestamp = null;
+        Long endDateTimestamp = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        try {
+            if (selectedStartDate != null && !selectedStartDate.isEmpty()) {
+                Date startDate = sdf.parse(selectedStartDate);
+                startDateTimestamp = (startDate != null) ? startDate.getTime() : null;
+            }
+            if (selectedEndDate != null && !selectedEndDate.isEmpty()) {
+                Date endDate = sdf.parse(selectedEndDate);
+                endDateTimestamp = (endDate != null) ? endDate.getTime() : null;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+
+        }
+
         AppDatabase db = AppDatabase.getInstance(getContext());
         RealEstateDao dao = db.realtyListDao();
+        LiveData<List<RealEstate>> results = dao.searchProperties(minSurface, maxSurface, minPrice, maxPrice, minRooms, maxRooms, startDateTimestamp, endDateTimestamp);
 
-        LiveData<List<RealEstate>> results = dao.searchProperties(minSurface, maxSurface, minPrice, maxPrice, minRooms, maxRooms, selectedStartDate, selectedEndDate);
-
-        results.observe(getViewLifecycleOwner(), realEstates -> {
-            updateSearchResults(realEstates);
-        });
+        results.observe(getViewLifecycleOwner(), this::updateSearchResults);
     }
+
 
     private Integer getIntegerFromEditText(EditText editText) {
         if (!TextUtils.isEmpty(editText.getText())) {

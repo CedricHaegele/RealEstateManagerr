@@ -250,7 +250,7 @@
                 android:id="@+id/statusInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Statut du bien"
+                android:hint="Status"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
                 <AutoCompleteTextView
                     android:id="@+id/statusAutoCompleteTextView"
@@ -264,14 +264,14 @@
                 android:id="@+id/marketDateButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Date d’entrée sur le marché" />
+                android:text="Start date " />
 
             <!-- Button pour la date de vente du bien -->
             <Button
                 android:id="@+id/soldDateButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Date de vente du bien" />
+                android:text="Sold Date" />
         </LinearLayout>
 
         <TextView

@@ -1,18 +1,16 @@
 package com.example.realestatemanager.activities;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.bumptech.glide.Glide;
-import com.example.realestatemanager.R;
 import com.example.realestatemanager.databinding.ActivityEditPropertyBinding;
 import com.example.realestatemanager.model.AddressLoc;
 import com.example.realestatemanager.model.RealEstate;
@@ -22,16 +20,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
+import java.util.Objects;
 
 public class EditPropertyActivity extends AppCompatActivity {
     private ActivityEditPropertyBinding binding;
     private RealEstateViewModel realEstateViewModel;
     private RealEstate currentRealEstate;
-    private static final int PICK_IMAGE_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +70,7 @@ public class EditPropertyActivity extends AppCompatActivity {
                 currentRealEstate = realEstate;
                 binding.editTextTitle.setText(realEstate.getTitle());
                 binding.editTextPrice.setText(realEstate.getPrice());
+                binding.editTextDescription.setText(realEstate.getDescription());
                 binding.editTextSurface.setText(realEstate.getSurface());
                 binding.editTextBedrooms.setText(realEstate.getBedrooms());
                 binding.editTextBathrooms.setText(realEstate.getBathrooms());
@@ -83,12 +80,6 @@ public class EditPropertyActivity extends AppCompatActivity {
                 if (realEstate.getMarketDate() != null) {
                     binding.editTextMarketDate.setText(formatDate(realEstate.getMarketDate()));
                 }
-
-                binding.imageViewEditPhoto.setOnClickListener(v -> {
-                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, PICK_IMAGE_REQUEST);
-                });
-
 
                 binding.checkBoxSchool.setChecked(realEstate.hasSchoolNearby());
                 binding.checkBoxShopping.setChecked(realEstate.hasShoppingNearby());
@@ -142,7 +133,7 @@ public class EditPropertyActivity extends AppCompatActivity {
 
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-            currentRealEstate.setMarketDate(sdf.parse(binding.editTextMarketDate.getText().toString()));
+            currentRealEstate.setMarketDate(sdf.parse(Objects.requireNonNull(binding.editTextMarketDate.getText()).toString()));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -157,7 +148,7 @@ public class EditPropertyActivity extends AppCompatActivity {
         if (binding.switchSold.isChecked()) {
             currentRealEstate.setStatus("Sold");
             try {
-                currentRealEstate.setSoldDate(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(binding.editTextSoldDate.getText().toString()));
+                currentRealEstate.setSoldDate(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(Objects.requireNonNull(binding.editTextSoldDate.getText()).toString()));
             } catch (ParseException e) {
                 Toast.makeText(this, "Invalid date format for Sold Date", Toast.LENGTH_SHORT).show();
             }
@@ -170,5 +161,4 @@ public class EditPropertyActivity extends AppCompatActivity {
         Toast.makeText(this, "Property updated successfully", Toast.LENGTH_SHORT).show();
         finish();
     }
-
 }
