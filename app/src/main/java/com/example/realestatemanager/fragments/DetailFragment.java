@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.realestatemanager.activities.MainActivity;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -59,6 +61,7 @@ public class DetailFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         realtyEstateViewModel = new ViewModelProvider(requireActivity()).get(AddRealtyViewModel.class);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -70,13 +73,35 @@ public class DetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         if (getArguments() != null) {
             realtyEstateViewModel.getRealEstate(getArguments().getInt(ARG_ID)).observe(getViewLifecycleOwner(), this::populateRealEstate);
         }
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).setupDrawerToggle(false);
         }
+        if (getActivity() instanceof AppCompatActivity) {
+            AppCompatActivity activity = (AppCompatActivity) getActivity();
+            if (activity.getSupportActionBar() != null) {
+                activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+            }
+        }
+
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            // Gérer l'action de retour ici
+            if (getActivity() != null) {
+                getActivity().onBackPressed();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public void onResume() {
@@ -85,7 +110,6 @@ public class DetailFragment extends Fragment {
             ((MainActivity) getActivity()).setupDrawerToggle(true);
         }
     }
-
 
 
     @Override
@@ -98,7 +122,7 @@ public class DetailFragment extends Fragment {
     private void populateRealEstate(RealEstate realEstate) {
         if (realEstate != null) {
             binding.propertyTitle.setText("Title : " + realEstate.getTitle());
-            binding.propertyDescription.setText("Description : "+ realEstate.getDescription());
+            binding.propertyDescription.setText("Description : " + realEstate.getDescription());
             binding.propertyPrice.setText("Price : $ " + realEstate.getPrice());
             binding.propertySurface.setText("Surface : " + realEstate.getSurface());
             binding.propertyAddress.setText("Address : " + realEstate.getAddressLoc().getAddressLabel());
@@ -111,7 +135,7 @@ public class DetailFragment extends Fragment {
             binding.transportCheckbox.setChecked(realEstate.hasTransportNearby());
             binding.poolCheckbox.setChecked(realEstate.hasPoolNearby());
             binding.propertyTitle.setText("Title : " + realEstate.getTitle());
-            binding.propertyDescription.setText("Description : "+ realEstate.getDescription());
+            binding.propertyDescription.setText("Description : " + realEstate.getDescription());
             binding.statusAutoCompleteTextView.setText(realEstate.getStatus());
 
             if (realEstate.getMarketDate() != null) {
@@ -185,6 +209,7 @@ public class DetailFragment extends Fragment {
                                 Log.e("DetailFragment", "Erreur de chargement de la carte", e);
                                 return false;
                             }
+
                             @Override
                             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                                 Log.i("DetailFragment", "Carte chargée avec succès");

@@ -4,6 +4,7 @@ import static com.google.android.gms.common.util.DeviceProperties.isTablet;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,22 +31,21 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
 
     @Override
     public void onPropertySelected(int propertyId) {
-        if (isTablet(getApplicationContext())) {
+        currentPropertyId = propertyId;
+        DetailFragment detailFragment = DetailFragment.newInstance(propertyId);
 
-            DetailFragment detailFragment = DetailFragment.newInstance(propertyId);
+        if (isTablet(getApplicationContext())) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_detail_container, detailFragment)
                     .commit();
         } else {
-
-            DetailFragment detailFragment = DetailFragment.newInstance(propertyId);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_list_container, detailFragment)
                     .addToBackStack(null)
                     .commit();
         }
-
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
                         .commit();
             }
         }
+
     }
 
     @Override

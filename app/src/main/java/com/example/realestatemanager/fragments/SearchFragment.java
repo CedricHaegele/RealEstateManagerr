@@ -128,4 +128,6 @@ public class SearchFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
+
 }
