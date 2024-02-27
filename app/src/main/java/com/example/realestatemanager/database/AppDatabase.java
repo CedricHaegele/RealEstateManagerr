@@ -33,7 +33,13 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     public abstract RealEstateDao realtyListDao();
+
     public static void setTestInstance(AppDatabase testInstance) {
         TEST_INSTANCE = testInstance;
+    }
+    public static AppDatabase createInMemoryDatabase(Context context) {
+        return Room.inMemoryDatabaseBuilder(context.getApplicationContext(), AppDatabase.class)
+                .allowMainThreadQueries() // À utiliser uniquement dans le cadre de tests
+                .build();
     }
 }

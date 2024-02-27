@@ -78,7 +78,7 @@ public class DetailFragment extends Fragment {
             realtyEstateViewModel.getRealEstate(getArguments().getInt(ARG_ID)).observe(getViewLifecycleOwner(), this::populateRealEstate);
         }
         if (getActivity() instanceof MainActivity) {
-            ((MainActivity) getActivity()).setupDrawerToggle(false);
+       //  ((MainActivity) getActivity()).setupDrawerToggle(false);
         }
         if (getActivity() instanceof AppCompatActivity) {
             AppCompatActivity activity = (AppCompatActivity) getActivity();
@@ -92,22 +92,29 @@ public class DetailFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            // Gérer l'action de retour ici
-            if (getActivity() != null) {
-                getActivity().onBackPressed();
-            }
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
+
 
 
     @Override
     public void onResume() {
         super.onResume();
         if (getActivity() instanceof MainActivity) {
-            ((MainActivity) getActivity()).setupDrawerToggle(true);
+          //  ((MainActivity) getActivity()).setupDrawerToggle(true);
         }
     }
 

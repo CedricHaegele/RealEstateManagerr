@@ -58,15 +58,8 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
         initFirstTabletItem();
         handleNavigationDrawer();
 
-        if (getIntent().hasExtra("property_id")) {
-            int propertyId = getIntent().getIntExtra("property_id", -1);
-            if (propertyId != -1) {
-                DetailFragment detailFragment = DetailFragment.newInstance(propertyId);
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_list_container, detailFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
     }
@@ -150,21 +143,6 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
         });
     }
 
-
-    public void setupDrawerToggle(boolean enableDrawer) {
-        toggle.setDrawerIndicatorEnabled(enableDrawer);
-        if (enableDrawer) {
-            toggle.setToolbarNavigationClickListener(null);
-            toggle.syncState();
-
-            toggle.setDrawerSlideAnimationEnabled(true);
-            binding.drawerLayout.addDrawerListener(toggle);
-        } else {
-            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -229,13 +207,10 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            if (isSearchFragmentDisplayed) {
-                isSearchFragmentDisplayed = false;
-                invalidateOptionsMenu();
-            }
             super.onBackPressed();
         }
     }
+
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {

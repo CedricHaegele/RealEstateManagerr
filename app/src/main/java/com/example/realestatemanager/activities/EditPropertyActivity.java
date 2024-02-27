@@ -49,9 +49,24 @@ public class EditPropertyActivity extends AppCompatActivity {
             }
         });
 
+
         int propertyId = getIntent().getIntExtra("PROPERTY_ID", -1);
         loadPropertyDetails(propertyId);
         handleFormSubmission();
+        setupDeleteButton();
+    }
+
+    private void setupDeleteButton() {
+        binding.buttonDeleteProperty.setOnClickListener(v -> {
+            if (currentRealEstate != null) {
+                realEstateViewModel.deleteProperty(currentRealEstate);
+                Toast.makeText(EditPropertyActivity.this, "Property deleted successfully", Toast.LENGTH_SHORT).show();
+                finish();
+            } else {
+                Toast.makeText(EditPropertyActivity.this, "Error: No property to delete", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     @Override

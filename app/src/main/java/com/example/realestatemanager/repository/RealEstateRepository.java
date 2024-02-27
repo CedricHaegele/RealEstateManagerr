@@ -45,4 +45,10 @@ public class RealEstateRepository {
         executor.execute(() -> realEstateDao.update(realEstate));
     }
 
+    public void deleteProperty(RealEstate realEstate) {
+        executor.execute(() -> {
+            realEstateDao.delete(realEstate);
+        });
+
+    }
 }

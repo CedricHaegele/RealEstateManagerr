@@ -30,5 +30,10 @@ public class RealEstateViewModel extends AndroidViewModel {
     public void updateProperty(RealEstate realEstate) {
         repository.update(realEstate);
     }
+
+    public void deleteProperty(RealEstate realEstate) {
+        repository.deleteProperty(realEstate);
+    }
+
 }
 
