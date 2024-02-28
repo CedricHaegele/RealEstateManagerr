@@ -78,7 +78,7 @@ public class DetailFragment extends Fragment {
             realtyEstateViewModel.getRealEstate(getArguments().getInt(ARG_ID)).observe(getViewLifecycleOwner(), this::populateRealEstate);
         }
         if (getActivity() instanceof MainActivity) {
-       //  ((MainActivity) getActivity()).setupDrawerToggle(false);
+            //  ((MainActivity) getActivity()).setupDrawerToggle(false);
         }
         if (getActivity() instanceof AppCompatActivity) {
             AppCompatActivity activity = (AppCompatActivity) getActivity();
@@ -114,7 +114,7 @@ public class DetailFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (getActivity() instanceof MainActivity) {
-          //  ((MainActivity) getActivity()).setupDrawerToggle(true);
+            //  ((MainActivity) getActivity()).setupDrawerToggle(true);
         }
     }
 

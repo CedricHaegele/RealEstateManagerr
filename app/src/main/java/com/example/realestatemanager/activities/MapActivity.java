@@ -72,7 +72,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             Integer propertyId = (Integer) marker.getTag();
             if (propertyId != null) {
                 Intent intent = new Intent(MapActivity.this, MainActivity.class);
-                intent.putExtra("property_id", propertyId);
+                intent.putExtra(MainActivity.EXTRA_PROPERTY_ID, propertyId);
                 startActivity(intent);
             } else {
                 Log.e("MapActivity", "L'ID de la propriété est nul.");
@@ -80,6 +80,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             return false;
         });
+
 
     }
 

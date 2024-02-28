@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -24,6 +25,7 @@ import com.example.realestatemanager.fragments.SearchFragment;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements OnListItemSelectedListener {
+    public static final String EXTRA_PROPERTY_ID = "EXTRA_PROPERTY_ID";
     private int currentPropertyId = -1;
     private ActivityMainBinding binding;
     private ActionBarDrawerToggle toggle;
@@ -52,16 +54,29 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
         super.onCreate(savedInstanceState);
 
         initViews();
-        initToolBar();
         initListeners();
         displayFragments();
         initFirstTabletItem();
         handleNavigationDrawer();
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            initToolBar();
+        } else {
+            Log.e("MainActivity", "ActionBar is null");
         }
 
+        Intent intent = getIntent();
+        if (intent.hasExtra(EXTRA_PROPERTY_ID)) {
+            int propertyId = intent.getIntExtra(EXTRA_PROPERTY_ID, -1);
+            if (propertyId != -1) {
+                DetailFragment detailFragment = DetailFragment.newInstance(propertyId);
+                int containerId = isTablet(getApplicationContext()) ? R.id.fragment_detail_container : R.id.fragment_list_container;
+                getSupportFragmentManager().beginTransaction()
+                        .replace(containerId, detailFragment)
+                        .commit();
+            }
+        }
     }
 
     @Override
@@ -131,17 +146,24 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
         toggle.syncState();
         binding.navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
-            if (id == R.id.nav_first_activity) {
-                Intent intent = new Intent(MainActivity.this, MapActivity.class);
-                startActivity(intent);
+            if (id == R.id.nav_list) {
+
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_list_container, new ListFragment())
+                        .commit();
+            } else if (id == R.id.nav_first_activity) {
+                Intent mapIntent = new Intent(MainActivity.this, MapActivity.class);
+                startActivity(mapIntent);
             } else if (id == R.id.nav_second_activity) {
-                Intent intent = new Intent(MainActivity.this, SimulatorActivity.class);
-                startActivity(intent);
+                Intent simulatorIntent = new Intent(MainActivity.this, SimulatorActivity.class);
+                startActivity(simulatorIntent);
             }
             binding.drawerLayout.closeDrawers();
             return true;
         });
     }
+
+
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -210,21 +232,19 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
             super.onBackPressed();
         }
     }
-
-
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
         MenuItem editItem = menu.findItem(R.id.action_edit);
-
-        boolean showItems = !isSearchFragmentDisplayed;
-        if (searchItem != null && editItem != null) {
-            searchItem.setVisible(showItems);
-            editItem.setVisible(showItems);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        if (editItem != null) {
+            editItem.setVisible(true);
         }
-
+        if (searchItem != null) {
+            searchItem.setVisible(true);
+        }
         return true;
     }
+
 
 }
