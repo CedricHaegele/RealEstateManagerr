@@ -100,10 +100,7 @@ public class ListFragment extends Fragment implements OnItemClickListener {
             listener.onPropertySelected(realEstate.getId());
         }
 
-        requireActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_list_container, DetailFragment.newInstance(realEstate.getId()))
-                .addToBackStack(null)
-                .commit();
+
     }
 
 }

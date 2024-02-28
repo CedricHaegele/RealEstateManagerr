@@ -108,15 +108,15 @@ public class DetailFragment extends Fragment {
         }
     }
 
-
-
     @Override
     public void onResume() {
         super.onResume();
-        if (getActivity() instanceof MainActivity) {
-            //  ((MainActivity) getActivity()).setupDrawerToggle(true);
+        if (getArguments() != null) {
+            int propertyId = getArguments().getInt(ARG_ID);
+            realtyEstateViewModel.getRealEstate(propertyId).observe(getViewLifecycleOwner(), this::populateRealEstate);
         }
     }
+
 
 
     @Override
@@ -196,6 +196,8 @@ public class DetailFragment extends Fragment {
                 realtyEstateViewModel.updateRealEstate(realEstate);
             });
 
+
+
             if (realEstate.getAddressLoc() != null && realEstate.getAddressLoc().getLatLng() != null) {
                 this.latLng = realEstate.getAddressLoc().getLatLng(); // Mise à jour correcte
 
@@ -231,20 +233,13 @@ public class DetailFragment extends Fragment {
             ImageAdapter imageAdapter = new ImageAdapter(getContext(), imageUrls);
             binding.photosRecyclerView.setAdapter(imageAdapter);
             binding.photosRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-            binding.propertyMap.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Vérifiez si LatLng est non null
-                    if (latLng != null) {
-                        String geoUri = "geo:0,0?q=" + latLng.latitude + "," + latLng.longitude + "(Label)";
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(geoUri));
-                        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                            startActivity(intent);
-                        } else {
-                            Log.e("DetailFragment", "Aucune application pour ouvrir la carte n'a été trouvée.");
-                        }
-                    }
+            binding.propertyMap.setOnClickListener(v -> {
+                if (latLng != null) {
+                    String geoUri = "geo:" + latLng.latitude + "," + latLng.longitude + "?q=" + latLng.latitude + "," + latLng.longitude + "(Label)";
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(geoUri));
+                    startActivity(intent);
                 }
+
             });
         }
     }
