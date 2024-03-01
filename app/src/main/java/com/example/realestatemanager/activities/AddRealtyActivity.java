@@ -55,7 +55,6 @@ public class AddRealtyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         viewModel = new ViewModelProvider(this).get(AddRealtyViewModel.class);
         initView();
         initToolBar();
@@ -67,7 +66,7 @@ public class AddRealtyActivity extends AppCompatActivity {
     }
 
     private void setupStatusDropdown() {
-        String[] statuses = {"On Sale", "Sold"};
+        String[] statuses = {getString(R.string.on_sale), getString(R.string.sold)};
         ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(this, R.layout.dropdown_menu_popup_item, statuses);
         binding.statusAutoCompleteTextView.setAdapter(statusAdapter);
     }
@@ -205,11 +204,12 @@ public class AddRealtyActivity extends AppCompatActivity {
                 Bundle extras = data.getExtras();
                 if (extras != null) {
                     Bitmap bitmap = (Bitmap) extras.get("data");
-                    addImageToList(bitmap);
+                    if (bitmap != null) {
+                        addImageToList(bitmap);
+                    }
                 }
             } else if (requestCode == REQUEST_PICK_IMAGE) {
                 if (data.getClipData() != null) {
-
                     int count = data.getClipData().getItemCount();
                     for (int i = 0; i < count; i++) {
                         Uri imageUri = data.getClipData().getItemAt(i).getUri();
@@ -271,7 +271,6 @@ public class AddRealtyActivity extends AppCompatActivity {
         Date marketDate = Utils.convertStringToDate(marketDateStr);
         Date soldDate = Utils.convertStringToDate(soldDateStr);
 
-
         if (validateInput(title, price, surface, address, rooms, bedrooms, bathrooms, description, agent, status, marketDateStr, soldDateStr) || imageList.isEmpty()) {
             Toast.makeText(this, getString(R.string.error_fields), Toast.LENGTH_SHORT).show();
             return;
@@ -294,6 +293,7 @@ public class AddRealtyActivity extends AppCompatActivity {
         realEstate.setStatus(status);
         realEstate.setMarketDate(marketDate);
         realEstate.setSoldDate(soldDate);
+        realEstate.setPointsOfInterest(getPoi());
         if (imageAdapter != null) {
             realEstate.setImageUrls(imageAdapter.getImages());
         }
@@ -305,11 +305,27 @@ public class AddRealtyActivity extends AppCompatActivity {
         });
     }
 
+    private List<String> getPoi() {
+        List<String> pois = new ArrayList<>();
+        if (binding.schoolCheckbox.isChecked()) {
+            pois.add(getString(R.string.school));
+        }
+        if (binding.shoppingCheckbox.isChecked()) {
+            pois.add(getString(R.string.shopping));
+        }
+        if (binding.transportCheckbox.isChecked()) {
+            pois.add(getString(R.string.transport));
+        }
+        if (binding.poolCheckbox.isChecked()) {
+            pois.add(getString(R.string.swimming_pool));
+        }
+        return pois;
+    }
+
     private boolean validateInput(String title, String price, String surface, String address, String rooms, String bedrooms, String bathrooms, String description, String agent, String status, String marketDateStr, String soldDateStr) {
         if (title.isEmpty() || price.isEmpty() || surface.isEmpty() || address.isEmpty() || rooms.isEmpty() || bedrooms.isEmpty() || bathrooms.isEmpty() || description.isEmpty() || agent.isEmpty() || marketDateStr.isEmpty()) {
             return true;
         }
-
         return "Sold".equals(status) && soldDateStr.isEmpty();// Passed all validations
     }
 

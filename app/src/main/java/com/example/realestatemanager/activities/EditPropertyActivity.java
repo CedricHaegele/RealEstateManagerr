@@ -4,15 +4,14 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.realestatemanager.R;
 import com.example.realestatemanager.databinding.ActivityEditPropertyBinding;
 import com.example.realestatemanager.model.AddressLoc;
 import com.example.realestatemanager.model.RealEstate;
@@ -37,43 +36,55 @@ public class EditPropertyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        realEstateViewModel = new ViewModelProvider(this).get(RealEstateViewModel.class);
+
+        initView();
+        initTopBar();
+        initListeners();
+        loadPropertyDetails();
+        handleFormSubmission();
+        setupDeleteButton();
+    }
+
+    private void initView() {
         binding = ActivityEditPropertyBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+    }
 
+    private void initTopBar() {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+    }
 
-        realEstateViewModel = new ViewModelProvider(this).get(RealEstateViewModel.class);
-
+    private void initListeners() {
         binding.switchSold.setOnCheckedChangeListener((buttonView, isChecked) -> {
             binding.editTextSoldDate.setEnabled(isChecked);
             if (!isChecked) {
                 binding.editTextSoldDate.setText("");
             }
         });
-
-        int propertyId = getIntent().getIntExtra("PROPERTY_ID", -1);
-        loadPropertyDetails(propertyId);
-        handleFormSubmission();
-        setupDeleteButton();
     }
 
     private void setupDeleteButton() {
         binding.buttonDeleteProperty.setOnClickListener(v -> {
             if (currentRealEstate != null) {
                 realEstateViewModel.deleteProperty(currentRealEstate);
-                Toast.makeText(EditPropertyActivity.this, "Property deleted successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditPropertyActivity.this, getString(R.string.successfully_deleted_property), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(EditPropertyActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
                 finish();
             } else {
-                Toast.makeText(EditPropertyActivity.this, "Error: No property to delete", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditPropertyActivity.this, getString(R.string.error_delete), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-
-    private void loadPropertyDetails(int propertyId) {
+    private void loadPropertyDetails() {
+        int propertyId = getIntent().getIntExtra("PROPERTY_ID", -1);
         realEstateViewModel.getRealEstate(propertyId).observe(this, realEstate -> {
             if (realEstate != null) {
                 currentRealEstate = realEstate;
@@ -113,14 +124,14 @@ public class EditPropertyActivity extends AppCompatActivity {
                             Address address = addresses.get(0);
                             runOnUiThread(() -> updateRealEstateWithNewLocation(address.getLatitude(), address.getLongitude()));
                         } else {
-                            runOnUiThread(() -> Toast.makeText(EditPropertyActivity.this, "Address not found", Toast.LENGTH_LONG).show());
+                            runOnUiThread(() -> Toast.makeText(EditPropertyActivity.this, R.string.error_address, Toast.LENGTH_LONG).show());
                         }
                     } catch (IOException e) {
-                        runOnUiThread(() -> Toast.makeText(EditPropertyActivity.this, "Geocoder failed", Toast.LENGTH_LONG).show());
+                        runOnUiThread(() -> Toast.makeText(EditPropertyActivity.this, R.string.geocoder_error, Toast.LENGTH_LONG).show());
                     }
                 });
             } else {
-                Toast.makeText(this, "Please check your input", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.check_error), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -141,7 +152,6 @@ public class EditPropertyActivity extends AppCompatActivity {
         addressLoc.setAddressLabel(binding.editTextAddress.getText().toString());
         addressLoc.setLatLng(new com.google.android.gms.maps.model.LatLng(latitude, longitude));
         currentRealEstate.setAddressLoc(addressLoc);
-
         currentRealEstate.setTitle(binding.editTextTitle.getText().toString());
         currentRealEstate.setPrice(binding.editTextPrice.getText().toString());
         currentRealEstate.setSurface(binding.editTextSurface.getText().toString());
@@ -159,18 +169,18 @@ public class EditPropertyActivity extends AppCompatActivity {
         }
 
         List<String> poi = new ArrayList<>();
-        if (binding.checkBoxSchool.isChecked()) poi.add("School");
-        if (binding.checkBoxShopping.isChecked()) poi.add("Shopping");
-        if (binding.checkBoxPublicTransport.isChecked()) poi.add("Transport");
-        if (binding.checkBoxPool.isChecked()) poi.add("Swimming Pool");
+        if (binding.checkBoxSchool.isChecked()) poi.add(getString(R.string.school));
+        if (binding.checkBoxShopping.isChecked()) poi.add(getString(R.string.shopping));
+        if (binding.checkBoxPublicTransport.isChecked()) poi.add(getString(R.string.transport));
+        if (binding.checkBoxPool.isChecked()) poi.add(getString(R.string.swimming_pool));
         currentRealEstate.setPointsOfInterest(poi);
 
         if (binding.switchSold.isChecked()) {
-            currentRealEstate.setStatus("Sold");
+            currentRealEstate.setStatus(getString(R.string.sold));
             try {
                 currentRealEstate.setSoldDate(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(Objects.requireNonNull(binding.editTextSoldDate.getText()).toString()));
             } catch (ParseException e) {
-                Toast.makeText(this, "Invalid date format for Sold Date", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.format_date_error, Toast.LENGTH_SHORT).show();
             }
         } else {
             currentRealEstate.setStatus("Available");
@@ -178,9 +188,10 @@ public class EditPropertyActivity extends AppCompatActivity {
         }
 
         realEstateViewModel.updateProperty(currentRealEstate);
-        Toast.makeText(this, "Property updated successfully", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.update_property, Toast.LENGTH_SHORT).show();
         finish();
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -188,8 +199,6 @@ public class EditPropertyActivity extends AppCompatActivity {
             finish();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
-
 }

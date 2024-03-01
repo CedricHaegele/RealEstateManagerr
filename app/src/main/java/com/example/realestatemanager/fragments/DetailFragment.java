@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.realestatemanager.activities.MainActivity;
@@ -71,32 +70,19 @@ public class DetailFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
+    public void onResume() {
+        super.onResume();
         if (getArguments() != null) {
-            realtyEstateViewModel.getRealEstate(getArguments().getInt(ARG_ID)).observe(getViewLifecycleOwner(), this::populateRealEstate);
+            int propertyId = getArguments().getInt(ARG_ID);
+            realtyEstateViewModel.getRealEstate(propertyId).observe(getViewLifecycleOwner(), this::populateRealEstate);
         }
-        if (getActivity() instanceof MainActivity) {
-            //  ((MainActivity) getActivity()).setupDrawerToggle(false);
-        }
-        if (getActivity() instanceof AppCompatActivity) {
-            AppCompatActivity activity = (AppCompatActivity) getActivity();
-            if (activity.getSupportActionBar() != null) {
-                activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
-            }
-        }
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-
                 Intent intent = new Intent(getActivity(), MainActivity.class);
-
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 if (getActivity() != null) {
@@ -107,17 +93,6 @@ public class DetailFragment extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (getArguments() != null) {
-            int propertyId = getArguments().getInt(ARG_ID);
-            realtyEstateViewModel.getRealEstate(propertyId).observe(getViewLifecycleOwner(), this::populateRealEstate);
-        }
-    }
-
-
 
     @Override
     public void onDestroyView() {
@@ -159,44 +134,6 @@ public class DetailFragment extends Fragment {
             } else {
                 binding.soldDateEditText.setVisibility(View.GONE);
             }
-
-            binding.schoolCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked) {
-                    realEstate.addPointOfInterest("School");
-                } else {
-                    realEstate.removePointOfInterest("School");
-                }
-                realtyEstateViewModel.updateRealEstate(realEstate);
-            });
-
-            binding.shoppingCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked) {
-                    realEstate.addPointOfInterest("Shopping");
-                } else {
-                    realEstate.removePointOfInterest("Shopping");
-                }
-                realtyEstateViewModel.updateRealEstate(realEstate);
-            });
-
-            binding.transportCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked) {
-                    realEstate.addPointOfInterest("Transport");
-                } else {
-                    realEstate.removePointOfInterest("Transport");
-                }
-                realtyEstateViewModel.updateRealEstate(realEstate);
-            });
-
-            binding.poolCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked) {
-                    realEstate.addPointOfInterest("Swimming Pool");
-                } else {
-                    realEstate.removePointOfInterest("Swimming Pool");
-                }
-                realtyEstateViewModel.updateRealEstate(realEstate);
-            });
-
-
 
             if (realEstate.getAddressLoc() != null && realEstate.getAddressLoc().getLatLng() != null) {
                 this.latLng = realEstate.getAddressLoc().getLatLng(); // Mise à jour correcte

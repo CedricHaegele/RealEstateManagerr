@@ -1,5 +1,6 @@
 package com.example.realestatemanager.adapter;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +50,13 @@ public class RealEstateAdapter extends RecyclerView.Adapter<PropertyViewHolder> 
             if (bitmap != null) {
                 Glide.with(holder.itemView.getContext()).load(bitmap).into(holder.imageViewPropertyPhoto);
             }
+        }
+
+        Resources resources = holder.itemView.getContext().getResources();
+        if (realEstate.getStatus().equals(resources.getString(R.string.sold))) {
+            holder.soldOutImageView.setVisibility(View.VISIBLE);
+        } else {
+            holder.soldOutImageView.setVisibility(View.GONE);
         }
     }
 

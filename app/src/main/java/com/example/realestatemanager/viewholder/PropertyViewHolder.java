@@ -14,11 +14,12 @@ import com.example.realestatemanager.model.RealEstate;
 import java.util.List;
 
 public class PropertyViewHolder extends RecyclerView.ViewHolder {
-    public ImageView imageViewPropertyPhoto;
+    public ImageView imageViewPropertyPhoto, soldOutImageView;
     public TextView textViewTitle, textViewAddress, textViewPrice;
 
     public PropertyViewHolder(@NonNull View itemView, List<RealEstate> properties, final OnItemClickListener listener) {
         super(itemView);
+        soldOutImageView = itemView.findViewById(R.id.soldeOutImage);
         imageViewPropertyPhoto = itemView.findViewById(R.id.imageViewPropertyPhoto);
         textViewTitle = itemView.findViewById(R.id.textViewTitle);
         textViewAddress = itemView.findViewById(R.id.textViewAddress);

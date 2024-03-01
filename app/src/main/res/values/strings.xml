@@ -38,5 +38,20 @@
     <string name="add_message">Veuillez ajouter des propriétés</string>
     <string name="error_fields_photos_required">Please fill in all required fields.</string>
     <string name="successfully_added_property">Property was added successfully.</string>
+    <string name="successfully_deleted_property">Property deleted successfully.</string>
+    <string name="on_sale">On Sale</string>
+    <string name="sold">Sold</string>
+    <string name="school">School</string>
+    <string name="shopping">Shopping</string>
+    <string name="transport">Transport</string>
+    <string name="swimming_pool">Swimming Pool</string>
+    <string name="error_selection">No property selected</string>
+    <string name="error_delete">Error: No property to delete</string>
+    <string name="check_error">Please check your input</string>
+    <string name="geocoder_error">Geocoder failed</string>
+    <string name="error_address">Address not found</string>
+    <string name="format_date_error">Invalid date format for Sold Date</string>
+    <string name="_property">Property updated successfully</string>
+    <string name="update_property">Property updated successfully</string>
 
 </resources>

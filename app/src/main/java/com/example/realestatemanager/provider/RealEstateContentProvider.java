@@ -31,7 +31,7 @@ public class RealEstateContentProvider extends ContentProvider {
             cursor.setNotificationUri(getContext().getContentResolver(), uri);
             return cursor;
 
-    }
+        }
         throw new IllegalArgumentException("Failed to query for uri: " + uri);
     }
 

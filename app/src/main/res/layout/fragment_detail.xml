@@ -195,36 +195,40 @@
             android:layout_marginEnd="8dp"
             android:orientation="horizontal"
             android:padding="@dimen/small_padding"
-            app:layout_constraintTop_toBottomOf="@id/poiTitle"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/poiTitle">
 
             <CheckBox
                 android:id="@+id/schoolCheckbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="School"
+                android:enabled="false"
+                android:text="@string/school"
                 android:textSize="12sp" />
 
             <CheckBox
                 android:id="@+id/shoppingCheckbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Shopping"
+                android:enabled="false"
+                android:text="@string/shopping"
                 android:textSize="12sp" />
 
             <CheckBox
                 android:id="@+id/transportCheckbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Transport"
+                android:enabled="false"
+                android:text="@string/transport"
                 android:textSize="12sp" />
 
             <CheckBox
                 android:id="@+id/poolCheckbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Swimming Pool"
+                android:enabled="false"
+                android:text="@string/swimming_pool"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -232,22 +236,22 @@
             android:id="@+id/statusAndDateContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/poiLayout"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/poiLayout" />
 
         <!-- Statut du bien (En cours, Vendu) -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/statusInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/poiLayout"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/poiLayout">
 
             <AutoCompleteTextView
                 android:id="@+id/statusAutoCompleteTextView"
@@ -259,37 +263,39 @@
         <!-- Date de mise en vente -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/marketDateInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/statusInputLayout"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/statusInputLayout">
+
             <EditText
                 android:id="@+id/marketDateEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="On Sale since : "
-                android:inputType="date"/>
+                android:inputType="date" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Date de vente du bien -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/soldDateInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/marketDateInputLayout"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/marketDateInputLayout">
+
             <EditText
                 android:id="@+id/soldDateEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Sold On: "
-                android:inputType="date"/>
+                android:inputType="date" />
         </com.google.android.material.textfield.TextInputLayout>
 
 

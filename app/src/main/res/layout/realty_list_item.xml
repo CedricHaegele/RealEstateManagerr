@@ -10,38 +10,49 @@
         android:id="@+id/imageViewPropertyPhoto"
         android:layout_width="100dp"
         android:layout_height="65dp"
-        android:scaleType="fitXY"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="property_photo"
-        android:src="@drawable/estate_image" />
+        android:scaleType="fitXY"
+        android:src="@drawable/estate_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/soldeOutImage"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:contentDescription="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/sold_out"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textViewTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@id/imageViewPropertyPhoto"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/imageViewPropertyPhoto"
         android:layout_marginStart="16dp"
-        android:text="Title" />
+        android:text="Title"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imageViewPropertyPhoto"
+        app:layout_constraintTop_toTopOf="@id/imageViewPropertyPhoto" />
 
     <TextView
         android:id="@+id/textViewAddress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="Address"
         app:layout_constraintStart_toStartOf="@id/textViewTitle"
-        app:layout_constraintTop_toBottomOf="@id/textViewTitle"
-        android:text="Address" />
+        app:layout_constraintTop_toBottomOf="@id/textViewTitle" />
 
     <TextView
         android:id="@+id/textViewPrice"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="Price"
         app:layout_constraintStart_toStartOf="@id/textViewAddress"
-        app:layout_constraintTop_toBottomOf="@id/textViewAddress"
-        android:text="Price" />
+        app:layout_constraintTop_toBottomOf="@id/textViewAddress" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

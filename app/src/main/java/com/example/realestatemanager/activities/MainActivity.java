@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
     private int currentPropertyId = -1;
     private ActivityMainBinding binding;
     private ActionBarDrawerToggle toggle;
-    private boolean isSearchFragmentDisplayed = false;
 
     @Override
     public void onPropertySelected(int propertyId) {
@@ -52,31 +51,12 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         initViews();
         initListeners();
         displayFragments();
         initFirstTabletItem();
         handleNavigationDrawer();
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            initToolBar();
-        } else {
-            Log.e("MainActivity", "ActionBar is null");
-        }
-
-        Intent intent = getIntent();
-        if (intent.hasExtra(EXTRA_PROPERTY_ID)) {
-            int propertyId = intent.getIntExtra(EXTRA_PROPERTY_ID, -1);
-            if (propertyId != -1) {
-                DetailFragment detailFragment = DetailFragment.newInstance(propertyId);
-                int containerId = isTablet(getApplicationContext()) ? R.id.fragment_detail_container : R.id.fragment_list_container;
-                getSupportFragmentManager().beginTransaction()
-                        .replace(containerId, detailFragment)
-                        .commit();
-            }
-        }
+        initToolBar();
     }
 
     @Override
@@ -164,7 +144,6 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
     }
 
 
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -203,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
                 intent.putExtra("PROPERTY_ID", currentPropertyId);
                 startActivity(intent);
             } else {
-                Toast.makeText(this, "No property selected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.error_selection), Toast.LENGTH_SHORT).show();
             }
             return true;
         }
@@ -218,9 +197,6 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
                 .replace(R.id.fragment_list_container, searchFragment)
                 .addToBackStack(null)
                 .commit();
-
-        isSearchFragmentDisplayed = true;
-
         invalidateOptionsMenu();
     }
 
@@ -232,19 +208,4 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
             super.onBackPressed();
         }
     }
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        MenuItem editItem = menu.findItem(R.id.action_edit);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        if (editItem != null) {
-            editItem.setVisible(true);
-        }
-        if (searchItem != null) {
-            searchItem.setVisible(true);
-        }
-        return true;
-    }
-
-
 }
