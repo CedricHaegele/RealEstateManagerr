@@ -52,15 +52,15 @@ public class RealEstateDaoTest {
     @Test
     public void writeRealEstateAndReadInList() throws InterruptedException {
         RealEstate realEstate = new RealEstate();
-        // Configurez votre objet realEstate ici
+
         realEstate.setId(1);
-        dao.insert(realEstate); // Correction ici
+        dao.insert(realEstate);
 
         LiveData<List<RealEstate>> liveData = dao.getAll();
         List<RealEstate> realEstateList = getValue(liveData);
 
         assertEquals(realEstateList.get(0).getId(), realEstate.getId());
-        // Vous pouvez ajouter plus d'assertions ici pour tester d'autres champs
+
     }
 
     public static <T> T getValue(final LiveData<T> liveData) throws InterruptedException {

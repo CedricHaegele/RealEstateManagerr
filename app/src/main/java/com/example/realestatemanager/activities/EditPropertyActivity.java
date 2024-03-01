@@ -1,6 +1,8 @@
 package com.example.realestatemanager.activities;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -16,6 +18,7 @@ import com.example.realestatemanager.model.AddressLoc;
 import com.example.realestatemanager.model.RealEstate;
 import com.example.realestatemanager.viewmodel.RealEstateViewModel;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +26,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class EditPropertyActivity extends AppCompatActivity {
     private ActivityEditPropertyBinding binding;
@@ -49,7 +54,6 @@ public class EditPropertyActivity extends AppCompatActivity {
             }
         });
 
-
         int propertyId = getIntent().getIntExtra("PROPERTY_ID", -1);
         loadPropertyDetails(propertyId);
         handleFormSubmission();
@@ -66,13 +70,11 @@ public class EditPropertyActivity extends AppCompatActivity {
                 Toast.makeText(EditPropertyActivity.this, "Error: No property to delete", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-
             finish();
             return true;
         }
@@ -91,11 +93,9 @@ public class EditPropertyActivity extends AppCompatActivity {
                 binding.editTextBathrooms.setText(realEstate.getBathrooms());
                 binding.editTextAddress.setText(realEstate.getAddressLoc().getAddressLabel());
                 binding.editTextAgent.setText(realEstate.getAgent());
-
                 if (realEstate.getMarketDate() != null) {
                     binding.editTextMarketDate.setText(formatDate(realEstate.getMarketDate()));
                 }
-
                 binding.checkBoxSchool.setChecked(realEstate.hasSchoolNearby());
                 binding.checkBoxShopping.setChecked(realEstate.hasShoppingNearby());
                 binding.checkBoxPublicTransport.setChecked(realEstate.hasTransportNearby());
@@ -105,17 +105,27 @@ public class EditPropertyActivity extends AppCompatActivity {
     }
 
     private String formatDate(Date date) {
-        if (date == null) return "";
         return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date);
     }
 
     private void handleFormSubmission() {
         binding.buttonUpdateProperty.setOnClickListener(v -> {
             if (validateInput()) {
-                updateRealEstateFromInput();
-                realEstateViewModel.updateProperty(currentRealEstate);
-                Toast.makeText(this, "Property updated successfully", Toast.LENGTH_SHORT).show();
-                finish();
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                executor.execute(() -> {
+                    try {
+                        Geocoder geocoder = new Geocoder(EditPropertyActivity.this);
+                        List<Address> addresses = geocoder.getFromLocationName(binding.editTextAddress.getText().toString(), 1);
+                        if (!addresses.isEmpty()) {
+                            Address address = addresses.get(0);
+                            runOnUiThread(() -> updateRealEstateWithNewLocation(address.getLatitude(), address.getLongitude()));
+                        } else {
+                            runOnUiThread(() -> Toast.makeText(EditPropertyActivity.this, "Address not found", Toast.LENGTH_LONG).show());
+                        }
+                    } catch (IOException e) {
+                        runOnUiThread(() -> Toast.makeText(EditPropertyActivity.this, "Geocoder failed", Toast.LENGTH_LONG).show());
+                    }
+                });
             } else {
                 Toast.makeText(this, "Please check your input", Toast.LENGTH_SHORT).show();
             }
@@ -132,18 +142,18 @@ public class EditPropertyActivity extends AppCompatActivity {
                 !TextUtils.isEmpty(binding.editTextMarketDate.getText());
     }
 
-    private void updateRealEstateFromInput() {
+    private void updateRealEstateWithNewLocation(double latitude, double longitude) {
+        AddressLoc addressLoc = currentRealEstate.getAddressLoc() != null ? currentRealEstate.getAddressLoc() : new AddressLoc();
+        addressLoc.setAddressLabel(binding.editTextAddress.getText().toString());
+        addressLoc.setLatLng(new com.google.android.gms.maps.model.LatLng(latitude, longitude));
+        currentRealEstate.setAddressLoc(addressLoc);
+
         currentRealEstate.setTitle(binding.editTextTitle.getText().toString());
         currentRealEstate.setPrice(binding.editTextPrice.getText().toString());
         currentRealEstate.setSurface(binding.editTextSurface.getText().toString());
         currentRealEstate.setDescription(binding.editTextDescription.getText().toString());
         currentRealEstate.setBedrooms(binding.editTextBedrooms.getText().toString());
         currentRealEstate.setBathrooms(binding.editTextBathrooms.getText().toString());
-        currentRealEstate.setAgent(binding.editTextAgent.getText().toString());
-
-        AddressLoc address = new AddressLoc();
-        address.setAddressLabel(binding.editTextAddress.getText().toString());
-        currentRealEstate.setAddressLoc(address);
         currentRealEstate.setAgent(binding.editTextAgent.getText().toString());
 
         try {
