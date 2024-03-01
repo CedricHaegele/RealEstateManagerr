@@ -72,14 +72,6 @@ public class EditPropertyActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     private void loadPropertyDetails(int propertyId) {
         realEstateViewModel.getRealEstate(propertyId).observe(this, realEstate -> {
@@ -89,6 +81,7 @@ public class EditPropertyActivity extends AppCompatActivity {
                 binding.editTextPrice.setText(realEstate.getPrice());
                 binding.editTextDescription.setText(realEstate.getDescription());
                 binding.editTextSurface.setText(realEstate.getSurface());
+                binding.editTextRooms.setText(String.valueOf(realEstate.getRooms()));
                 binding.editTextBedrooms.setText(realEstate.getBedrooms());
                 binding.editTextBathrooms.setText(realEstate.getBathrooms());
                 binding.editTextAddress.setText(realEstate.getAddressLoc().getAddressLabel());
@@ -136,6 +129,7 @@ public class EditPropertyActivity extends AppCompatActivity {
         return !TextUtils.isEmpty(binding.editTextTitle.getText()) &&
                 !TextUtils.isEmpty(binding.editTextPrice.getText()) &&
                 !TextUtils.isEmpty(binding.editTextSurface.getText()) &&
+                !TextUtils.isEmpty(binding.editTextRooms.getText()) &&
                 !TextUtils.isEmpty(binding.editTextDescription.getText()) &&
                 !TextUtils.isEmpty(binding.editTextBedrooms.getText()) &&
                 !TextUtils.isEmpty(binding.editTextBathrooms.getText()) &&
@@ -152,6 +146,7 @@ public class EditPropertyActivity extends AppCompatActivity {
         currentRealEstate.setPrice(binding.editTextPrice.getText().toString());
         currentRealEstate.setSurface(binding.editTextSurface.getText().toString());
         currentRealEstate.setDescription(binding.editTextDescription.getText().toString());
+        currentRealEstate.setRooms(binding.editTextRooms.getText().toString());
         currentRealEstate.setBedrooms(binding.editTextBedrooms.getText().toString());
         currentRealEstate.setBathrooms(binding.editTextBathrooms.getText().toString());
         currentRealEstate.setAgent(binding.editTextAgent.getText().toString());

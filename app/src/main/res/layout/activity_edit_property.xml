@@ -15,8 +15,8 @@
             android:id="@+id/editTextTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:inputType="text"
             android:hint="Title : "
+            android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -25,21 +25,21 @@
             android:id="@+id/editTextAddress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Address :"
-            android:drawablePadding="10dp"
             android:drawableLeft="@drawable/location"
+            android:drawablePadding="10dp"
+            android:hint="Address :"
             android:inputType="text"
-            app:layout_constraintTop_toBottomOf="@id/editTextTitle"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/editTextTitle" />
 
         <EditText
             android:id="@+id/editTextPrice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint ="Price : "
             android:drawableLeft="@drawable/price"
             android:drawablePadding="10dp"
+            android:hint="Price : "
             android:inputType="numberDecimal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,9 +49,9 @@
             android:id="@+id/editTextSurface"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint =" Surface :"
             android:drawableLeft="@drawable/surface"
             android:drawablePadding="10dp"
+            android:hint=" Surface :"
             android:inputType="numberDecimal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,9 +61,9 @@
             android:id="@+id/editTextDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint=" Description :"
             android:drawableLeft="@drawable/description"
             android:drawablePadding="10dp"
+            android:hint=" Description :"
             android:inputType="textMultiLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -73,13 +73,13 @@
             android:id="@+id/editTextAgent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="  Agent : "
             android:drawableLeft="@drawable/agent"
             android:drawablePadding="10dp"
+            android:hint="  Agent : "
             android:inputType="text"
-            app:layout_constraintTop_toBottomOf="@id/editTextDescription"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/editTextDescription" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layoutMarketDate"
@@ -115,111 +115,123 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/switchSold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/switchSold">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextSoldDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:enabled="false"
                 android:hint="Sold Date"
-                android:inputType="date"
-                android:enabled="false" />
+                android:inputType="date" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <EditText
-            android:id="@+id/editTextBedrooms"
+            android:id="@+id/editTextRooms"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint =" Bedrooms:"
-            android:drawableLeft="@drawable/room"
             android:drawablePadding="10dp"
+            android:drawableLeft="@drawable/rooms"
+            android:hint="Rooms :"
             android:inputType="number"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutMarketDate" />
 
         <EditText
+            android:id="@+id/editTextBedrooms"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/room"
+            android:drawablePadding="10dp"
+            android:hint=" Bedrooms:"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextRooms" />
+
+        <EditText
             android:id="@+id/editTextBathrooms"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Bathrooms :"
-            android:drawablePadding="10dp"
             android:drawableLeft="@drawable/bathroom"
+            android:drawablePadding="10dp"
             android:inputType="number"
-            app:layout_constraintTop_toBottomOf="@id/editTextBedrooms"
+            android:text="Bathrooms :"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/editTextBedrooms" />
 
         <TextView
             android:id="@+id/textViewPOI"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Points of Interest"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/editTextBathrooms"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:text="Points of Interest"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editTextBathrooms" />
 
         <LinearLayout
             android:id="@+id/linearLayoutPOI"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/textViewPOI"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/textViewPOI">
 
             <CheckBox
                 android:id="@+id/checkBoxSchool"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="School"/>
+                android:text="School" />
 
             <CheckBox
                 android:id="@+id/checkBoxShopping"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Shopping"/>
+                android:text="Shopping" />
 
             <CheckBox
                 android:id="@+id/checkBoxPublicTransport"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Transport"/>
+                android:text="Transport" />
 
             <CheckBox
                 android:id="@+id/checkBoxPool"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Swimming Pool"/>
+                android:text="Swimming Pool" />
         </LinearLayout>
 
         <Button
             android:id="@+id/buttonUpdateProperty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="Update Property"
-            app:layout_constraintTop_toBottomOf="@id/layoutSoldDate"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutSoldDate" />
 
         <Button
             android:id="@+id/buttonDeleteProperty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/design_default_color_error"
+            android:backgroundTint="@color/red"
             android:text="Delete Property"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonUpdateProperty"
-            android:backgroundTint="@color/red"/>
+            app:layout_constraintTop_toBottomOf="@+id/buttonUpdateProperty" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
