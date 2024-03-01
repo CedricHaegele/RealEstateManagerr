@@ -201,32 +201,48 @@ public class AddRealtyActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            Bitmap bitmap = null;
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 Bundle extras = data.getExtras();
                 if (extras != null) {
-                    bitmap = (Bitmap) extras.get("data");
+                    Bitmap bitmap = (Bitmap) extras.get("data");
+                    addImageToList(bitmap);
                 }
-            } else if (requestCode == REQUEST_PICK_IMAGE && data != null && data.getData() != null) {
-                Uri selectedImageUri = data.getData();
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
-                } catch (IOException e) {
-                    Log.e(TAG, "Error processing gallery image", e);
+            } else if (requestCode == REQUEST_PICK_IMAGE) {
+                if (data.getClipData() != null) {
+
+                    int count = data.getClipData().getItemCount();
+                    for (int i = 0; i < count; i++) {
+                        Uri imageUri = data.getClipData().getItemAt(i).getUri();
+                        try {
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                            addImageToList(bitmap);
+                        } catch (IOException e) {
+                            Log.e(TAG, "Error processing gallery image", e);
+                        }
+                    }
+                } else if (data.getData() != null) {
+
+                    Uri imageUri = data.getData();
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                        addImageToList(bitmap);
+                    } catch (IOException e) {
+                        Log.e(TAG, "Error processing gallery image", e);
+                    }
                 }
             }
-
-            if (bitmap != null) {
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream); // Compresser l'image
-                byte[] byteArray = byteArrayOutputStream.toByteArray();
-                String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
-
-                imageList.add(encodedImage);
-                updateRecyclerView();
-            }
+            updateRecyclerView();
         }
     }
+
+    private void addImageToList(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream); // Compresser l'image
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        imageList.add(encodedImage);
+    }
+
 
     @SuppressLint("NotifyDataSetChanged")
     private void updateRecyclerView() {
