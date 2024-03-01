@@ -40,7 +40,10 @@ public class RealEstateAdapter extends RecyclerView.Adapter<PropertyViewHolder> 
         if (realEstate.getAddressLoc() != null) {
             holder.textViewAddress.setText(realEstate.getAddressLoc().getAddressLabel());
         }
-        holder.textViewPrice.setText(String.valueOf(realEstate.getPrice()));
+
+        String formattedPrice = "$" + realEstate.getPrice();
+        holder.textViewPrice.setText(formattedPrice);
+
         if (realEstate.getImageUrls() != null && !realEstate.getImageUrls().isEmpty()) {
             Bitmap bitmap = Utils.base64ToBitmap(realEstate.getImageUrls().get(0));
             if (bitmap != null) {
@@ -48,6 +51,7 @@ public class RealEstateAdapter extends RecyclerView.Adapter<PropertyViewHolder> 
             }
         }
     }
+
 
     @Override
     public int getItemCount() {
