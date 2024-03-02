@@ -1,11 +1,14 @@
 package com.example.realestatemanager.activities;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +24,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -60,12 +64,44 @@ public class EditPropertyActivity extends AppCompatActivity {
     }
 
     private void initListeners() {
+        // Existing listeners setup
         binding.switchSold.setOnCheckedChangeListener((buttonView, isChecked) -> {
             binding.editTextSoldDate.setEnabled(isChecked);
             if (!isChecked) {
                 binding.editTextSoldDate.setText("");
+            } else {
+                // Show DatePickerDialog when enabling the sold date
+                showDatePickerDialog(binding.editTextSoldDate);
             }
         });
+
+        // Listener for market date EditText to show DatePicker
+        binding.editTextMarketDate.setOnClickListener(v -> showDatePickerDialog(binding.editTextMarketDate));
+
+        // Listener for sold date EditText to show DatePicker
+        binding.editTextSoldDate.setOnClickListener(v -> showDatePickerDialog(binding.editTextSoldDate));
+    }
+
+    /**
+     * Shows a DatePickerDialog and sets the selected date on the provided EditText.
+     *
+     * @param dateField The EditText where the selected date will be set.
+     */
+    private void showDatePickerDialog(final EditText dateField) {
+        // Use the current date as the default date in the picker
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        // Create a new instance of DatePickerDialog and show it
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                (view, yearSelected, monthOfYear, dayOfMonth) -> {
+                    // Format the selected date and set it on the dateField EditText
+                    String formattedDate = String.format(Locale.getDefault(), "%d-%02d-%02d", yearSelected, monthOfYear + 1, dayOfMonth);
+                    dateField.setText(formattedDate);
+                }, year, month, day);
+        datePickerDialog.show();
     }
 
     private void setupDeleteButton() {

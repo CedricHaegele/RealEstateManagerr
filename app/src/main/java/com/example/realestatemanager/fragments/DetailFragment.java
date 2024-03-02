@@ -80,18 +80,16 @@ public class DetailFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                if (getActivity() != null) {
-                    getActivity().finish();
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            if (getActivity() != null) {
+                getActivity().finish();
+            }
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -149,7 +147,7 @@ public class DetailFragment extends Fragment {
                 Glide.with(this)
                         .load(mapUrl)
                         .placeholder(R.drawable.map_placeholder)
-                        .listener(new RequestListener<Drawable>() {
+                        .listener(new RequestListener<>() {
                             @Override
                             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                 Log.e("DetailFragment", "Erreur de chargement de la carte", e);

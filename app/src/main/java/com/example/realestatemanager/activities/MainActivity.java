@@ -4,28 +4,25 @@ import static com.google.android.gms.common.util.DeviceProperties.isTablet;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 
 import com.example.realestatemanager.R;
 import com.example.realestatemanager.callback.OnListItemSelectedListener;
+import com.example.realestatemanager.databinding.ActivityMainBinding;
 import com.example.realestatemanager.fragments.DetailFragment;
 import com.example.realestatemanager.fragments.ListFragment;
-import com.example.realestatemanager.databinding.ActivityMainBinding;
 import com.example.realestatemanager.fragments.SearchFragment;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements OnListItemSelectedListener {
-    public static final String EXTRA_PROPERTY_ID = "EXTRA_PROPERTY_ID";
     private int currentPropertyId = -1;
     private ActivityMainBinding binding;
     private ActionBarDrawerToggle toggle;
@@ -189,7 +186,6 @@ public class MainActivity extends AppCompatActivity implements OnListItemSelecte
 
         return super.onOptionsItemSelected(item);
     }
-
 
     private void displaySearchFragment() {
         SearchFragment searchFragment = new SearchFragment();

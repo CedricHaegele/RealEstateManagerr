@@ -6,7 +6,7 @@
     <string name="monthly_payment_result">Montant du paiement mensuel: %1$.2f</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="type">Type</string>
-    <string name="monthly_payment">Paiement mensuel : %1$s</string>
+    <string name="monthly_payment">Monthly payment : %1$s</string>
     <string name="input_error">Please enter valid numbers in all fields.</string>
 
     <string-array name="real_estate_agents">
@@ -35,7 +35,7 @@
     <string name="add_photo">Add Photo</string>
     <string name="error_fields">Please fill in all required fields.</string>
     <string name="successfully">Property was added successfully.</string>
-    <string name="add_message">Veuillez ajouter des propriétés</string>
+    <string name="add_message">Let\'s add properties</string>
     <string name="error_fields_photos_required">Please fill in all required fields.</string>
     <string name="successfully_added_property">Property was added successfully.</string>
     <string name="successfully_deleted_property">Property deleted successfully.</string>

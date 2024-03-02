@@ -286,18 +286,21 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            app:boxStrokeColor="@android:color/holo_red_dark"
+            app:hintTextColor="@android:color/holo_red_dark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/marketDateInputLayout">
 
-            <EditText
-                android:id="@+id/soldDateEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Sold On: "
-                android:inputType="date" />
-        </com.google.android.material.textfield.TextInputLayout>
+        <EditText
+            android:id="@+id/soldDateEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Sold On : "
+            android:inputType="date"
+            android:textColor="@android:color/holo_red_dark"
+            android:textColorHint="@android:color/holo_red_dark"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

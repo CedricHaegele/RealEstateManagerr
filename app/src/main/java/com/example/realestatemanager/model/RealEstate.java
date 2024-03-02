@@ -2,6 +2,7 @@ package com.example.realestatemanager.model;
 
 import android.content.ContentValues;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -237,18 +238,8 @@ public class RealEstate {
         return this.pointsOfInterest.contains("Swimming Pool");
     }
 
-    public void addPointOfInterest(String pointOfInterest) {
-        if (!this.pointsOfInterest.contains(pointOfInterest)) {
-            this.pointsOfInterest.add(pointOfInterest);
-        }
-    }
 
-    public void removePointOfInterest(String pointOfInterest) {
-        this.pointsOfInterest.remove(pointOfInterest);
-    }
-
-
-
+    @NonNull
     @Override
     public String toString() {
         return "RealEstate{" +
