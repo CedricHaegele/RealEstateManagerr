@@ -28,7 +28,7 @@
 - **SQLite** : Base de données locale pour un stockage persistant.
 - **ContentProvider** : Couche d’abstraction pour un accès standardisé aux données.
 - **Google Maps API** : Pour la gestion de la carte et la géo-localisation.
-- **Architecture MVC/MVP** : Organisation de l’application.
+- **Architecture MVVM** : Organisation de l’application.
 - **Tests unitaires et d’intégration** : Pour garantir la qualité du code.
 - **Material Design** : Interface respectant les recommandations UX de Google.
 
