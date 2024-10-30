@@ -45,6 +45,8 @@
 ![image](https://github.com/user-attachments/assets/722b3048-5964-49a7-9f39-26874ceb02db)
 ![image](https://github.com/user-attachments/assets/760cbe0b-aff3-4e4c-9a2f-8f8b83fcf98c)
 
+[P9 – Devenez un as de la gestion.pptx](https://github.com/user-attachments/files/17569163/P9.Devenez.un.as.de.la.gestion.pptx)
+
 ## Installation
 
 1. **Cloner le dépôt** :
