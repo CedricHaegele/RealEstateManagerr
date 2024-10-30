@@ -1,8 +1,6 @@
 # Real Estate Manager
 
 **Application Android pour la gestion de biens immobiliers dans une agence spécialisée dans les biens d’exception.**  
-Dernière mise à jour : Jeudi 17 mars 2022  
-Temps estimé : 100 heures
 
 ## Description
 
